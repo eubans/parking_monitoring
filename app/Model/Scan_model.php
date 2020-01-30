@@ -60,4 +60,32 @@ class Scan_model extends Model
             ->first()
             ->glv_value;
     }
+
+    function saveReservation($data)
+    {
+        DB::table('reservations')
+            ->insert($data);
+    }
+
+    function getOccupantPendingReservation($id)
+    {
+        return DB::table('reservations')
+            ->where('rsv_occupant_id', $id)
+            ->where('rsv_status', 'pending')
+            ->first();
+    }
+
+    function getLatestOccupantReservation()
+    {
+        return DB::table('reservations')
+            ->where('rsv_status', 'pending')
+            ->first();
+    }
+
+    function updateReservation($data, $rsv_id)
+    {
+        DB::table('reservations')
+            ->where('rsv_id', $rsv_id)
+            ->update($data);
+    }
 }

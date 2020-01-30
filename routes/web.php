@@ -23,6 +23,12 @@ Route::get('home', 'Controller@Home');
 
 Route::get('get-parking-status', 'Controller@getParkingStatus');
 Route::get('get-ongoing-occupants', 'Controller@getOngoingOccupants');
+Route::get('get-pending-reservations', 'Controller@getPendingReservation');
+Route::get('get-queued-reservation-count', 'Controller@getQueuedReservationCount');
+Route::get('get-occupant-queue-number', 'Controller@getOccupantQueueNumber');
+
+Route::get('occupant-reserve-slot', 'Controller@reserveSlot');
+Route::get('occupant-cancel-reservation', 'Controller@cancelReservation');
 
 Route::get('occupant', 'Occupant@List');
 Route::get('occupant/registration', 'Occupant@Registration');
@@ -30,6 +36,7 @@ Route::post('occupant/registration/save', 'Occupant@Registration_Save');
 Route::get('occupant/profile', 'Occupant@Registration');
 Route::get('occupant/profile/fetch', 'Occupant@getOccupantProfile');
 Route::post('occupant/profile/toggle-status', 'Occupant@Occupant_Change_Status');
+Route::post('occupant/profile/toggle-login', 'Occupant@Occupant_Change_Login');
 
 Route::get('occupant/attendance-logs', 'Occupant@Attendance_Logs');
 
@@ -37,7 +44,26 @@ Route::get('scan', 'Scan@Index');
 Route::get('scan/fetch-occupant-details', 'Scan@getOccupantDetails');
 Route::get('scan/occupant/in', 'Scan@occupantTimeIn');
 Route::get('scan/occupant/out', 'Scan@occupantTimeOut');
+Route::get('scan/occupant/reserve', 'Scan@occupantReservation');
 Route::get('scan/fetch-occupant-logs', 'Scan@getOccupantLogs');
+
+Route::get('reservation', 'Reservation@List');
+Route::get('reservation/logs', 'Reservation@Logs');
+Route::get('reservation/cancel', 'Reservation@Cancel_Reservation');
+
+Route::get('settings/global-variables', 'Settings@Global_Variables');
+Route::post('settings/global-variables/parking-slot/save', 'Settings@Parking_Slot_Save');
+
+Route::get('settings/user/list', 'Settings@User_List');
+Route::get('settings/user', 'Settings@User');
+Route::post('settings/user/save', 'Settings@User_Save');
+Route::get('settings/user/fetch-details', 'Settings@getAdminitratorDetails');
+
+Route::get('user-settings', 'Settings@User_Settings');
+Route::post('user-settings/save', 'Settings@User_Settings_Save');
+
+Route::post('user-settings/upload', 'Settings@uploadAvatar');
+Route::get('user-settings/upload', 'Settings@uploadAvatar');
 
 Route::get('qr-code', function () {
     return QrCode::size(250)->generate('2588cb9d5f503262dcf0b00d74f4bcf37bf0ad05');

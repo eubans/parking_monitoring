@@ -14,15 +14,15 @@
     }
 </style>
 
-<div class="card" style="font-size:small;">
+<div class="card">
     <div class="card-header">
         <div class="row">
             <div class="col-6">
-                <h4>Occupant List</h4>
+                <h4>Administrator List</h4>
             </div>
             <div class="col-6" style="text-align: right;">
-                <a href="{{ url('occupant/registration') }}" class="btn btn-primary" title="Open" style="float: right;">
-                    New Occupant
+                <a href="{{ url('settings/user') }}" class="btn btn-primary" title="Open" style="float: right;">
+                    New Administrator
                 </a>
             </div>
         </div>
@@ -31,32 +31,26 @@
         <table id="table" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
-                    <th>Occupant Type</th>
-                    <th>Student Number</th>
+                    <th>Username</th>
                     <th>Fullname</th>
-                    <th>Course</th>
+                    <th>Email</th>
                     <th>Contact</th>
-                    <th>Plate Number</th>
                     <th>Status</th>
-                    <th>Login</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($occupants as $occupant)
+                @foreach($users as $user)
                 <tr>
-                    <td>{{$occupant->oct_name}}</td>
-                    <td><strong>{{$occupant->occ_student_number}}</strong></td>
+                    <td>{{$user->use_username}}</td>
                     <td>
-                        {{$occupant->occ_lastname . ", " . $occupant->occ_firstname . ", " . strtoupper($occupant->occ_middlename[0]) . ". "}}
+                        {{$user->usd_lastname . ", " . $user->usd_firstname . ", " . strtoupper($user->usd_middlename[0]) . ". "}}
                     </td>
-                    <td>{{$occupant->occ_course}}</td>
-                    <td>{{$occupant->occ_phone_number . " | " . $occupant->occ_telephone}}</td>
-                    <td>{{$occupant->omi_plate_number}}</td>
-                    <td>{{ucfirst($occupant->occ_account_status)}}</td>
-                    <td>{{ucfirst($occupant->use_status)}}</td>
+                    <td>{{$user->usd_email}}</td>
+                    <td>{{$user->usd_contact_number}}</td>
+                    <td>{{ucfirst($user->use_status)}}</td>
                     <td style="text-align: center;">
-                        <a href="{{url('occupant/profile?id=') . $occupant->occ_id}}" type="button"
+                        <a href="{{url('settings/user?id=') . $user->use_id}}" type="button"
                             class="btn btn-primary btn-sm" title="Open">
                             <i class="fa fa-external-link"></i>
                         </a>

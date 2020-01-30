@@ -163,7 +163,7 @@ class Occupant extends Controller
             return redirect('occupant/profile?id=' . $occ_id)->with('status', 'success_save');
         } catch (\Exception $e) {
             DB::rollback();
-            return $e;
+            // return $e;
             return redirect()->back()->with('status', 'error_save')->withInput();
         }
     }
@@ -173,7 +173,7 @@ class Occupant extends Controller
         $details = $this->occupant_m->getOccupantProfile($request->id);
         return json_encode(array(
             'details' => $details,
-            'qr_code' => $this->global_c->Render_QR($details->occ_qr_code, 250, 'svg', 5),
+            'qr_code' => $this->global_c->Render_QR($details->occ_qr_code, 200, 'svg', 5),
         ));
     }
 
@@ -212,6 +212,10 @@ class Occupant extends Controller
     {
         $logs = $this->occupant_m->getAllOccupantLogs();
 
+        if (Session::get('USER_TYPE_ID') == 2) {
+            $logs = $this->occupant_m->getOccupantLogs(Session::get('USER_ID'));
+        }
+
         $data = array(
             'logs' => $logs,
         );
@@ -219,5 +223,36 @@ class Occupant extends Controller
         $theme = Theme::uses('main')->layout('default');
         $theme->setTitle('Parking Monitoring | Attendance Logs');
         return $theme->of('occupant.attendance_logs', $data)->render();
+    }
+
+    function Occupant_Change_Login(Request $request)
+    {
+        DB::beginTransaction();
+        $id = $request->use_id;
+        $occ_id = $request->occ_id;
+        $new_status = "active";
+
+
+        if ($request->login == "active")
+            $new_status = "deactivated";
+
+        $ongoing_ctr = $this->occupant_m->getOccupantOngoingLog($id);
+        if (count($ongoing_ctr) > 0) {
+            DB::rollback();
+            return redirect()->back()->with('status', 'error_ongoing_log')->withInput();
+        }
+
+        try {
+            $this->occupant_m->updateUser(array(
+                "use_status" => $new_status,
+            ), $id);
+
+            DB::commit();
+            return redirect('occupant/profile?id=' . $occ_id)->with('status', 'success_change_login');
+        } catch (\Exception $e) {
+            DB::rollback();
+            // return $e;
+            return redirect()->back()->with('status', 'error_change_login')->withInput();
+        }
     }
 }

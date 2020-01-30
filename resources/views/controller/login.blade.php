@@ -1,8 +1,9 @@
 <link href="{{ asset('public/themes/default/assets/css/main.css') }}" rel="stylesheet">
 <div class="sidenav">
     <div class="login-main-text">
+        <img src="{{ asset('public/img/logo.png') }}" style="margin-bottom: 20%;">
         <h2>Parking Monitoring System<br> Login Page</h2>
-        <p>Login or register from here to access.</p>
+        <p>Login from here to access.</p>
     </div>
 </div>
 <div class="main">
@@ -18,7 +19,7 @@
                 <input type="password" class="form-control" placeholder="Password" name="password">
             </div>
             <button type="submit" class="btn btn-black">Login</button>
-            <button type="submit" class="btn btn-secondary">Register</button>
+            <button type="button" class="btn btn-secondary">Forget Password</button>
             {!! Form::close() !!}
         </div>
     </div>
@@ -32,6 +33,13 @@
             iziToast.error({
                 title: 'Failed to Login',
                 message: "Invalid Username/Password",
+                position: 'bottomCenter',
+            });
+        }else if(error=="2"){
+            iziToast.error({
+                title: 'Failed to Login',
+                message: "Account is deactivated. Please contact the adminitrator.",
+                position: 'bottomCenter',
             });
         }
     });

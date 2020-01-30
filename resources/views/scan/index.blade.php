@@ -227,6 +227,7 @@
                         iziToast.success({
                             title: 'Success:',
                             message: ' Occupant is successfully timed-in.',
+                            position: 'bottomCenter',
                         });
 
                         $('#time_in_btn').attr("disabled", true);
@@ -237,15 +238,29 @@
                         iziToast.error({
                             title: 'Error:',
                             message: ' Failure for occupant to time-in.',
+                            position: 'bottomCenter',
                         });
                     } else if (response == "parking_full") {
                         iziToast.warning({
                             title: 'Warning:',
                             message: ' Failure for occupant to time-in. Parking is currently full.',
+                            position: 'bottomCenter',
                         });
 
                         $("#time_group_btn").css("display", "none");
                         $("#reserve_slot_btn").css('display', 'block');
+                    } else if (response == "occupant_deactivated") {
+                        iziToast.warning({
+                            title: 'Warning:',
+                            message: ' Failure for occupant to time-in. Occupant\'s account is deactived.',
+                            position: 'bottomCenter',
+                        });
+                    } else if (response == "invalid_occupant_queue") {
+                        iziToast.warning({
+                            title: 'Warning:',
+                            message: ' Failure for occupant to time-in. Invalid queued occupant. Please check the list of pending reservation.',
+                            position: 'bottomCenter',
+                        });
                     }
 
                     //for ending loading
@@ -275,6 +290,7 @@
                         iziToast.success({
                             title: 'Success:',
                             message: ' Occupant is successfully timed-out.',
+                            position: 'bottomCenter',
                         });
 
                         $('#time_in_btn').attr("disabled", false);
@@ -285,7 +301,58 @@
                         iziToast.error({
                             title: 'Error:',
                             message: ' Failure for occupant to time-out.',
+                            position: 'bottomCenter',
+                        });
+                    }
 
+                    //for ending loading
+                    $('#body-container').waitMe('hide');
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(JSON.stringify(jqXHR));
+                    console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                    //for ending loading
+                    $('#body-container').waitMe('hide');
+                }
+            });
+        });
+
+        $('#reserve_slot_btn').click(function (e) {
+            run_waitMe('ios', '#body-container');
+            $.ajax({
+                method: 'GET',
+                url: '{{ url("scan/occupant/reserve") }}',
+                data: {
+                    'qr_code': $('#qr_code').val(),
+                },
+                success: function (response) {
+                    console.log(response);
+
+                    $('#reserve_slot_btn > button').attr("disabled", true);
+                    if (response == "success_reservation") {
+                        iziToast.success({
+                            title: 'Success:',
+                            message: ' Occupant is successfully reserved.',
+                            position: 'bottomCenter',
+                        });
+                    } else if (response == "error_reservation") {
+                        iziToast.error({
+                            title: 'Error:',
+                            message: ' Failure for occupant to reserve.',
+                            position: 'bottomCenter',
+                        });
+                        $('#reserve_slot_btn').attr("disabled", false);
+                    } else if (response == "occupant_deactivated") {
+                        iziToast.warning({
+                            title: 'Warning:',
+                            message: ' Failure for occupant to reserve. Occupant\'s account is deactived.',
+                            position: 'bottomCenter',
+                        });
+                    } else if (response == "occupant_reservation_exist") {
+                        iziToast.error({
+                            title: 'Error:',
+                            message: ' Failure for occupant to reserve. Occupant have existing reservation.',
+                            position: 'bottomCenter',
                         });
                     }
 

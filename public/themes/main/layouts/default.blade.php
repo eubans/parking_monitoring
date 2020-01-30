@@ -16,6 +16,7 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('public/plugin/DataTables/datatables.min.css') }}"/>
         <link href="{{ asset('public/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="{{ asset('public/css/waitMe.min.css')}}">
+        <link rel="icon" href="{!! asset('public/img/favicon.ico') !!}"/>
 
         <!-- DATATABLE STYLE EXPORT START -->
         <link rel="stylesheet" type="text/css" href="{{ asset('public/plugin/DataTables/jquery.dataTables.min.css')}}"/>
@@ -50,6 +51,8 @@
         <script src="{{ asset('public/plugin/DataTables/filterDropDown.min.js')}}"></script>
         <!-- DATATABLE SCRIPT EXPORT END -->
         <script src="{{ asset('public/js/dataTables.bootstrap4.min.js') }}/"></script>
+
+        <script src="{{ asset('public/plugin/printThis/printThis.js')}}"></script>
  
     </head>
     <body>

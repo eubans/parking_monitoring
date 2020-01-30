@@ -85,7 +85,14 @@
 </div>
 
 <script>
+    var _user_type = "{{session('USER_TYPE_ID')}}";
+
     $(document).ready(function () {
+        var columns = [{ idx: 0 }, { idx: 1 }, { idx: 7 }];
+        if(_user_type == 2){
+            columns = [{ idx: 7 }];
+        }
+
         $('#table').DataTable({
             "order": [],
             "iDisplayLength": 10,
@@ -95,7 +102,7 @@
             ],
             responsive: true,
             filterDropDown: {
-                columns: [{ idx: 0 }, { idx: 1 }, { idx: 7 }],
+                columns: columns,
                 label: '<strong>Filter by:</strong> ',
                 bootstrap: true,
             },

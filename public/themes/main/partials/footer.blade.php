@@ -4,7 +4,7 @@
             <br>
             © Copyright 2020
             <br>
-            All rights reserved. Powered by <b>EITI</b>
+            All rights reserved. Powered by <b>IETI</b>
         </p>
     </div>
 </div>

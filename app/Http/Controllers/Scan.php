@@ -59,13 +59,35 @@ class Scan extends Controller
     {
         DB::beginTransaction();
 
-        $id = $this->scan_m->getOccupantDetails($request->qr_code)->occ_id;
+        $occupant_details = $this->scan_m->getOccupantDetails($request->qr_code);
+        $id = $occupant_details->occ_id;
+        $status = $occupant_details->occ_account_status;
 
-        if ($this->scan_m->getOccupantOngoingLogsCount() >= $this->scan_m->getParkingCount()) {
+        if ($status != "active")
+            return 'occupant_deactivated';
+
+        $parking_status = $this->scan_m->getOccupantOngoingLogsCount() >= $this->scan_m->getParkingCount();
+
+        if ($parking_status)
             return 'parking_full';
-        }
+
+        $reservation = $this->scan_m->getLatestOccupantReservation();
 
         try {
+            // // return response()->json(isset($reservation->rsv_occupant_id));
+            // return response()->json([$reservation->rsv_occupant_id, $id]);
+            if (isset($reservation->rsv_occupant_id)) {
+                if ($reservation->rsv_occupant_id != $id)
+                    return 'invalid_occupant_queue';
+                else
+                    $this->scan_m->updateReservation(array(
+                        "rsv_timein_datetime" => date('Y-m-d H:i:s'),
+                        "rsv_status" => "done",
+                        "modified_at" => date('Y-m-d H:i:s'),
+                        "created_by" => Session::get('USER_ID'),
+                    ), $reservation->rsv_id);
+            }
+
             $attendance_logs = array(
                 "atl_occupant_id" => $id,
                 "atl_date_in" => date('Y-m-d'),
@@ -80,7 +102,7 @@ class Scan extends Controller
             return 'success_time_in';
         } catch (\Exception $e) {
             DB::rollback();
-            // return $e;
+            return $e;
             return 'error_time_in';
         }
     }
@@ -124,6 +146,38 @@ class Scan extends Controller
             DB::rollback();
             // return $e;
             return 'error_time_out';
+        }
+    }
+
+    function occupantReservation(Request $request)
+    {
+        DB::beginTransaction();
+
+        $occupant_details = $this->scan_m->getOccupantDetails($request->qr_code);
+        $id = $occupant_details->occ_id;
+        $status = $occupant_details->occ_account_status;
+
+        if ($status != "active")
+            return 'occupant_deactivated';
+
+        if (count($this->scan_m->getOccupantPendingReservation($id)) > 0)
+            return 'occupant_reservation_exist';
+
+        try {
+            $reservation = array(
+                "rsv_occupant_id" => $id,
+                "rsv_datetime" => date('Y-m-d H:i:s'),
+                "created_at" => date('Y-m-d H:i:s'),
+                "created_by" => Session::get('USER_ID'),
+            );
+            $this->scan_m->saveReservation($reservation);
+
+            DB::commit();
+            return 'success_reservation';
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e;
+            return 'error_reservation';
         }
     }
 }

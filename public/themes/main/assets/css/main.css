@@ -23,3 +23,8 @@ body {
 .navbar-nav > li {
     padding-right: 15px;
 }
+
+.form-group.required label:after {
+    content: " *";
+    color: red;
+}

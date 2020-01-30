@@ -9,7 +9,7 @@ body {
 
 .sidenav {
     height: 100%;
-    background-color: #000;
+    background-color: #003007;
     overflow-x: hidden;
     padding-top: 20px;
 }
@@ -57,9 +57,9 @@ body {
 }
 
 .login-main-text {
-    margin-top: 20%;
     padding: 60px;
     color: #fff;
+    text-align: center;
 }
 
 .login-main-text h2 {
@@ -67,6 +67,6 @@ body {
 }
 
 .btn-black {
-    background-color: #000 !important;
+    background-color: #003007 !important;
     color: #fff;
 }
