@@ -191,52 +191,29 @@
             <div class="col-md-6">
                 <div class="row" style="margin-bottom: 5px;">
                     <div class="col-lg-12">
-                        <h5>Parents Information</h5>
+                        <h5>Guardian Information</h5>
                     </div>
                 </div>
                 <div class="row" style="padding-left: 5px;">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="mother_name">Mother Fullname:</label>
-                            <input type="text" class="form-control" placeholder="Enter Mother Fullname" id="mother_name"
-                                name="mother_name">
+                            <label for="guardian_name">Fullname:</label>
+                            <input type="text" class="form-control" placeholder="Enter Mother Fullname" id="guardian_name"
+                                name="guardian_name">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="mother_occupation">Occupation:</label>
+                            <label for="guardian_">Occupation:</label>
                             <input type="text" class="form-control" placeholder="Enter Occupation"
-                                id="mother_occupation" name="mother_occupation">
+                                id="guardian_occupation" name="guardian_occupation">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="mother_contact">Contact Number:</label>
+                            <label for="guardian_contact">Contact Number:</label>
                             <input type="text" class="form-control" placeholder="Enter Contact Number"
-                                id="mother_contact" name="mother_contact">
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="padding-left: 5px;">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="father_name">Father Fullname:</label>
-                            <input type="text" class="form-control" placeholder="Enter Father Fullname" id="father_name"
-                                name="father_name">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="father_occupation">Occupation:</label>
-                            <input type="text" class="form-control" placeholder="Enter Occupation"
-                                id="father_occupation" name="father_occupation">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="father_contact">Contact Number:</label>
-                            <input type="text" class="form-control" placeholder="Enter Contact Number"
-                                id="father_contact" name="father_contact">
+                                id="guardian_contact" name="guardian_contact">
                         </div>
                     </div>
                 </div>
@@ -310,20 +287,13 @@
                     <td width="70%" colspan="2">Name: <span id="card_name" style="font-weight: bold;"></span></td>
                 </tr>
                 <tr>
-                    <td rowspan="6" width="20%" style="vertical-align: middle;">
+                    <td rowspan="4" width="20%" style="vertical-align: middle;">
                         <div id="qrcode" style="text-align: center;"></div>
                     </td>
                     <td>Type: <span id="card_occupant_type" style="font-weight: bold;"></span>
                     </td>
                     <td>Date Issued: <span id="card_date_issued" style="font-weight: bold;"></span></td>
-                </tr>
-                <tr>
-                    <td colspan="2">Official Receipt: <span id="card_or_number" style="font-weight: bold;"></span></td>
-                </tr>
-                <tr>
-                    <td colspan="2">Certificate of Registration: <span id="card_cr_number"
-                            style="font-weight: bold;"></span></td>
-                </tr>
+                </tr> 
                 <tr>
                     <td colspan="2">Plate Number: <span id="card_plate_number" style="font-weight: bold;"></span></td>
                 </tr>
@@ -396,13 +366,10 @@
                     $("#telephone").val(d.occ_telephone);
                     $("#phone_number").val(d.occ_phone_number);
                     $("#address").val(d.occ_address);
-
-                    $("#mother_name").val(d.ocp_mother_name);
-                    $("#mother_occupation").val(d.ocp_mother_occupation);
-                    $("#mother_contact").val(d.ocp_mother_contact);
-                    $("#father_name").val(d.ocp_father_name);
-                    $("#father_occupation").val(d.ocp_father_occupation);
-                    $("#father_contact").val(d.ocp_father_number);
+                    
+                    $("#guardian_name").val(d.ocg_name);
+                    $("#guardian_occupation").val(d.ocg_occupation);
+                    $("#guardian_contact").val(d.ocg_contact);
 
                     $("#or_number").val(d.omi_or_number);
                     $("#cr_number").val(d.omi_cr_number);

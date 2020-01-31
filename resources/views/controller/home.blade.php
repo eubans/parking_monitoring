@@ -339,6 +339,12 @@
                         message: ' Invalid to reserve a slot. Parking slot is not full.',
                         position: 'bottomCenter',
                     });
+                } else if(response == "occupant_ongoing_attendance_exist"){
+                    iziToast.error({
+                        title: 'Error:',
+                        message: ' Invalid to reserve a slot. Occupant has ongoing attendance.',
+                        position: 'bottomCenter',
+                    });
                 }
                 
                 getQueuedReservationCount();

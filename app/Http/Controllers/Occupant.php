@@ -103,16 +103,13 @@ class Occupant extends Controller
                 );
                 $occ_id = $this->occupant_m->saveOccupant($occupant_details);
 
-                $occupant_parents = array(
-                    "ocp_occupant_id" => $occ_id,
-                    "ocp_mother_name" => $request->mother_name,
-                    "ocp_mother_occupation" => $request->mother_occupation,
-                    "ocp_mother_contact" => $request->mother_contact,
-                    "ocp_father_name" => $request->father_name,
-                    "ocp_father_occupation" => $request->father_occupation,
-                    "ocp_father_number" => $request->father_contact,
+                $occupant_guardian = array(
+                    "ocg_occupant_id" => $occ_id,
+                    "ocg_name" => $request->guardian_name,
+                    "ocg_occupation" => $request->guardian_occupation,
+                    "ocg_contact" => $request->guardian_contact,
                 );
-                $this->occupant_m->saveOccupantParents($occupant_parents);
+                $this->occupant_m->saveOccupantGuardian($occupant_guardian);
 
                 $occupant_motorcycle = array(
                     "omi_occupant_id" => $occ_id,
@@ -139,15 +136,12 @@ class Occupant extends Controller
                 );
                 $this->occupant_m->updateOccupant($occupant_details, $occ_id);
 
-                $occupant_parents = array(
-                    "ocp_mother_name" => $request->mother_name,
-                    "ocp_mother_occupation" => $request->mother_occupation,
-                    "ocp_mother_contact" => $request->mother_contact,
-                    "ocp_father_name" => $request->father_name,
-                    "ocp_father_occupation" => $request->father_occupation,
-                    "ocp_father_number" => $request->father_contact,
+                $occupant_guardian = array(
+                    "ocg_name" => $request->guardian_name,
+                    "ocg_occupation" => $request->guardian_occupation,
+                    "ocg_contact" => $request->guardian_contact,
                 );
-                $this->occupant_m->updateOccupantParents($occupant_parents, $occ_id);
+                $this->occupant_m->updateOccupantGuardian($occupant_guardian, $occ_id);
 
                 $occupant_motorcycle = array(
                     "omi_or_number" => $request->or_number,

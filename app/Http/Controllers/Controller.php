@@ -151,7 +151,10 @@ class Controller extends BaseController
         $occupant_details = $this->controller_m->getOccupantDetails($id);
         $occ_id = $occupant_details->occ_id;
 
-        if (count($this->controller_m->getAllOngoingAttendanceLog()) <= $this->controller_m->getParkingCount())
+        if (count($this->controller_m->getOccupantOngoingAttendance($occ_id)) > 0)
+            return 'occupant_ongoing_attendance_exist';
+
+        if (count($this->controller_m->getAllOngoingAttendanceLog()) < $this->controller_m->getParkingCount())
             return 'reservation_invalid_not_full';
 
         if ($status != "active")

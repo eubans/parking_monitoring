@@ -19,7 +19,7 @@
                 <input type="password" class="form-control" placeholder="Password" name="password">
             </div>
             <button type="submit" class="btn btn-black">Login</button>
-            <button type="button" class="btn btn-secondary">Forget Password</button>
+            <button type="button" class="btn btn-secondary" style="display:none;">Forget Password</button>
             {!! Form::close() !!}
         </div>
     </div>

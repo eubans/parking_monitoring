@@ -11,7 +11,7 @@ class Occupant_model extends Model
     {
         return DB::table('occupants')
             ->join('occupant_motorcycle_info', 'occupants.occ_id', '=', 'occupant_motorcycle_info.omi_occupant_id')
-            ->join('occupant_parents', 'occupants.occ_id', '=', 'occupant_parents.ocp_occupant_id')
+            ->join('occupant_guardians', 'occupants.occ_id', '=', 'occupant_guardians.ocg_occupant_id')
             ->join('occupant_type', 'occupants.occ_type', '=', 'occupant_type.oct_id')
             ->leftJoin('users', 'occupants.occ_user_id', '=', 'users.use_id')
             ->get();
@@ -35,9 +35,9 @@ class Occupant_model extends Model
             ->insertGetId($data);
     }
 
-    function saveOccupantParents($data)
+    function saveOccupantGuardian($data)
     {
-        DB::table('occupant_parents')
+        DB::table('occupant_guardians')
             ->insert($data);
     }
 
@@ -51,7 +51,7 @@ class Occupant_model extends Model
     {
         return DB::table('occupants')
             ->join('occupant_motorcycle_info', 'occupants.occ_id', '=', 'occupant_motorcycle_info.omi_occupant_id')
-            ->join('occupant_parents', 'occupants.occ_id', '=', 'occupant_parents.ocp_occupant_id')
+            ->join('occupant_guardians', 'occupants.occ_id', '=', 'occupant_guardians.ocg_occupant_id')
             ->join('occupant_type', 'occupants.occ_type', '=', 'occupant_type.oct_id')
             ->leftJoin('users', 'occupants.occ_user_id', '=', 'users.use_id')
             ->where('occ_id', $id)
@@ -65,10 +65,10 @@ class Occupant_model extends Model
             ->update($data);
     }
 
-    function updateOccupantParents($data, $occ_id)
+    function updateOccupantGuardian($data, $occ_id)
     {
-        DB::table('occupant_parents')
-            ->where('ocp_occupant_id', $occ_id)
+        DB::table('occupant_guardians')
+            ->where('ocg_occupant_id', $occ_id)
             ->update($data);
     }
 
@@ -84,7 +84,7 @@ class Occupant_model extends Model
         return DB::table('attendance_logs')
             ->join('occupants', 'attendance_logs.atl_occupant_id', '=', 'occupants.occ_id')
             ->join('occupant_motorcycle_info', 'occupants.occ_id', '=', 'occupant_motorcycle_info.omi_occupant_id')
-            ->join('occupant_parents', 'occupants.occ_id', '=', 'occupant_parents.ocp_occupant_id')
+            ->join('occupant_guardians', 'occupants.occ_id', '=', 'occupant_guardians.ocg_occupant_id')
             ->join('occupant_type', 'occupants.occ_type', '=', 'occupant_type.oct_id')
             ->orderBy('atl_id', 'desc')
             ->get();
@@ -110,7 +110,7 @@ class Occupant_model extends Model
         return DB::table('attendance_logs')
             ->join('occupants', 'attendance_logs.atl_occupant_id', '=', 'occupants.occ_id')
             ->join('occupant_motorcycle_info', 'occupants.occ_id', '=', 'occupant_motorcycle_info.omi_occupant_id')
-            ->join('occupant_parents', 'occupants.occ_id', '=', 'occupant_parents.ocp_occupant_id')
+            ->join('occupant_guardians', 'occupants.occ_id', '=', 'occupant_guardians.ocg_occupant_id')
             ->join('occupant_type', 'occupants.occ_type', '=', 'occupant_type.oct_id')
             ->orderBy('atl_id', 'desc')
             ->where('occ_user_id', $id)

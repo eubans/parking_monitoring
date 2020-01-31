@@ -56,7 +56,7 @@ class Controller_model extends Model
     {
         return DB::table('occupants')
             ->join('occupant_motorcycle_info', 'occupants.occ_id', '=', 'occupant_motorcycle_info.omi_occupant_id')
-            ->join('occupant_parents', 'occupants.occ_id', '=', 'occupant_parents.ocp_occupant_id')
+            ->join('occupant_guardians', 'occupants.occ_id', '=', 'occupant_guardians.ocg_occupant_id')
             ->join('occupant_type', 'occupants.occ_type', '=', 'occupant_type.oct_id')
             ->where('occ_user_id', $use_id)
             ->first();
@@ -81,5 +81,13 @@ class Controller_model extends Model
         DB::table('reservations')
             ->where('rsv_id', $rsv_id)
             ->update($data);
+    }
+
+    function getOccupantOngoingAttendance($occ_id)
+    {
+        return DB::table('attendance_logs')
+            ->where('atl_occupant_id', $occ_id)
+            ->where('atl_status', 'ongoing')
+            ->get();
     }
 }

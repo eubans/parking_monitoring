@@ -11,7 +11,7 @@ class Scan_model extends Model
     {
         return DB::table('occupants')
             ->join('occupant_motorcycle_info', 'occupants.occ_id', '=', 'occupant_motorcycle_info.omi_occupant_id')
-            ->join('occupant_parents', 'occupants.occ_id', '=', 'occupant_parents.ocp_occupant_id')
+            ->join('occupant_guardians', 'occupants.occ_id', '=', 'occupant_guardians.ocg_occupant_id')
             ->join('occupant_type', 'occupants.occ_type', '=', 'occupant_type.oct_id')
             ->where('occ_qr_code', $qr_code)
             ->first();
