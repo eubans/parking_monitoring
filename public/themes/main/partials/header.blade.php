@@ -5,7 +5,7 @@
 </style>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-end fixed-top" id="header-nav">
     <a class="navbar-brand" href="{{ url('home') }}"> <img src="{{ asset('public/img/logo.png') }}" class="img-circle" style="width: 35px;height: 35px;object-fit: cover; ">
-     Parking Monitoring System</a>
+     Parking Logs System</a>
     <span class="ml-auto mr-1"></span>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
         <span class="navbar-toggler-icon"></span>

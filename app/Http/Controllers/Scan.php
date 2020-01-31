@@ -42,7 +42,7 @@ class Scan extends Controller
     function Index()
     {
         $theme = Theme::uses('main')->layout('default');
-        $theme->setTitle('Parking Monitoring | Scan');
+        $theme->setTitle('Parking Logs System | Scan');
         return $theme->of('scan.index')->render();
     }
 

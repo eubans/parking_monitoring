@@ -309,6 +309,10 @@
                     title: 'Success:',
                     message: ' User profile picture is successfully uploaded.',
                     position: 'bottomCenter',
+                    titleSize: '30px',
+                    titleLineHeight: '70px',
+                    messageSize: '20px',
+                    messageLineHeight: '70px',
                 });
                 $('#image_avatar').removeAttr('src');
                 $("#image_avatar").removeAttr("src").attr("src", response + new Date().getTime());
@@ -457,6 +461,10 @@
                     title: 'Error:',
                     message: ' Failure to uploader user profile picture. File not supported.',
                     position: 'bottomCenter',
+                    titleSize: '30px',
+                    titleLineHeight: '70px',
+                    messageSize: '20px',
+                    messageLineHeight: '70px',
                 });
             }
         });
@@ -469,24 +477,40 @@
                 title: 'Error:',
                 message: ' Failure to save user details. Password does not match.',
                 position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
             });
         } else if (status == "error_invalid_old_password") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to save user details. Invalid Old Password.',
                 position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
             });
         } else if (status == "success_save") {
             iziToast.success({
                 title: 'Success:',
                 message: ' User details is successfully saved.',
                 position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
             });
         } else if (status == "error_save") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to save user details.',
                 position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
             });
         }
     });

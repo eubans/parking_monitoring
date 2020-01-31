@@ -50,7 +50,7 @@ class Occupant extends Controller
         );
 
         $theme = Theme::uses('main')->layout('default');
-        $theme->setTitle('Parking Monitoring | Occupant List');
+        $theme->setTitle('Parking Logs System | Occupant List');
         return $theme->of('occupant.list', $data)->render();
     }
 
@@ -63,7 +63,7 @@ class Occupant extends Controller
         );
 
         $theme = Theme::uses('main')->layout('default');
-        $theme->setTitle('Parking Monitoring | Occupant');
+        $theme->setTitle('Parking Logs System | Occupant');
         return $theme->of('occupant.registration', $data)->render();
     }
 
@@ -215,7 +215,7 @@ class Occupant extends Controller
         );
 
         $theme = Theme::uses('main')->layout('default');
-        $theme->setTitle('Parking Monitoring | Attendance Logs');
+        $theme->setTitle('Parking Logs System | Attendance Logs');
         return $theme->of('occupant.attendance_logs', $data)->render();
     }
 

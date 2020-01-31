@@ -50,7 +50,7 @@ class Reservation extends Controller
         // return response()->json($data);
 
         $theme = Theme::uses('main')->layout('default');
-        $theme->setTitle('Parking Monitoring | Reservation List');
+        $theme->setTitle('Parking Logs System | Reservation List');
         return $theme->of('reservation.list', $data)->render();
     }
 
@@ -65,7 +65,7 @@ class Reservation extends Controller
         // return response()->json($data);
 
         $theme = Theme::uses('main')->layout('default');
-        $theme->setTitle('Parking Monitoring | Reservation List');
+        $theme->setTitle('Parking Logs System | Reservation List');
         return $theme->of('reservation.logs', $data)->render();
     }
 

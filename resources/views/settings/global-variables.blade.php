@@ -47,18 +47,30 @@
                 title: 'Success:',
                 message: ' Parking Slot is successfully updated.',
                 position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
             });
         } else if (status_parking_slot == "error_parking_slot_update") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to update Parking Slot.',
                 position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
             });
         } else if (status_parking_slot == "error_invalid_parking_slot") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to update Parking Slot. Parking slot is currently not equal or higher than the ongoing occupant parked.',
                 position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
             });
         }
     });

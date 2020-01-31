@@ -87,12 +87,20 @@
                 title: 'Success:',
                 message: ' Occupant reservation successfully cancelled.',
                 position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
             });
         } else if (status == "error_cancellation") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to cancel occupant reservation.',
                 position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
             });
         }
     });

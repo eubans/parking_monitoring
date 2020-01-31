@@ -313,12 +313,20 @@
                         title: 'Success:',
                         message: ' Occupant is successfully reserved.',
                         position: 'bottomCenter',
+                        titleSize: '30px',
+                        titleLineHeight: '70px',
+                        messageSize: '20px',
+                        messageLineHeight: '70px',
                     });
                 } else if (response == "error_reservation") {
                     iziToast.error({
                         title: 'Error:',
                         message: ' Failure for occupant to reserve.',
                         position: 'bottomCenter',
+                        titleSize: '30px',
+                        titleLineHeight: '70px',
+                        messageSize: '20px',
+                        messageLineHeight: '70px',
                     });
                     $('#reserve_slot_btn').attr("disabled", false);
                 } else if (response == "occupant_deactivated") {
@@ -326,24 +334,40 @@
                         title: 'Warning:',
                         message: ' Failure for occupant to reserve. Occupant\'s account is deactived.',
                         position: 'bottomCenter',
+                        titleSize: '30px',
+                        titleLineHeight: '70px',
+                        messageSize: '20px',
+                        messageLineHeight: '70px',
                     });
                 } else if (response == "occupant_reservation_exist") {
                     iziToast.error({
                         title: 'Error:',
                         message: ' Failure for occupant to reserve. Occupant have existing reservation.',
                         position: 'bottomCenter',
+                        titleSize: '30px',
+                        titleLineHeight: '70px',
+                        messageSize: '20px',
+                        messageLineHeight: '70px',
                     });
                 } else if (response == "reservation_invalid_not_full") {
                     iziToast.warning({
                         title: 'Warning:',
                         message: ' Invalid to reserve a slot. Parking slot is not full.',
                         position: 'bottomCenter',
+                        titleSize: '30px',
+                        titleLineHeight: '70px',
+                        messageSize: '20px',
+                        messageLineHeight: '70px',
                     });
                 } else if(response == "occupant_ongoing_attendance_exist"){
                     iziToast.error({
                         title: 'Error:',
                         message: ' Invalid to reserve a slot. Occupant has ongoing attendance.',
                         position: 'bottomCenter',
+                        titleSize: '30px',
+                        titleLineHeight: '70px',
+                        messageSize: '20px',
+                        messageLineHeight: '70px',
                     });
                 }
                 
@@ -381,12 +405,20 @@
                         title: 'Success:',
                         message: ' Occupant reservation successfully cancelled.',
                         position: 'bottomCenter',
+                        titleSize: '30px',
+                        titleLineHeight: '70px',
+                        messageSize: '20px',
+                        messageLineHeight: '70px',
                     });
                 } else if (response == "error_cancellation") {
                     iziToast.error({
                         title: 'Error:',
                         message: ' Failure to cancel occupant reservation.',
                         position: 'bottomCenter',
+                        titleSize: '30px',
+                        titleLineHeight: '70px',
+                        messageSize: '20px',
+                        messageLineHeight: '70px',
                     });
                 }
                 

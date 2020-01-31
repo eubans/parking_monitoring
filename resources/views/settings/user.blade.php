@@ -253,24 +253,40 @@
                 title: 'Error:',
                 message: ' Failure to save user details. Password does not match.',
                 position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
             });
         } else if (status == "error_username_taken") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to save user details. Username has been already taken.',
                 position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
             });
         } else if (status == "success_save") {
             iziToast.success({
                 title: 'Success:',
                 message: ' User details is successfully saved.',
                 position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
             });
         } else if (status == "error_save") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to save user details.',
                 position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
             });
         }
     });

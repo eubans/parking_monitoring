@@ -40,7 +40,7 @@ class Controller extends BaseController
     {
         // return Hash::make("admin");
         $theme = Theme::uses('default')->layout('default');
-        $theme->setTitle('Parking Monitoring | Login');
+        $theme->setTitle('Parking Logs System | Login');
         return $theme->of('controller.login')->render();
     }
 
@@ -91,7 +91,7 @@ class Controller extends BaseController
     function Home()
     {
         $theme = Theme::uses('main')->layout('default');
-        $theme->setTitle('Parking Monitoring | Home');
+        $theme->setTitle('Parking Logs System | Home');
         return $theme->of('controller.home')->render();
     }
 

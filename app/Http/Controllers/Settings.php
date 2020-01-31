@@ -49,7 +49,7 @@ class Settings extends Controller
         );
 
         $theme = Theme::uses('main')->layout('default');
-        $theme->setTitle('Parking Monitoring | Settings Global Variables');
+        $theme->setTitle('Parking Logs System | Settings Global Variables');
         return $theme->of('settings.global-variables', $data)->render();
     }
 
@@ -87,14 +87,14 @@ class Settings extends Controller
         );
 
         $theme = Theme::uses('main')->layout('default');
-        $theme->setTitle('Parking Monitoring | Settings Adminitrator List');
+        $theme->setTitle('Parking Logs System | Settings Adminitrator List');
         return $theme->of('settings.user-list', $data)->render();
     }
 
     function User()
     {
         $theme = Theme::uses('main')->layout('default');
-        $theme->setTitle('Parking Monitoring | Settings User Set-up');
+        $theme->setTitle('Parking Logs System | Settings User Set-up');
         return $theme->of('settings.user')->render();
     }
 
@@ -183,7 +183,7 @@ class Settings extends Controller
         );
 
         $theme = Theme::uses('main')->layout('default');
-        $theme->setTitle('Parking Monitoring | User Settings');
+        $theme->setTitle('Parking Logs System | User Settings');
         return $theme->of('settings.user-login-settings', $data)->render();
     }
 

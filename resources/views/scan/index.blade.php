@@ -228,6 +228,10 @@
                             title: 'Success:',
                             message: ' Occupant is successfully timed-in.',
                             position: 'bottomCenter',
+                            titleSize: '30px',
+                            titleLineHeight: '70px',
+                            messageSize: '20px',
+                            messageLineHeight: '70px',
                         });
 
                         $('#time_in_btn').attr("disabled", true);
@@ -239,12 +243,20 @@
                             title: 'Error:',
                             message: ' Failure for occupant to time-in.',
                             position: 'bottomCenter',
+                            titleSize: '30px',
+                            titleLineHeight: '70px',
+                            messageSize: '20px',
+                            messageLineHeight: '70px',
                         });
                     } else if (response == "parking_full") {
                         iziToast.warning({
                             title: 'Warning:',
                             message: ' Failure for occupant to time-in. Parking is currently full.',
                             position: 'bottomCenter',
+                            titleSize: '30px',
+                            titleLineHeight: '70px',
+                            messageSize: '20px',
+                            messageLineHeight: '70px',
                         });
 
                         $("#time_group_btn").css("display", "none");
@@ -254,12 +266,20 @@
                             title: 'Warning:',
                             message: ' Failure for occupant to time-in. Occupant\'s account is deactived.',
                             position: 'bottomCenter',
+                            titleSize: '30px',
+                            titleLineHeight: '70px',
+                            messageSize: '20px',
+                            messageLineHeight: '70px',
                         });
                     } else if (response == "invalid_occupant_queue") {
                         iziToast.warning({
                             title: 'Warning:',
                             message: ' Failure for occupant to time-in. Invalid queued occupant. Please check the list of pending reservation.',
                             position: 'bottomCenter',
+                            titleSize: '30px',
+                            titleLineHeight: '70px',
+                            messageSize: '20px',
+                            messageLineHeight: '70px',
                         });
                     }
 
@@ -291,6 +311,10 @@
                             title: 'Success:',
                             message: ' Occupant is successfully timed-out.',
                             position: 'bottomCenter',
+                            titleSize: '30px',
+                            titleLineHeight: '70px',
+                            messageSize: '20px',
+                            messageLineHeight: '70px',
                         });
 
                         $('#time_in_btn').attr("disabled", false);
@@ -302,6 +326,10 @@
                             title: 'Error:',
                             message: ' Failure for occupant to time-out.',
                             position: 'bottomCenter',
+                            titleSize: '30px',
+                            titleLineHeight: '70px',
+                            messageSize: '20px',
+                            messageLineHeight: '70px',
                         });
                     }
 
@@ -334,12 +362,20 @@
                             title: 'Success:',
                             message: ' Occupant is successfully reserved.',
                             position: 'bottomCenter',
+                            titleSize: '30px',
+                            titleLineHeight: '70px',
+                            messageSize: '20px',
+                            messageLineHeight: '70px',
                         });
                     } else if (response == "error_reservation") {
                         iziToast.error({
                             title: 'Error:',
                             message: ' Failure for occupant to reserve.',
                             position: 'bottomCenter',
+                            titleSize: '30px',
+                            titleLineHeight: '70px',
+                            messageSize: '20px',
+                            messageLineHeight: '70px',
                         });
                         $('#reserve_slot_btn').attr("disabled", false);
                     } else if (response == "occupant_deactivated") {
@@ -347,12 +383,20 @@
                             title: 'Warning:',
                             message: ' Failure for occupant to reserve. Occupant\'s account is deactived.',
                             position: 'bottomCenter',
+                            titleSize: '30px',
+                            titleLineHeight: '70px',
+                            messageSize: '20px',
+                            messageLineHeight: '70px',
                         });
                     } else if (response == "occupant_reservation_exist") {
                         iziToast.error({
                             title: 'Error:',
                             message: ' Failure for occupant to reserve. Occupant have existing reservation.',
                             position: 'bottomCenter',
+                            titleSize: '30px',
+                            titleLineHeight: '70px',
+                            messageSize: '20px',
+                            messageLineHeight: '70px',
                         });
                     }
 
