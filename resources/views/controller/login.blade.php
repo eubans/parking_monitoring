@@ -11,15 +11,15 @@
         <div class="login-form">
             {!! Form::open(['url' => 'login/action']) !!}
             <div class="form-group">
-                <label>User Name</label>
+                <label>Username:</label>
                 <input type="text" class="form-control" placeholder="User Name" name="username">
             </div>
             <div class="form-group">
-                <label>Password</label>
+                <label>Password:</label>
                 <input type="password" class="form-control" placeholder="Password" name="password">
             </div>
             <button type="submit" class="btn btn-black">Login</button>
-            <button type="button" class="btn btn-secondary" style="display:none;">Forget Password</button>
+        <a href="{{url('forgot-password')}}" type="button" class="btn btn-outline-dark">Forget Password</a>
             {!! Form::close() !!}
         </div>
     </div>
@@ -43,6 +43,19 @@
             iziToast.error({
                 title: 'Failed to Login',
                 message: "Account is deactivated. Please contact the adminitrator.",
+                position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
+            });
+        }
+
+        var status = (loadPageVar('status'));
+        if (status=="cp"){
+            iziToast.success({
+                title: 'Success',
+                message: "Password is successfully changed.",
                 position: 'bottomCenter',
                 titleSize: '30px',
                 titleLineHeight: '70px',

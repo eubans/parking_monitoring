@@ -21,6 +21,13 @@ Route::post('login/action', 'Controller@ActionLogin');
 Route::get('logout', 'Controller@Logout');
 Route::get('home', 'Controller@Home');
 
+Route::get('forgot-password', 'Controller@Forgot_Password');
+Route::post('forgot-password/send-verification-code', 'Controller@Send_Verification_Code');
+Route::get('forgot-password/updateVerificationCode', 'Controller@updateVerificationCode');
+Route::get('forgot-password/code-verification', 'Controller@Verify_Code');
+Route::get('forgot-password/change-password', 'Controller@Change_Password');
+Route::post('forgot-password/change-forgotten-password', 'Controller@Change_Password_Save');
+
 Route::get('get-parking-status', 'Controller@getParkingStatus');
 Route::get('get-ongoing-occupants', 'Controller@getOngoingOccupants');
 Route::get('get-pending-reservations', 'Controller@getPendingReservation');

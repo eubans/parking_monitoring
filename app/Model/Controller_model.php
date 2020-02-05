@@ -90,4 +90,31 @@ class Controller_model extends Model
             ->where('atl_status', 'ongoing')
             ->get();
     }
+
+    function validateEmail($email)
+    {
+        return DB::table('user_details')
+            ->where('usd_email', $email)
+            ->get();
+    }
+
+    function validateOccupantUsername($email)
+    {
+        return DB::table('users')
+            ->where('use_username', $email)
+            ->get();
+    }
+
+    function getUsernameFromEmail($email){
+        return DB::table('user_details')
+        ->leftjoin('users', 'user_details.usd_user_id', '=', 'users.use_id')
+        ->where('usd_email', $email)
+        ->pluck('users.use_username');
+    }
+    
+    function updatePassword($details, $account){
+        DB::table('users')
+        ->where('use_username', $account)
+        ->update($details);
+    }
 }

@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Input;
 use Teepluss\Theme\Facades\Theme;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMail;
 
 use Session;
 use Hash;
@@ -200,6 +202,136 @@ class Controller extends BaseController
             DB::rollback();
             return $e;
             return 'error_cancellation';
+        }
+    }
+
+    function Forgot_Password()
+    {
+        $theme = Theme::uses('default')->layout('default');
+        $theme->setTitle('Parking Logs System | Forgot Password');
+        return $theme->of('controller.forgot-password')->render();
+    }
+
+    function Send_Verification_Code(Request $request)
+    {
+
+        //email username = ieti.parkinglogssystem@gmail.com
+        //password = ieti_2020
+
+        $email = $request->email;
+        $result = $this->controller_m->validateEmail($email);
+
+        if (count($result) > 0) {
+            // TODO: send email and stuffs
+            $verificationCode = sprintf("%06d", mt_rand(1, 999999));
+            Session::put('VER_EMAIL', $email);
+            Session::put('VER_CODE', md5($verificationCode));
+
+            $obj_parameter = new \stdClass();
+            $obj_parameter->subject = "Parking Logs System: Verification Code";
+            $obj_parameter->email = $email;
+            $obj_parameter->code = $verificationCode;
+            $obj_parameter->template = 'mails.verification-code-email';
+            $obj_parameter->plain_template = 'mails.verification-code-email';
+
+            try {
+                Mail::to($email)->send(new SendMail($obj_parameter));
+            } catch (\Exception $e) {
+                $error_mail = "Verification timeout exceeded please reload page";
+                return redirect('forgot-password/code-verification')->with(['status' => 'invalid_email', 'error_msg' => $error_mail]);
+            }
+            return redirect('forgot-password/code-verification')->with('status', 'email_sent');
+        } else {
+            return redirect()->back()->with('status', 'emailnotexist')->withInput();
+        }
+    }
+
+    function updateVerificationCode(Request $request)
+    {
+        $email = $request->email;
+        $result = $this->controller_m->validateEmail($email);
+
+        if (count($result) > 0) {
+            // TODO: send email and stuffs
+            $verificationCode = sprintf("%06d", mt_rand(1, 999999));
+            Session::put('VER_EMAIL', $email);
+            Session::put('VER_CODE', md5($verificationCode));
+
+            $obj_parameter = new \stdClass();
+            $obj_parameter->subject = "Parking Logs System: Verification Code";
+            $obj_parameter->email = $email;
+            $obj_parameter->code = $verificationCode;
+            $obj_parameter->template = 'mails.verification-code-email';
+            $obj_parameter->plain_template = 'mails.verification-code-email';
+
+            try {
+                Mail::to($email)->send(new SendMail($obj_parameter));
+            } catch (\Exception $e) {
+                return $e;
+                $error_mail = "Verification timeout exceeded please reload page";
+                return redirect('code-verification')->with(['status' => 'invalid_email', 'error_msg' => $error_mail]);
+            }
+
+            // @TODO: Send associative array here vercode and email
+            return md5($verificationCode);
+            exit;
+        } else {
+            return redirect()->back()->with('status', 'emailnotexist')->withInput();
+        }
+    }
+
+    function Verify_Code()
+    {
+        $theme = Theme::uses('default')->layout('default');
+        $theme->setTitle('Parking Logs System | Verify Code');
+        return $theme->of('controller.code-verification')->render();
+    }
+
+    function Change_Password(Request $request)
+    {
+        $email = $request->eax;
+        if($email === "") {$email = Session::get('VER_EMAIL');}
+
+        $code = $request->qcs;
+        if ($code === "") {
+            $code = Session::get('VER_CODE');
+        }
+
+        $result = $this->controller_m->getUsernameFromEmail($email);
+        $data = array(
+            'account' => $result[0],
+            'code' => $code
+        );
+        $theme = Theme::uses('default')->layout('default');
+        $theme->setTitle('Parking Logs System | Change Password');
+        return $theme->of('controller.change-password', $data)->render();
+    }
+
+    function Change_Password_Save(Request $request)
+    {
+        DB::beginTransaction();
+
+        $account = $request->account;
+        $new_password = $request->new_password;
+        $confirm_password = $request->confirm_password;
+
+        if (($new_password != null && $confirm_password != null) && $new_password != $confirm_password)
+            return redirect()->back()->with('status', 'error_password_not_match')->withInput();
+
+        try {
+            if ($new_password != null && $confirm_password != null) {
+                $user = array(
+                    "use_password" => Hash::make($new_password),
+                );
+                $this->controller_m->updatePassword($user, $account);
+            }
+
+            DB::commit();
+            return redirect('login?status=cp');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e;
+            return redirect()->back()->with('status', 'error_save')->withInput();
         }
     }
 }

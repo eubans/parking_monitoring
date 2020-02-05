@@ -10,6 +10,8 @@
         <link href="{{ asset('public/css/font_awesome_all.css') }}" rel="stylesheet">
         <link href="{{ asset('public/css/iziModal.min.css') }}" rel="stylesheet">
         <link href="{{ asset('public/css/iziToast.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="{{ asset('public/css/waitMe.min.css')}}">
+        <link rel="stylesheet" href="{{ url('public/plugin/font-awesome/css/font-awesome.min.css')}}">
 
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
         
@@ -24,6 +26,7 @@
         <script src="{{ asset('public/js/iziModal.min.js') }}/"></script>
         <script src="{{ asset('public/js/iziToast.min.js') }}/"></script>
         <script src="{{ asset('public/js/main.js') }}/"></script>
+        <script src="{{ asset('public/js/waitMe.min.js')}}"></script>
 
     </head>
     <body>
