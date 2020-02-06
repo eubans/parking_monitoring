@@ -15,12 +15,12 @@
             <li class="nav-item">
                 <a class="nav-link text-white" href="{{ url('home') }}"><i class="fa fa-home"></i> Home</a>
             </li>
-            @if(session('USER_TYPE_ID') != 2)
+            @if(session('USER_TYPE_ID') == 4 || session('USER_TYPE_ID') == 3)
             <li class="nav-item">
                 <a class="nav-link text-white" href="{{ url('scan') }}"><i class="fa fa-qrcode"></i> Scan</a>
             </li>
             @endif
-            @if(session('USER_TYPE_ID') != 2)
+            @if(session('USER_TYPE_ID') == 1 || session('USER_TYPE_ID') == 3 || session('USER_TYPE_ID') == 4)
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownMenuLink"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -32,7 +32,7 @@
                 </div>
             </li>
             @endif
-            @if(session('USER_TYPE_ID') != 2)
+            @if(session('USER_TYPE_ID') == 1 || session('USER_TYPE_ID') == 3 || session('USER_TYPE_ID') == 4)
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownMenuLink"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -42,6 +42,11 @@
                     <a class="dropdown-item" href="{{ url('occupant') }}">List</a>
                     <a class="dropdown-item" href="{{ url('occupant/attendance-logs') }}">Attendance Logs</a>
                 </div>
+            </li>
+            @endif
+            @if(session('USER_TYPE_ID') == 3)
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{{ url('incident-reports') }}"><i class="fa fa-exclamation-triangle"></i> Incident Reports</a>
             </li>
             @endif
             @if(session('USER_TYPE_ID') == 2)

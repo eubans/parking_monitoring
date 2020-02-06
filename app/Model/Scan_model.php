@@ -88,4 +88,26 @@ class Scan_model extends Model
             ->where('rsv_id', $rsv_id)
             ->update($data);
     }
+
+    function saveIncidentReport($data)
+    {
+        DB::table('incident_reports')
+            ->insert($data);
+    }
+
+    function getAllIncidentReports()
+    {
+        return DB::table('incident_reports')
+            ->join('occupants', 'incident_reports.icr_occupant_id', '=', 'occupants.occ_id')
+            ->join('occupant_type', 'occupants.occ_type', '=', 'occupant_type.oct_id')
+            ->orderBy('icr_id', 'desc')
+            ->get();
+    }
+
+    function updateIncident($data, $icr_id)
+    {
+        DB::table('incident_reports')
+            ->where('icr_id', $icr_id)
+            ->update($data);
+    }
 }

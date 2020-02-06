@@ -18,11 +18,11 @@
     <div class="card-header">
         <div class="row">
             <div class="col-6">
-                <h4>Administrator List</h4>
+                <h4>User List</h4>
             </div>
             <div class="col-6" style="text-align: right;">
                 <a href="{{ url('settings/user') }}" class="btn btn-primary" title="Open" style="float: right;">
-                    New Administrator
+                    New User
                 </a>
             </div>
         </div>
@@ -31,6 +31,7 @@
         <table id="table" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
+                    <th>Type</th>
                     <th>Username</th>
                     <th>Fullname</th>
                     <th>Email</th>
@@ -42,6 +43,7 @@
             <tbody>
                 @foreach($users as $user)
                 <tr>
+                    <td>{{$user->ust_type}}</td>
                     <td>{{$user->use_username}}</td>
                     <td>
                         {{$user->usd_lastname . ", " . $user->usd_firstname . ", " . strtoupper($user->usd_middlename[0]) . ". "}}

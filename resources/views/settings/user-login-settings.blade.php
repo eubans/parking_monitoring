@@ -277,8 +277,7 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <button type="submit" class="btn btn-primary" id="submit_button" style="float:right;margin: 5px -5px;"
-                    onclick="confirm('Are you sure to continue?')">
+                <button type="submit" class="btn btn-primary" id="submit_button" style="float:right;margin: 5px -5px;">
                     <i class="fa fa-floppy-o"></i> Save
                 </button>
                 <button class="btn btn-danger" type="button" onclick="window.location.href='{{url('user-settings')}}';"
@@ -513,5 +512,21 @@
                 messageLineHeight: '70px',
             });
         }
+        
+        $('#form_submit').submit(function (event) {
+            event.preventDefault(); //this will prevent the default submit
+            $.confirm({
+                title: 'Confirmation',
+                content: 'Are you sure to continue?',
+                buttons: {
+                    confirm: function () {
+                        $('#form_submit').unbind('submit').submit(); // continue the submit unbind preventDefault
+                    },
+                    cancel: function () {
+                        //
+                    },
+                }
+            });
+        });
     });
 </script>

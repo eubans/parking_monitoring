@@ -52,6 +52,15 @@ class Controller_model extends Model
             ->get();
     }
 
+    function getAllOngoingIncidentReports()
+    {
+        return DB::table('incident_reports')
+            ->join('occupants', 'incident_reports.icr_occupant_id', '=', 'occupants.occ_id')
+            ->join('occupant_type', 'occupants.occ_type', '=', 'occupant_type.oct_id')
+            ->where('icr_status', 'ongoing')
+            ->get();
+    }
+
     function getOccupantDetails($use_id)
     {
         return DB::table('occupants')
@@ -105,16 +114,18 @@ class Controller_model extends Model
             ->get();
     }
 
-    function getUsernameFromEmail($email){
+    function getUsernameFromEmail($email)
+    {
         return DB::table('user_details')
-        ->leftjoin('users', 'user_details.usd_user_id', '=', 'users.use_id')
-        ->where('usd_email', $email)
-        ->pluck('users.use_username');
+            ->leftjoin('users', 'user_details.usd_user_id', '=', 'users.use_id')
+            ->where('usd_email', $email)
+            ->pluck('users.use_username');
     }
-    
-    function updatePassword($details, $account){
+
+    function updatePassword($details, $account)
+    {
         DB::table('users')
-        ->where('use_username', $account)
-        ->update($details);
+            ->where('use_username', $account)
+            ->update($details);
     }
 }

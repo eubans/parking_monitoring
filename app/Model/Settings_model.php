@@ -89,4 +89,10 @@ class Settings_model extends Model
             ->where('use_id', $id)
             ->first();
     }
+
+    function getUserType()
+    {
+        return DB::table('user_type')
+            ->get();
+    }
 }

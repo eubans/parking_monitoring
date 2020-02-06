@@ -102,7 +102,7 @@ class Scan extends Controller
             return 'success_time_in';
         } catch (\Exception $e) {
             DB::rollback();
-            return $e;
+            // return $e;
             return 'error_time_in';
         }
     }
@@ -176,8 +176,72 @@ class Scan extends Controller
             return 'success_reservation';
         } catch (\Exception $e) {
             DB::rollback();
-            return $e;
+            // return $e;
             return 'error_reservation';
+        }
+    }
+
+    function reportIncident(Request $request)
+    {
+        DB::beginTransaction();
+
+        $id = $this->scan_m->getOccupantDetails($request->qr_code)->occ_id;
+
+        try {
+            $incident_report = array(
+                "icr_occupant_id" => $id,
+                "icr_datetime" => date('Y-m-d H:i:s'),
+                "icr_description" => $request->description,
+                "icr_status" => "ongoing",
+                "created_at" => date('Y-m-d H:i:s'),
+                "created_by" => Session::get('USER_ID'),
+            );
+            $this->scan_m->saveIncidentReport($incident_report);
+
+            DB::commit();
+            return 'success_report_incident';
+        } catch (\Exception $e) {
+            DB::rollback();
+            // return $e;
+            return 'error_report_incident';
+        }
+    }
+
+    function Incident_Reports()
+    {
+        $incidents = $this->scan_m->getAllIncidentReports();
+
+        $data = array(
+            'incidents' => $incidents,
+        );
+
+        $theme = Theme::uses('main')->layout('default');
+        $theme->setTitle('Parking Logs System | Incident Reports');
+        return $theme->of('scan.incident-reports', $data)->render();
+    }
+
+    function Process_Incident(Request $request)
+    {
+        DB::beginTransaction();
+        $icr_id = $request->id;
+        $status = $request->s;
+        $notes = $request->notes;
+
+        try {
+            $details = array(
+                "icr_status" => $status,
+                "icr_notes" => $notes,
+                "modified_at" => date('Y-m-d H:i:s'),
+                "created_by" => Session::get('USER_ID'),
+            );
+            $this->scan_m->updateIncident($details, $icr_id);
+
+            DB::commit();
+            return redirect('incident-reports')->with('status', 'success_process');
+        } catch (\Exception $e) {
+            DB::rollback();
+            // return $e;
+            return redirect()->back()->with('status', 'error_process')->withInput();
         }
     }
 }

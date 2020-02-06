@@ -81,6 +81,9 @@
                 <div class="btn-group btn-block" role="group" id="reserve_slot_btn" style="display: none;">
                     <button type="button" class="btn btn-success btn-lg btn-block">RESERVE SLOT</button>
                 </div>
+                <div class="btn-group btn-block" role="group" id="report_incident_btn" style="display: none;">
+                    <button type="button" class="btn btn-dark btn-lg btn-block">REPORT INCIDENT</button>
+                </div>
             </div>
         </div>
         <div class="row justify-content-md-center" style="margin-top: 20px;">
@@ -95,7 +98,8 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col-md-2" style="text-align:center;">
+                                <img src="" alt="" srcset="" id="image" width="100px">
                                 <div id="qrcode" style="text-align: center;"></div>
                             </div>
                             <div class="col-md-5">
@@ -178,6 +182,22 @@
             </div>
         </div>
     </div>
+    <!-- MODAL QR START -->
+    <div id="report-incident-modal" class="lead_modal" data-izimodal-group="" data-izimodal-loop=""
+        data-izimodal-title="Report Incident" data-izimodal-subtitle=" " style="display: none;">
+        <div class="row justify-content-center" style="margin-top: 20px;">
+            <div class="col-md-10">
+                <div class="form-group">
+                    <label for="incident_description">Incident Description:</label>
+                    <textarea class="form-control" rows="5" id="incident_description"
+                        name="incident_description"></textarea>
+                </div>
+                <button type="button" class="btn btn-primary" style="margin-bottom:20px;float: right;"
+                    id="incident_report_submit_btn"><i class="fa fa-floppy-o"></i> Submit</button>
+            </div>
+        </div>
+    </div>
+    <!-- MODAL QR END -->
 </div>
 
 <script>
@@ -189,13 +209,12 @@
 
     $(document).ready(function () {
         var _qr_code = (loadPageVar('qr'));
-        console.log(_qr_code);
-
 
         if (_qr_code.length > 0) {
             $('#qr_code').val(_qr_code);
             FetchOccupantDetails(_qr_code);
             FetchOccupantLogs(_qr_code);
+            $("#qr_code").attr("readonly", true);
         }
 
         $("#qr_code").focus();
@@ -221,7 +240,7 @@
                     'qr_code': $('#qr_code').val(),
                 },
                 success: function (response) {
-                    console.log(response);
+                    // console.log(response);
 
                     if (response == "success_time_in") {
                         iziToast.success({
@@ -304,7 +323,7 @@
                     'atl_id': _ongoing_atl_id,
                 },
                 success: function (response) {
-                    console.log(response);
+                    // console.log(response);
 
                     if (response == "success_time_out") {
                         iziToast.success({
@@ -354,7 +373,7 @@
                     'qr_code': $('#qr_code').val(),
                 },
                 success: function (response) {
-                    console.log(response);
+                    // console.log(response);
 
                     $('#reserve_slot_btn > button').attr("disabled", true);
                     if (response == "success_reservation") {
@@ -411,6 +430,24 @@
                 }
             });
         });
+
+        $('#report-incident-modal').iziModal({
+            headerColor: '#23282E',
+            width: '40%',
+            overlay: true,
+            overlayClose: false,
+            overlayColor: 'rgba(0, 0, 0, 0.4)',
+            transitionIn: 'bounceInDown',
+            transitionOut: 'bounceOutDown',
+        });
+
+        $("#report_incident_btn").click(function () {
+            $('#report-incident-modal').iziModal('open');
+        });
+
+        $("#incident_report_submit_btn").click(function () {
+            ReportIncident();
+        });
     });
 
     function FetchOccupantDetails(qr_code) {
@@ -441,10 +478,14 @@
                 $("#brand").text(d.omi_brand);
                 $("#model").text(d.omi_model);
 
+                var data_uri = "{{asset('public/img/occupant')}}" + "/" + d.occ_id + ".png?" + new Date().getTime();
+                $("#image").attr("src", data_uri);
+
                 if (d.occ_account_status == "deactivated") {
                     $("#account_deactivated_btn").css('display', 'block');
                     $("#time_group_btn").css("display", "none");
                 }
+
 
                 //for ending loading
                 $('#body-container').waitMe('hide');
@@ -479,6 +520,7 @@
                     $('#time_in_btn').attr("disabled", false);
                     $('#time_out_btn').attr("disabled", true);
                 }
+                $('#report_incident_btn').css("display", "block");
 
                 _table_logs.clear();
                 for (var i = 0; i < logs.length; i++) {
@@ -510,6 +552,54 @@
 
         $("#clear_btn").click(function (e) {
             window.location.href = "{{url('scan')}}";
+        });
+    }
+
+    function ReportIncident() {
+        run_waitMe('ios', '#report-incident-modal');
+        $.ajax({
+            method: 'GET',
+            url: '{{ url("scan/occupant/report-incident") }}',
+            data: {
+                'qr_code': $('#qr_code').val(),
+                'description': $("#incident_description").val(),
+            },
+            success: function (response) {
+                console.log(response);
+
+                if (response == "success_report_incident") {
+                    iziToast.success({
+                        title: 'Success:',
+                        message: ' Incident is successfully reported.',
+                        position: 'bottomCenter',
+                        titleSize: '30px',
+                        titleLineHeight: '70px',
+                        messageSize: '20px',
+                        messageLineHeight: '70px',
+                    });
+                } else if (response == "error_report_incident") {
+                    iziToast.error({
+                        title: 'Error:',
+                        message: ' Failure for report an incident.',
+                        position: 'bottomCenter',
+                        titleSize: '30px',
+                        titleLineHeight: '70px',
+                        messageSize: '20px',
+                        messageLineHeight: '70px',
+                    });
+                }
+                $('#report-incident-modal').iziModal('close');
+                $("#incident_description").val("");
+
+                //for ending loading
+                $('#report-incident-modal').waitMe('hide');
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(JSON.stringify(jqXHR));
+                console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                //for ending loading
+                $('#report-incident-modal').waitMe('hide');
+            }
         });
     }
 </script>

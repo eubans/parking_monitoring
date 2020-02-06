@@ -40,7 +40,7 @@
     <div class="card-header">
         <div class="row">
             <div class="col-12">
-                <h4>Reservation Logs</h4>
+                <h4>Incident Reports List</h4>
             </div>
         </div>
     </div>
@@ -48,45 +48,66 @@
         <table id="table" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
-                    <th>Reserve Date & Time</th>
-                    <th>Time In</th>
+                    <th>Date & Time</th>
                     <th>Occupant Type</th>
                     <th>Fullname</th>
-                    <th>Contact</th>
+                    <th>Description</th>
                     <th>Status</th>
+                    <th>Investigator Note</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($reservations as $rsv)
+                @foreach($incidents as $key => $inc)
                 <tr>
-                    <td>{{$rsv->rsv_datetime == "" ? "" :date_format(new DateTime($rsv->rsv_datetime),"F j, Y g:i:s A")}}
+                    <td>{{$inc->icr_datetime == "" ? "" :date_format(new DateTime($inc->icr_datetime),"F j, Y g:i:s A")}}
                     </td>
-                    <td>{{$rsv->rsv_timein_datetime == "" ? "" :date_format(new DateTime($rsv->rsv_datetime),"F j, Y g:i:s A")}}
-                    </td>
-                    <td>{{$rsv->oct_name}}</td>
+                    <td>{{$inc->oct_name}}</td>
                     <td>
-                        {{$rsv->occ_lastname . ", " . $rsv->occ_firstname . ", " . strtoupper($rsv->occ_middlename[0]) . ". "}}
+                        {{$inc->occ_lastname . ", " . $inc->occ_firstname . ", " . strtoupper($inc->occ_middlename[0]) . ". "}}
                     </td>
-                    <td>{{$rsv->occ_phone_number . " | " . $rsv->occ_telephone}}</td>
-                    <td>{{ucfirst($rsv->rsv_status)}}</td>
+                    <td>{{$inc->icr_description}}</td>
+                    <td>{{ucfirst($inc->icr_status)}}</td>
+                    <td>{{$inc->icr_notes}}</td>
                     <td style="text-align: center;">
-                        <a href="{{url('occupant/profile?id=') . $rsv->occ_id}}" type="button"
+                        @if($inc->icr_status == "ongoing")
+                        <a href="#"  type="button"
+                            class="btn btn-success btn-sm process_btn" title="Mark as Done" id="done_{{$inc->icr_id}}">
+                            <i class="fa fa-check"></i>
+                        </a>
+                        <a href="#" type="button"
+                            class="btn btn-danger btn-sm process_btn" title="Cancel Incident Report" id="cancel_{{$inc->icr_id}}">
+                            <i class="fa fa-times"></i>
+                        </a>
+                        @endif
+                        <a href="{{url('occupant/profile?id=') . $inc->occ_id}}" type="button"
                             class="btn btn-primary btn-sm" title="Open Occupant Profile">
                             <i class="fa fa-external-link"></i>
                         </a>
-                        @if(session('USER_TYPE_ID') == 3 || session('USER_TYPE_ID') == 4)
-                        <a href="{{url('scan?qr=') . $rsv->occ_qr_code}}" type="button" class="btn btn-info btn-sm"
-                            title="Go to Scan">
-                            <i class="fa fa-qrcode"></i>
-                        </a>
-                        @endif
                     </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+    <!-- MODAL QR START -->
+    <div id="report-incident-modal" class="lead_modal" data-izimodal-group="" data-izimodal-loop=""
+        data-izimodal-title="Process Incident" data-izimodal-subtitle=" " style="display: none;">
+        {!! Form::open(['url' => 'incident-reports/process','id'=>'form_submit_modal','data-smk-icon'=>'glyphicon-remove-sign']) !!}
+        <div class="row justify-content-center" style="margin-top: 20px;">
+            <div class="col-md-10">
+                <div class="form-group">
+                    <label for="notes">Incident Notes:</label>
+                    <textarea class="form-control" rows="5" id="notes"
+                        name="notes"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="margin-bottom:20px;float: right;"
+                    id="incident_report_submit_btn"><i class="fa fa-floppy-o"></i> Submit</button>
+            </div>
+        </div>
+        {!! Form::close() !!}
+    </div>
+    <!-- MODAL QR END -->
 </div>
 
 <script>
@@ -100,7 +121,7 @@
             ],
             responsive: true,
             filterDropDown: {
-                columns: [{ idx: 0 }, { idx: 1 }, { idx: 2 }, { idx: 5 }],
+                columns: [{ idx: 1 }, { idx: 2 }, { idx: 4 }],
                 label: '<strong>Filter by:</strong> ',
                 bootstrap: true,
             },
@@ -148,6 +169,47 @@
             "drawCallback": function (settings, json) {
                 // $("#table_filterSelect5").val("Pending");
             }
+        });
+
+        var status = "{{session('status')}}";
+
+        if (status == "success_process") {
+            iziToast.success({
+                title: 'Success:',
+                message: ' Incident is successfully processed.',
+                position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
+            });
+        } else if (status == "error_process") {
+            iziToast.error({
+                title: 'Error:',
+                message: ' Failure to proccess incident.',
+                position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
+            });
+        }
+
+        $('#report-incident-modal').iziModal({
+            headerColor: '#23282E',
+            width: '40%',
+            overlay: true,
+            overlayClose: false,
+            overlayColor: 'rgba(0, 0, 0, 0.4)',
+            transitionIn: 'bounceInDown',
+            transitionOut: 'bounceOutDown',
+        });
+
+        $(".process_btn").click(function () {
+            $("#form_submit_modal").attr('action', '{{url("incident-reports/process")}}');
+            $('#report-incident-modal').iziModal('open');
+            var value =  this.id.split("_");
+            $("#form_submit_modal").attr('action', $("#form_submit_modal").attr('action') + '?s=' + value[0] + '&id=' + value[1]);
         });
     });
 </script>
