@@ -17,6 +17,7 @@ use Hash;
 use DB;
 
 use App\Model\Controller_model;
+use App\Http\Controllers\GlobalController;
 
 class Controller extends BaseController
 {
@@ -26,6 +27,7 @@ class Controller extends BaseController
      * The user repository instance. 
      */
     protected $controller_m;
+    protected $global_c;
 
     /**
      * Create a new controller instance.
@@ -33,9 +35,10 @@ class Controller extends BaseController
      * @param  UserRepository
      * @return void
      */
-    public function __construct(Controller_model $controller_m)
+    public function __construct(Controller_model $controller_m, GlobalController $global_c)
     {
         $this->controller_m =  $controller_m;
+        $this->global_c =  $global_c;
     }
 
     function Login()
@@ -74,11 +77,22 @@ class Controller extends BaseController
                 session()->put('USER_CONTACT', $user_details->usd_contact_number);
                 session()->put('USER_STATUS', $user_details->use_status);
 
-                //for avatar of user
-                if (file_exists(public_path() . '/img/avatar/' . $user_details->use_id . '/1.jpg')) {
-                    session()->put('USER_AVATAR_PATH',  url('public/img/avatar/' . $user_details->use_id . '/1.jpg'));
+                session()->put('BASE_URL', url('/'));
+                session()->put('USER_URL_ACCESS', json_encode($this->global_c->Get_User_Access($user_details->ust_id)));
+
+                if ($user_details->ust_id == 2) {
+                    $occ_id = $this->controller_m->getOccupantDetails(Session::get('USER_ID'))->occ_id;
+                    if (file_exists(public_path() . '/img/occupant/' . $occ_id . '.png')) {
+                        session()->put('USER_AVATAR_PATH',  url('public/img/occupant/' . $occ_id . '.png'));
+                    } else {
+                        session()->put('USER_AVATAR_PATH',  url('public/img/avatar/0/1.jpg'));
+                    }
                 } else {
-                    session()->put('USER_AVATAR_PATH',  url('public/img/avatar/0/1.jpg'));
+                    if (file_exists(public_path() . '/img/avatar/' . $user_details->use_id . '/1.jpg')) {
+                        session()->put('USER_AVATAR_PATH',  url('public/img/avatar/' . $user_details->use_id . '/1.jpg'));
+                    } else {
+                        session()->put('USER_AVATAR_PATH',  url('public/img/avatar/0/1.jpg'));
+                    }
                 }
 
                 return redirect('home');
@@ -116,6 +130,11 @@ class Controller extends BaseController
     function getPendingReservation()
     {
         return $this->controller_m->getAllPendingReservations();
+    }
+
+    function getOngoingIncidentReports()
+    {
+        return $this->controller_m->getAllOngoingIncidentReports();
     }
 
     function getQueuedReservationCount()
@@ -290,7 +309,9 @@ class Controller extends BaseController
     function Change_Password(Request $request)
     {
         $email = $request->eax;
-        if($email === "") {$email = Session::get('VER_EMAIL');}
+        if ($email === "") {
+            $email = Session::get('VER_EMAIL');
+        }
 
         $code = $request->qcs;
         if ($code === "") {
@@ -333,5 +354,15 @@ class Controller extends BaseController
             return $e;
             return redirect()->back()->with('status', 'error_save')->withInput();
         }
+    }
+
+    function getOccupantProfile(Request $request)
+    {
+        $details = $this->controller_m->getOccupantDetails(Session::get('USER_ID'));
+        return json_encode(array(
+            'details' => $details,
+            'qr_code' => $this->global_c->Render_QR($details->occ_qr_code, 180, 'svg', 2),
+            'qr_sticker_code' => $this->global_c->Render_QR($details->occ_qr_code, 180, 'svg', 2),
+        ));
     }
 }

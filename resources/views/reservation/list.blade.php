@@ -50,7 +50,7 @@
                     <td style="text-align: center;">{{ucfirst($rsv->rsv_notify_ctr)}}</td>
                     <td>{{ucfirst($rsv->rsv_status)}}</td>
                     <td style="text-align: center;">
-                        <a href="{{url('reservation/cancel?id=') . $rsv->occ_id}}" type="button"
+                        <a href="#" type="button"
                             class="btn btn-secondary btn-sm" title="Send Alert SMS">
                             <i class="fa fa-mobile fa-lg"></i>
                         </a>
@@ -58,10 +58,12 @@
                             class="btn btn-primary btn-sm" title="Open Occupant Profile">
                             <i class="fa fa-external-link"></i>
                         </a>
+                        @if(session('USER_TYPE_ID') == 3 || session('USER_TYPE_ID') == 4)
                         <a href="{{url('scan?qr=') . $rsv->occ_qr_code}}" type="button" class="btn btn-info btn-sm"
                             title="Go to Scan">
                             <i class="fa fa-qrcode"></i>
                         </a>
+                        @endif
                         <a href="{{url('reservation/cancel?id=') . $rsv->rsv_id}}" type="button"
                             class="btn btn-danger btn-sm" title="Cancel Reservation">
                             <i class="fa fa-times"></i>

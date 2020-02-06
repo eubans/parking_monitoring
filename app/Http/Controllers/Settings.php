@@ -104,6 +104,8 @@ class Settings extends Controller
 
         $use_id = $request->id;
 
+        $user_type = $request->user_type;
+
         $username = $request->username;
         $password = $request->password;
         $confirm_password = $request->confirm_password;
@@ -124,7 +126,7 @@ class Settings extends Controller
                 $user = array(
                     "use_username" => $username,
                     "use_password" => Hash::make($password),
-                    "use_user_type" => 1,
+                    "use_user_type" => $user_type,
                 );
                 $use_id = $this->settings_m->saveUser($user);
 
@@ -163,7 +165,7 @@ class Settings extends Controller
             return redirect('settings/user?id=' . $use_id)->with('status', 'success_save');
         } catch (\Exception $e) {
             DB::rollback();
-            return $e;
+            // return $e;
             return redirect()->back()->with('status', 'error_save')->withInput();
         }
     }

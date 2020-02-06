@@ -24,6 +24,10 @@
     #show_hide_password {
         cursor: pointer;
     }
+
+    .iziModal {
+        z-index: 99999 !important;
+    }
 </style>
 
 <div class="card">
@@ -36,6 +40,8 @@
                 <button type="button" class="btn btn-primary" style="float:right;display: none;" id="show_qr_btn">
                     <i class=" fa fa-qrcode"></i> Show Occupant Card
                 </button>
+
+                @if(session('USER_TYPE_ID') == 1)
                 {!! Form::open(['url' =>
                 'occupant/profile/toggle-status','id'=>'form_toggle_status','data-smk-icon'=>'glyphicon-remove-sign'])
                 !!}
@@ -43,6 +49,8 @@
                     id="toggle_status_btn" name="status"></button>
                 <input type="hidden" class="toggle_occ_id" name="id">
                 {!! Form::close() !!}
+                @endif
+
                 @if(session('USER_TYPE_ID') == 3)
                 {!! Form::open(['url' =>
                 'occupant/profile/toggle-login','id'=>'form_toggle_login','data-smk-icon'=>'glyphicon-remove-sign'])
@@ -53,10 +61,13 @@
                 <input type="hidden" class="toggle_occ_id" name="occ_id">
                 {!! Form::close() !!}
                 @endif
+
+                @if(session('USER_TYPE_ID') == 3 || session('USER_TYPE_ID') == 4)
                 <a type="button" class="btn btn-primary" style="float:right;display: none;margin-right: 10px;"
                     id="scan_btn">
                     <i class="fa fa-print"></i> Go to Scan
                 </a>
+                @endif
             </div>
         </div>
     </div>
@@ -112,14 +123,14 @@
                         <div class="form-group required">
                             <label for="student_number">Student Number:</label>
                             <input type="text" class="form-control" placeholder="Enter Student Number"
-                                id="student_number" name="student_number" required>
+                                id="student_number" name="student_number" required value="{{ old('student_number') }}">
                         </div>
                     </div>
                     <div class="col-md-5">
                         <div class="form-group required">
                             <label for="course">Course:</label>
                             <input type="text" class="form-control" placeholder="Enter Course" id="course" name="course"
-                                required>
+                                required value="{{ old('course') }}">
                         </div>
                     </div>
                 </div>
@@ -128,21 +139,21 @@
                         <div class="form-group required">
                             <label for="lastname">Lastname:</label>
                             <input type="text" class="form-control" placeholder="Enter Lastname" id="lastname"
-                                name="lastname" required>
+                                name="lastname" required value="{{ old('lastname') }}">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group required">
                             <label for="firstname">Firstname:</label>
                             <input type="text" class="form-control" placeholder="Enter Firstname" id="firstname"
-                                name="firstname" required>
+                                name="firstname" required value="{{ old('firstname') }}">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="middlename">Middlename:</label>
                             <input type="text" class="form-control" placeholder="Enter Middlename" id="middlename"
-                                name="middlename">
+                                name="middlename" value="{{ old('middlename') }}">
                         </div>
                     </div>
                 </div>
@@ -151,14 +162,14 @@
                         <div class="form-group required">
                             <label for="birth_date">Date of birth:</label>
                             <input type="date" class="form-control" placeholder="Enter Date of Birth" id="birth_date"
-                                name="birth_date" required>
+                                name="birth_date" required value="{{ old('birth_date') }}">
                         </div>
                     </div>
                     <div class="col-md-7">
                         <div class="form-group required">
                             <label for="email">Email:</label>
                             <input type="text" class="form-control" placeholder="Enter Email" id="email" name="email"
-                                required>
+                                required value="{{ old('email') }}">
                         </div>
                     </div>
                 </div>
@@ -167,14 +178,14 @@
                         <div class="form-group">
                             <label for="telephone">Telephone:</label>
                             <input type="text" class="form-control" placeholder="Enter Telephone" id="telephone"
-                                name="telephone">
+                                name="telephone" value="{{ old('telephone') }}">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group required">
                             <label for="phone_number">Phone Number:</label>
                             <input type="text" class="form-control" placeholder="Enter Phone Number" id="phone_number"
-                                name="phone_number" required>
+                                name="phone_number" required value="{{ old('phone_number') }}">
                         </div>
                     </div>
                 </div>
@@ -183,12 +194,31 @@
                         <div class="form-group required">
                             <label for="address">Address:</label>
                             <input type="text" class="form-control" placeholder="Enter Address" id="address"
-                                name="address" required>
+                                name="address" required value="{{ old('address') }}">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
+                <div class="row" style="margin-bottom: 5px;">
+                    <div class="col-lg-12">
+                        <h5>Occupant Photo</h5>
+                    </div>
+                </div>
+                <div class="row" style="padding-left: 5px;">
+                    <div class="col-md-12" style="text-align: center;">
+                        <div id="my_camera" style="margin: 0 auto;"></div>
+                        <input type="hidden" name="base64_image" id="base64_image" required>
+                        <button type="button" class="btn btn-secondary" style="margin: 5px -5px;display: none;"
+                            onClick="takeSnapshot()" id="take_snap_btn">
+                            <i class="fa fa-camera"></i> Take Snapshot
+                        </button>
+                        <button type="button" class="btn btn-dark" style="margin: 5px -5px;" onClick="renderCamera()"
+                            id="try_again_snap_btn">
+                            <i class="fa fa-plus-circle"></i> New photo
+                        </button>
+                    </div>
+                </div>
                 <div class="row" style="margin-bottom: 5px;">
                     <div class="col-lg-12">
                         <h5>Guardian Information</h5>
@@ -198,22 +228,23 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="guardian_name">Fullname:</label>
-                            <input type="text" class="form-control" placeholder="Enter Mother Fullname" id="guardian_name"
-                                name="guardian_name">
+                            <input type="text" class="form-control" placeholder="Enter Guardian Fullname"
+                                id="guardian_name" name="guardian_name" value="{{ old('guardian_name') }}">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="guardian_">Occupation:</label>
                             <input type="text" class="form-control" placeholder="Enter Occupation"
-                                id="guardian_occupation" name="guardian_occupation">
+                                id="guardian_occupation" name="guardian_occupation"
+                                value="{{ old('guardian_occupation') }}">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="guardian_contact">Contact Number:</label>
                             <input type="text" class="form-control" placeholder="Enter Contact Number"
-                                id="guardian_contact" name="guardian_contact">
+                                id="guardian_contact" name="guardian_contact" value="{{ old('guardian_contact') }}">
                         </div>
                     </div>
                 </div>
@@ -227,40 +258,39 @@
                         <div class="form-group required">
                             <label for="or_number">Official Receipt:</label>
                             <input type="text" class="form-control" placeholder="Enter OR Number" id="or_number"
-                                name="or_number" required>
+                                name="or_number" required value="{{ old('or_number') }}">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group required">
                             <label for="cr_number">Certificate of Registration:</label>
                             <input type="text" class="form-control" placeholder="Enter CR Number" id="cr_number"
-                                name="cr_number" required>
+                                name="cr_number" required value="{{ old('cr_number') }}">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group required">
                             <label for="plate_number">Plate Number:</label>
                             <input type="text" class="form-control" placeholder="Enter Plate Number" id="plate_number"
-                                name="plate_number" required>
+                                name="plate_number" required value="{{ old('plate_number') }}">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group required">
                             <label for="brand">Brand:</label>
                             <input type="text" class="form-control" placeholder="Enter Brand" id="brand" name="brand"
-                                required>
+                                required value="{{ old('brand') }}">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group required">
                             <label for="model">Model:</label>
                             <input type="text" class="form-control" placeholder="Enter Model" id="model" name="model"
-                                required>
+                                required value="{{ old('model') }}">
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary" id="submit_button" style="float:right;margin: 5px -5px;"
-                    onclick="confirm('Are you sure to continue?')">
+                <button type="submit" class="btn btn-primary" id="submit_button" style="float:right;margin: 5px -5px;">
                     <i class="fa fa-floppy-o"></i> Save
                 </button>
             </div>
@@ -269,45 +299,82 @@
     {!! Form::close() !!}
     <!-- MODAL QR START -->
     <div id="select-qr-modal" class="lead_modal" data-izimodal-group="" data-izimodal-loop=""
-        data-izimodal-title="Occupant Card" data-izimodal-subtitle=" " style="display: none; text-align: center;">
-        <!-- <div id="qrcode" style="text-align: center;"></div> -->
-        <div class="row table-responsive" id="qr_card_div" style="padding: 20px;">
-            <style>
-                .table td {
-                    padding: 1px;
-                    vertical-align: middle;
-                    text-align: left;
-                }
-            </style>
-            <table class="table table-bordered" style="width: 600px;border: 2px solid #000 !important;margin: 0 auto;">
-                <tr>
-                    <td width="30%">
-                        <h5>IETI Occupant Card</h5>
-                    </td>
-                    <td width="70%" colspan="2">Name: <span id="card_name" style="font-weight: bold;"></span></td>
-                </tr>
-                <tr>
-                    <td rowspan="4" width="20%" style="vertical-align: middle;">
-                        <div id="qrcode" style="text-align: center;"></div>
-                    </td>
-                    <td>Type: <span id="card_occupant_type" style="font-weight: bold;"></span>
-                    </td>
-                    <td>Date Issued: <span id="card_date_issued" style="font-weight: bold;"></span></td>
-                </tr> 
-                <tr>
-                    <td colspan="2">Plate Number: <span id="card_plate_number" style="font-weight: bold;"></span></td>
-                </tr>
-                <tr>
-                    <td colspan="2">Brand: <span id="card_brand" style="font-weight: bold;"></span></td>
-                </tr>
-                <tr>
-                    <td colspan="2">Model: <span id="card_model" style="font-weight: bold;"></span></td>
-                </tr>
-            </table>
+        data-izimodal-title="Occupant Card" data-izimodal-subtitle=" " style="display: none; text-align: center; ">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="row table-responsive" id="qr_card_div" style="padding: 20px;margin: 0;">
+                    <style>
+                        .table td {
+                            padding: 0 1px;
+                            vertical-align: middle;
+                            text-align: left;
+                        }
+                    </style>
+                    <table class="table table-bordered"
+                        style="width: 600px;border: 2px solid #000 !important;margin: 0 auto;width: 470px;">
+                        <tr>
+                            <td width="80%" colspan="2">
+                                <h6 style="margin-bottom: 0;">IETI Parking Card</h6>
+                                <span id="card_name" style="font-weight: bold;"></span>
+                                <br>
+                                <span id="card_occupant_type" style="font-size: small;"></span>
+                            </td>
+                            <td width="20%" rowspan="2" style="text-align: center;">
+                                <img src="" alt="" srcset="" id="card_image" width="100px" style="float: right;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td rowspan="5" width="20%" style="vertical-align: middle;">
+                                <div id="qrcode" style="text-align: center;"></div>
+                                <!-- <span style="font-size: xx-small;margin-top: -15px;position: absolute">Date
+                                    Issued:</span>
+                                <span id="card_date_issued"
+                                    style="font-weight: bold;font-size: xx-small;margin-top: -15px;position: absolute;margin-left: 50px;"></span> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Plate Number: <span id="card_plate_number"
+                                    style="font-weight: bold;"></span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Brand: <span id="card_brand" style="font-weight: bold;"></span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Model: <span id="card_model" style="font-weight: bold;"></span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Date Issued: <span id="card_date_issued" style="font-weight: bold;"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <button id="btnQRCardPrint" class="btn btn-light btn-outline-dark" style="margin-bottom:20px;"><i
+                        class="fa fa-print"></i> Print
+                    Card</button>
+            </div>
+            <div class="col-sm-4">
+                <div class="row table-responsive" id="qr_sticker_div" style="padding: 20px;margin: 0;">
+                    <table style="border: 2px solid #000 !important;margin: 0 auto;width: 200px;height:200px">
+                        <tr>
+                            <td style="vertical-align: middle;">
+                                <div id="qr_sticker_code" style="text-align: center;"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;font-size: xx-small;"><span id="sticker_qr_serial"
+                                    style="font-weight: bold;"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;font-weight: bold;font-size: small;">IETI Parking
+                            </td>
+                        </tr>
+                    </table>
+                </div><button id="btnQRStickerPrint" class="btn btn-light btn-outline-dark"
+                    style="margin-bottom:20px;"><i class="fa fa-print"></i> Print
+                    QR Sticker</button>
+            </div>
         </div>
-        <button id="btnQRCardPrint" class="btn btn-light btn-outline-dark" style="margin-bottom:20px;"><i
-                class="fa fa-print"></i> Print
-            Card</button>
     </div>
     <!-- MODAL QR END -->
 </div>
@@ -319,7 +386,7 @@
 
         $('#select-qr-modal').iziModal({
             headerColor: '#23282E',
-            width: '90%',
+            width: '80%',
             overlay: true,
             overlayClose: false,
             overlayColor: 'rgba(0, 0, 0, 0.4)',
@@ -366,7 +433,7 @@
                     $("#telephone").val(d.occ_telephone);
                     $("#phone_number").val(d.occ_phone_number);
                     $("#address").val(d.occ_address);
-                    
+
                     $("#guardian_name").val(d.ocg_name);
                     $("#guardian_occupation").val(d.ocg_occupation);
                     $("#guardian_contact").val(d.ocg_contact);
@@ -415,6 +482,14 @@
                     $("#card_plate_number").text(d.omi_plate_number);
                     $("#card_brand").text(d.omi_brand);
                     $("#card_model").text(d.omi_model);
+
+                    $('#qr_sticker_code').html(response.qr_sticker_code);
+                    $('#sticker_qr_serial').html(d.occ_qr_code);
+
+                    var data_uri = "{{asset('public/img/occupant')}}" + "/" + d.occ_id + ".png?" + new Date().getTime();
+                    document.getElementById('my_camera').innerHTML =
+                        '<img id="imageprev" src="' + data_uri + '"/>';
+                    $("#card_image").attr("src", data_uri);
 
                     //for ending loading
                     $('#body-container').waitMe('hide');
@@ -529,6 +604,16 @@
                 messageSize: '20px',
                 messageLineHeight: '70px',
             });
+        } else if (status == "error_username_taken") {
+            iziToast.error({
+                title: 'Error:',
+                message: ' Failure to save occupant details. Email for username is already taken.',
+                position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
+            });
         }
 
         $('#occupant_type').on('change', function (e) {
@@ -545,5 +630,77 @@
         $("#btnQRCardPrint").on('click', function (e) {
             $("#qr_card_div").printThis();
         });
+
+        $("#btnQRStickerPrint").on('click', function (e) {
+            $("#qr_sticker_div").printThis();
+        });
+
+        $('#form_submit').submit(function (event) {
+            event.preventDefault(); //this will prevent the default submit
+            $.confirm({
+                title: 'Confirmation',
+                content: 'Are you sure to continue?',
+                buttons: {
+                    confirm: function () {
+                        if (!$("#imageprev").length) {
+                            iziToast.error({
+                                title: 'Error:',
+                                message: ' Occupant photo is required.',
+                                position: 'bottomCenter',
+                                titleSize: '30px',
+                                titleLineHeight: '70px',
+                                messageSize: '20px',
+                                messageLineHeight: '70px',
+                            });
+                        } else {
+                            $("#base64_image").val(getBase64Image(document.getElementById("imageprev")));
+                            $('#form_submit').unbind('submit').submit(); // continue the submit unbind preventDefault
+                        }
+                    },
+                    cancel: function () {
+                        //
+                    },
+                }
+            });
+        });
     });
+
+    function takeSnapshot() {
+        $("#take_snap_btn").css("display", "none");
+        $("#try_again_snap_btn").css("display", "unset");
+
+        Webcam.snap(function (data_uri) {
+            document.getElementById('my_camera').innerHTML =
+                '<img id="imageprev" src="' + data_uri + '"/>';
+            var base64image = document.getElementById("imageprev").src;
+            // base64image = base64image.split(';')[1];
+            $("#base64_image").val(base64image);
+        });
+    }
+
+    function renderCamera() {
+        $("#take_snap_btn").css("display", "unset");
+        $("#try_again_snap_btn").css("display", "none");
+        $("#base64_image").val("");
+        $("#my_camera").html("");
+
+        Webcam.set({
+            width: 320,
+            height: 240,
+            image_format: 'png',
+            jpeg_quality: 90
+        });
+        Webcam.attach('#my_camera');
+    }
+
+    function getBase64Image(img) {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        var dataURL = canvas.toDataURL("image/png");
+        return dataURL;
+        // return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+    }
 </script>

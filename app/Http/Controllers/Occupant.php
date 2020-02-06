@@ -9,12 +9,14 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Input;
 use Teepluss\Theme\Facades\Theme;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 use DB;
 use QrCode;
 use Session;
 use Illuminate\Support\Str;
 use Hash;
+use Image;
 
 use App\Model\Occupant_model;
 use App\Http\Controllers\GlobalController;
@@ -71,6 +73,9 @@ class Occupant extends Controller
     {
         DB::beginTransaction();
         $occ_id = $request->id;
+
+        if (count($this->occupant_m->checkOccupantUsername($request->email)) > 0)
+            return redirect()->back()->with('status', 'error_username_taken')->withInput();
 
         try {
             if ($occ_id == null) {
@@ -153,6 +158,13 @@ class Occupant extends Controller
                 $this->occupant_m->updateOccupantMotorcycle($occupant_motorcycle, $occ_id);
             }
 
+            $photo_name = $occ_id . '.' . explode('/', explode(':', substr(
+                $request->base64_image,
+                0,
+                strpos($request->base64_image, ';')
+            ))[1])[1];
+            Image::make($request->base64_image)->save(public_path('img/occupant/') . $photo_name);
+
             DB::commit();
             return redirect('occupant/profile?id=' . $occ_id)->with('status', 'success_save');
         } catch (\Exception $e) {
@@ -167,7 +179,8 @@ class Occupant extends Controller
         $details = $this->occupant_m->getOccupantProfile($request->id);
         return json_encode(array(
             'details' => $details,
-            'qr_code' => $this->global_c->Render_QR($details->occ_qr_code, 200, 'svg', 5),
+            'qr_code' => $this->global_c->Render_QR($details->occ_qr_code, 180, 'svg', 2),
+            'qr_sticker_code' => $this->global_c->Render_QR($details->occ_qr_code, 180, 'svg', 2),
         ));
     }
 

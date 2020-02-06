@@ -43,7 +43,7 @@
     <div class="card-header">
         <div class="row">
             <div class="col-sm-12">
-                <h4 id="page_title">Administrator Registration</h4>
+                <h4 id="page_title">User Registration</h4>
             </div>
         </div>
     </div>
@@ -57,12 +57,22 @@
                         <h5>Users Details</h5>
                     </div>
                     <div class="col-sm-6">
-                        <button type="button" class="btn btn-dark btn-sm" style="float:right;"
+                        <button type="button" class="btn btn-dark btn-sm" style="float:right;display:none;"
                             id="toggle_change_password_btn" value="true"><i class="fa fa-toggle-off"></i> Change
                             Password</button>
                     </div>
                 </div>
                 <div class="row" style="padding-left: 5px;">
+                    <div class="col-md-12">
+                        <div class="form-group required">
+                            <label for="user_type">User Type</label>
+                            <select class="form-control" id="user_type" name="user_type" required>
+                                <option value="" disabled selected>Please select user type</option>
+                                <option value="1">Admin</option>
+                                <option value="4">Attendant</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="col-md-4">
                         <div class="form-group required">
                             <label for="username">Username:</label>
@@ -132,8 +142,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary" id="submit_button" style="float:right;margin: 5px -5px;"
-                    onclick="confirm('Are you sure to continue?')">
+                <button type="submit" class="btn btn-primary" id="submit_button" style="float:right;margin: 5px -5px;">
                     <i class="fa fa-floppy-o"></i> Save
                 </button>
                 <button class="btn btn-danger" type="button" onclick="window.location.href='{{url('settings/user')}}';"
@@ -173,6 +182,8 @@
                         window.location.href = "{{url('settings/user')}}";
                     }
 
+                    $("#user_type").val(d.ust_id);
+
                     $("#username").val(d.use_username);
                     $("#username").attr("disabled", true);
                     $("#password").attr("disabled", true);
@@ -183,6 +194,9 @@
                     $("#middlename").val(d.usd_middlename);
                     $("#email").val(d.usd_email);
                     $("#phone_number").val(d.usd_contact_number);
+
+                    $("#toggle_change_password_btn").css("display","unset");
+                    $("#user_type").attr("disabled",true);
 
                     //for ending loading
                     $('#body-container').waitMe('hide');
@@ -289,5 +303,21 @@
                 messageLineHeight: '70px',
             });
         }
+
+        $('#form_submit').submit(function (event) {
+            event.preventDefault(); //this will prevent the default submit
+            $.confirm({
+                title: 'Confirmation',
+                content: 'Are you sure to continue?',
+                buttons: {
+                    confirm: function () {
+                        $('#form_submit').unbind('submit').submit(); // continue the submit unbind preventDefault
+                    },
+                    cancel: function () {
+                        //
+                    },
+                }
+            });
+        });
     });
 </script>

@@ -7,6 +7,7 @@
         <meta name="description" content="{!! Theme::get('description') !!}">
 
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+        <link rel="icon" href="{!! asset('public/img/favicon.ico') !!}"/>
         
         <link href="{{ asset('public/plugin/bootstrap-4.4.1-dist/css/bootstrap.min.css') }}" rel="stylesheet">
         <link rel="stylesheet" href="{{ url('public/plugin/font-awesome/css/font-awesome.min.css')}}">
@@ -16,7 +17,7 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('public/plugin/DataTables/datatables.min.css') }}"/>
         <link href="{{ asset('public/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="{{ asset('public/css/waitMe.min.css')}}">
-        <link rel="icon" href="{!! asset('public/img/favicon.ico') !!}"/>
+        <link rel="stylesheet" href="{{ asset('public/css/jquery-confirm.min.css')}}">
 
         <!-- DATATABLE STYLE EXPORT START -->
         <link rel="stylesheet" type="text/css" href="{{ asset('public/plugin/DataTables/jquery.dataTables.min.css')}}"/>
@@ -50,10 +51,11 @@
         <script src="{{ asset('public/plugin/DataTables/Buttons-1.5.1/js/buttons.print.js')}}"></script>       
         <script src="{{ asset('public/plugin/DataTables/filterDropDown.min.js')}}"></script>
         <!-- DATATABLE SCRIPT EXPORT END -->
-        <script src="{{ asset('public/js/dataTables.bootstrap4.min.js') }}/"></script>
 
+        <script src="{{ asset('public/js/dataTables.bootstrap4.min.js') }}/"></script>
         <script src="{{ asset('public/plugin/printThis/printThis.js')}}"></script>
- 
+        <script src="{{ asset('public/plugin/webcamjs/webcam.min.js')}}"></script>
+        <script src="{{ asset('public/js/jquery-confirm.min.js')}}"></script>
     </head>
     <body>
         {!! Theme::partial('header') !!}

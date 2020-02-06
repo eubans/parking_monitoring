@@ -116,4 +116,11 @@ class Occupant_model extends Model
             ->where('occ_user_id', $id)
             ->get();
     }
+
+    function checkOccupantUsername($username)
+    {
+        return DB::table('users')
+            ->where('use_username', $username)
+            ->first();
+    }
 }
