@@ -41,7 +41,7 @@
                     <i class=" fa fa-qrcode"></i> Show Occupant Card
                 </button>
 
-                @if(session('USER_TYPE_ID') == 1)
+                @if(session('USER_TYPE_ID') == 1 || session('USER_TYPE_ID') == 3)
                 {!! Form::open(['url' =>
                 'occupant/profile/toggle-status','id'=>'form_toggle_status','data-smk-icon'=>'glyphicon-remove-sign'])
                 !!}
@@ -462,8 +462,14 @@
                         $("#toggle_login_btn").addClass('btn-danger');
                         $("#toggle_login_btn").html('<i class="fa fa-toggle-off"></i> Deactivate Login');
                     } else {
-                        $("#toggle_login_btn").addClass('btn-success');
-                        $("#toggle_login_btn").html('<i class="fa fa-toggle-on"></i> Activate Login');
+                        if(!d.oct_name == "Guest"){
+                            $("#toggle_login_btn").addClass('btn-success');
+                            $("#toggle_login_btn").html('<i class="fa fa-toggle-on"></i> Activate Login');
+                        }else{
+                            $("#toggle_login_btn").addClass('btn-success');
+                            $("#toggle_login_btn").attr('disabled',true);
+                            $("#toggle_login_btn").html('<i class="fa fa-toggle-on"></i> Activate Login');
+                        }
                     }
                     $("#toggle_use_id").val(d.use_id);
                     $("#toggle_login_btn").val(d.use_status);

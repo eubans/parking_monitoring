@@ -38,6 +38,16 @@ class Settings_model extends Model
             ->get();
     }
 
+    function getAdminAttendantUsers()
+    {
+        return DB::table('users')
+            ->join('user_details', 'users.use_id', '=', 'user_details.usd_user_id')
+            ->join('user_type', 'users.use_user_type', '=', 'user_type.ust_id')
+            ->where('ust_type', 'Admin')
+            ->orWhere('ust_type', 'Attendant')
+            ->get();
+    }
+
     function saveUser($data)
     {
         return DB::table('users')
@@ -57,13 +67,14 @@ class Settings_model extends Model
             ->first();
     }
 
-    function getUserAdminDetails($id)
+    function getUserAdminAttendantDetails($id)
     {
         return DB::table('users')
             ->join('user_details', 'users.use_id', '=', 'user_details.usd_user_id')
             ->join('user_type', 'users.use_user_type', '=', 'user_type.ust_id')
             ->where('use_id', $id)
             ->where('ust_type', "Admin")
+            ->orWhere('ust_type', "Attendant")
             ->first();
     }
 

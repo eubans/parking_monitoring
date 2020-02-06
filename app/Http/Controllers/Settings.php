@@ -80,7 +80,7 @@ class Settings extends Controller
 
     function User_List()
     {
-        $users = $this->settings_m->getAdminUsers();
+        $users = $this->settings_m->getAdminAttendantUsers();
 
         $data = array(
             'users' => $users,
@@ -172,7 +172,7 @@ class Settings extends Controller
 
     function getAdminitratorDetails(Request $request)
     {
-        $details = $this->settings_m->getUserAdminDetails($request->id);
+        $details = $this->settings_m->getUserAdminAttendantDetails($request->id);
         return json_encode($details);
     }
 
