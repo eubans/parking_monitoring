@@ -168,6 +168,7 @@
                                             style="background-image: url({{Session::get('USER_AVATAR_PATH')}});">
                                         </div>
                                     </div>
+                                    <h6 style="text-align:center;" id="user_type">{{ $user->ust_type }}</h6>
                                 </div>
                             </div>
                             <div class="col-lg-6" style="padding: 0;">

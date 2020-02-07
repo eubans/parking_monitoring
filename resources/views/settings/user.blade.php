@@ -47,8 +47,6 @@
             </div>
         </div>
     </div>
-    {!! Form::open(['url' => 'settings/user/save','id'=>'form_submit','data-smk-icon'=>'glyphicon-remove-sign'])
-    !!}
     <div class="container" style="padding: 20px 35px;">
         <div class="row">
             <div class="col-md-9">
@@ -57,11 +55,22 @@
                         <h5>Users Details</h5>
                     </div>
                     <div class="col-sm-6">
-                        <button type="button" class="btn btn-dark btn-sm" style="float:right;display:none;"
+                        <button type="button" class="btn btn-dark btn-sm" style="float:right;"
                             id="toggle_change_password_btn" value="true"><i class="fa fa-toggle-off"></i> Change
                             Password</button>
+                        @if(session('USER_TYPE_ID') == 3)
+                        {!! Form::open(['url' =>
+                        'settings/user/toggle-status','id'=>'form_toggle_status','data-smk-icon'=>'glyphicon-remove-sign'])
+                        !!}
+                        <button type="submit" class="btn btn-sm" style="float:right;display: none;margin-right: 10px;"
+                            id="toggle_status_btn" name="status"></button>
+                        <input type="hidden" id="toggle_user_id" name="use_id">
+                        {!! Form::close() !!}
+                        @endif
                     </div>
                 </div>
+                {!! Form::open(['url' => 'settings/user/save','id'=>'form_submit','data-smk-icon'=>'glyphicon-remove-sign'])
+                !!}
                 <div class="row" style="padding-left: 5px;">
                     <div class="col-md-12">
                         <div class="form-group required">
@@ -147,10 +156,10 @@
                 </button>
                 <button class="btn btn-danger" type="button" onclick="window.location.href='{{url('settings/user')}}';"
                     style="float:right;margin: 5px 10px;"><i class="fa fa-times"></i> Reset</button>
+                {!! Form::close() !!}
             </div>
         </div>
     </div>
-    {!! Form::close() !!}
 </div>
 
 <script>
@@ -197,6 +206,17 @@
 
                     $("#toggle_change_password_btn").css("display","unset");
                     $("#user_type").attr("disabled",true);
+
+                    $("#toggle_user_id").val(d.use_id);
+                    if (d.use_status == 'active') {
+                        $("#toggle_status_btn").addClass('btn-danger');
+                        $("#toggle_status_btn").html('<i class="fa fa-toggle-off"></i> Deactivate User');
+                    } else {
+                        $("#toggle_status_btn").addClass('btn-success');
+                        $("#toggle_status_btn").html('<i class="fa fa-toggle-on"></i> Activate User');
+                    }
+                    $("#toggle_status_btn").val(d.use_status);
+                    $("#toggle_status_btn").css('display', 'block');
 
                     //for ending loading
                     $('#body-container').waitMe('hide');
@@ -296,6 +316,26 @@
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to save user details.',
+                position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
+            });
+        } else if (status == "success_change_status") {
+            iziToast.success({
+                title: 'Success:',
+                message: ' User login access successfully changed.',
+                position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
+            });
+        } else if (status == "error_change_status") {
+            iziToast.error({
+                title: 'Error:',
+                message: ' Failure to change User login access.',
                 position: 'bottomCenter',
                 titleSize: '30px',
                 titleLineHeight: '70px',

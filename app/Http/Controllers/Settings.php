@@ -245,7 +245,7 @@ class Settings extends Controller
             return redirect('user-settings')->with('status', 'success_save');
         } catch (\Exception $e) {
             DB::rollback();
-            return $e;
+            // return $e;
             return redirect()->back()->with('status', 'error_save')->withInput();
         }
     }
@@ -285,6 +285,29 @@ class Settings extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             return $e;
+        }
+    }
+
+    function User_Change_Status(Request $request)
+    {
+        DB::beginTransaction();
+        $id = $request->use_id;
+        $new_status = "active";
+
+        if ($request->status == "active")
+            $new_status = "deactivated";
+
+        try {
+            $this->settings_m->updateUser(array(
+                "use_status" => $new_status,
+            ), $id);
+
+            DB::commit();
+            return redirect('settings/user?id=' . $id)->with('status', 'success_change_status');
+        } catch (\Exception $e) {
+            DB::rollback();
+            // return $e;
+            return redirect()->back()->with('status', 'error_change_status')->withInput();
         }
     }
 }

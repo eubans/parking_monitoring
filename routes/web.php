@@ -73,6 +73,7 @@ Route::group(['middleware' => 'authUser'], function () {
     Route::get('settings/user', 'Settings@User');
     Route::post('settings/user/save', 'Settings@User_Save');
     Route::get('settings/user/fetch-details', 'Settings@getAdminitratorDetails');
+    Route::post('settings/user/toggle-status', 'Settings@User_Change_Status');
 
     Route::get('user-settings', 'Settings@User_Settings');
     Route::post('user-settings/save', 'Settings@User_Settings_Save');
@@ -88,7 +89,7 @@ Route::get('sample-sms', function () {
 
     return $nexmo->message()->send([
         'to'   => '639059033184',
-        'from' => '639059033184',
+        'from' => '03272015',
         'text' => "Testing. Parking Monitoring" . date('Y-m-d h:i:s')
     ]);
 });
