@@ -40,6 +40,7 @@ Route::get('occupant-cancel-reservation', 'Controller@cancelReservation');
 
 Route::group(['middleware' => 'authUser'], function () {
     Route::get('home', 'Controller@Home');
+    Route::get('send-closing-sms-blast', 'Controller@Closing_SMS_Blast');
 
     Route::get('occupant', 'Occupant@List');
     Route::get('occupant/registration', 'Occupant@Registration');
@@ -65,14 +66,17 @@ Route::group(['middleware' => 'authUser'], function () {
     Route::get('reservation', 'Reservation@List');
     Route::get('reservation/logs', 'Reservation@Logs');
     Route::get('reservation/cancel', 'Reservation@Cancel_Reservation');
+    Route::get('reservation/send-alert', 'Reservation@Alert_Occupant_SMS');
 
     Route::get('settings/global-variables', 'Settings@Global_Variables');
-    Route::post('settings/global-variables/parking-slot/save', 'Settings@Parking_Slot_Save');
+    Route::post('settings/global-variables/save', 'Settings@Global_Variables_Save');
+
 
     Route::get('settings/user/list', 'Settings@User_List');
     Route::get('settings/user', 'Settings@User');
     Route::post('settings/user/save', 'Settings@User_Save');
     Route::get('settings/user/fetch-details', 'Settings@getAdminitratorDetails');
+    Route::post('settings/user/toggle-status', 'Settings@User_Change_Status');
 
     Route::get('user-settings', 'Settings@User_Settings');
     Route::post('user-settings/save', 'Settings@User_Settings_Save');
@@ -88,7 +92,7 @@ Route::get('sample-sms', function () {
 
     return $nexmo->message()->send([
         'to'   => '639059033184',
-        'from' => '639059033184',
+        'from' => '03272015',
         'text' => "Testing. Parking Monitoring" . date('Y-m-d h:i:s')
     ]);
 });

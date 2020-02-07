@@ -2,8 +2,12 @@
     .card-header {
         padding: .75rem;
     }
+    .form-control[readonly] {
+        background-color: #fff;
+        opacity: 1;
+    }
 </style>
-
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 <div class="card">
     <div class="card-header">
         <div class="row">
@@ -13,7 +17,7 @@
         </div>
     </div>
     {!! Form::open(['url' =>
-    'settings/global-variables/parking-slot/save','id'=>'form_submit','data-smk-icon'=>'glyphicon-remove-sign'])
+    'settings/global-variables/save','id'=>'form_submit','data-smk-icon'=>'glyphicon-remove-sign'])
     !!}
     <div class="container" style="padding: 20px 35px;">
         <div class="row">
@@ -21,9 +25,63 @@
                 <div class="row" style="padding-left: 5px;">
                     <div class="col-md-12">
                         <div class="form-group required">
-                            <label for="student_number">Parking Slot:</label>
+                            <label for="parking_slot">Parking Slot:</label>
                             <input type="number" class="form-control" placeholder="Enter Parking Slot" id="parking_slot"
                                 value="{{$parking_slot}}" name="parking_slot" required>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group required">
+                            <label for="reservation_time_limit">Reservation Time Limit (Minute):</label>
+                            <input type="number" class="form-control" placeholder="Enter Parking Slot" id="reservation_time_limit"
+                                value="{{$reservation_time_limit}}" name="reservation_time_limit" required>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group required">
+                            <label for="parking_closing_time">Parking Closing Time:</label>
+                            <input type="text" class="form-control timepicker" placeholder="Enter Parking Closing Time" id="parking_closing_time"
+                                value="{{$parking_closing_time}}" name="parking_closing_time" required readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group required">
+                            <label for="enable_email">Enable Email:</label>
+                            <select class="form-control" id="enable_email" name="enable_email" required>
+                                <option value="1" {{$enable_email == 1 ? "selected" : "" }}>Yes</option>
+                                <option value="0" {{$enable_email == 0 ? "selected" : "" }}>No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="row" style="padding-left: 5px;">
+                    <div class="col-md-12">
+                        <div class="form-group required">
+                            <label for="enable_sms">Enable SMS:</label>
+                            <select class="form-control" id="enable_sms" name="enable_sms" required>
+                                <option value="1" {{$enable_sms == 1 ? "selected" : "" }}>Yes</option>
+                                <option value="0" {{$enable_sms == 0 ? "selected" : "" }}>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group required">
+                            <label for="enable_automatic_closing_sms_blast">Enable Automatic Closing SMS Blast:</label>
+                            <select class="form-control" id="enable_automatic_closing_sms_blast" name="enable_automatic_closing_sms_blast" required>
+                                <option value="1" {{$enable_automatic_closing_sms_blast == 1 ? "selected" : "" }}>Yes</option>
+                                <option value="0" {{$enable_automatic_closing_sms_blast == 0 ? "selected" : "" }}>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group required">
+                            <label for="enable_automatic_disabling_of_guest">Enable Automatic Disabling of Guest:</label>
+                            <select class="form-control" id="enable_automatic_disabling_of_guest" name="enable_automatic_disabling_of_guest" required>
+                                <option value="1" {{$enable_automatic_disabling_of_guest == 1 ? "selected" : "" }}>Yes</option>
+                                <option value="0" {{$enable_automatic_disabling_of_guest == 0 ? "selected" : "" }}>No</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -35,26 +93,26 @@
     </div>
     {!! Form::close() !!}
 </div>
-
+<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 <script>
     $(document).ready(function () {
-        var status_parking_slot = "{{session('status_parking_slot')}}";
+        var status_parking_slot = "{{session('status')}}";
         // alert(status);
 
-        if (status_parking_slot == "success_parking_slot_update") {
+        if (status_parking_slot == "success_save") {
             iziToast.success({
                 title: 'Success:',
-                message: ' Parking Slot is successfully updated.',
+                message: ' Global Variables are successfully updated.',
                 position: 'bottomCenter',
                 titleSize: '30px',
                 titleLineHeight: '70px',
                 messageSize: '20px',
                 messageLineHeight: '70px',
             });
-        } else if (status_parking_slot == "error_parking_slot_update") {
+        } else if (status_parking_slot == "error_save") {
             iziToast.error({
                 title: 'Error:',
-                message: ' Failure to update Parking Slot.',
+                message: ' Failure to update Global Variables.',
                 position: 'bottomCenter',
                 titleSize: '30px',
                 titleLineHeight: '70px',
@@ -64,7 +122,7 @@
         } else if (status_parking_slot == "error_invalid_parking_slot") {
             iziToast.error({
                 title: 'Error:',
-                message: ' Failure to update Parking Slot. Parking slot is currently not equal or higher than the ongoing occupant parked.',
+                message: ' Global Variables are successfully updated. Parking slot is currently not equal or higher than the ongoing occupant parked.',
                 position: 'bottomCenter',
                 titleSize: '30px',
                 titleLineHeight: '70px',
@@ -88,5 +146,7 @@
                 }
             });
         });
+        
+        $('.timepicker').timepicker();
     });
 </script>

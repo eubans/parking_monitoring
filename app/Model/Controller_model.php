@@ -128,4 +128,12 @@ class Controller_model extends Model
             ->where('use_username', $account)
             ->update($details);
     }
+
+    function getGlobalVariable($name)
+    {
+        return DB::table('global_variables')
+            ->where('glv_name', $name)
+            ->first()
+            ->glv_value;
+    }
 }

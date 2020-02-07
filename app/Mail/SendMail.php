@@ -36,6 +36,9 @@ class SendMail extends Mailable
 
     public function build()
     {
+        //email username = ieti.parkinglogssystem@gmail.com
+        //password = ieti_2020
+
         return $this->from('ieti.parkinglogssystem@gmail.com')
             ->view($this->send_mail->template)
             ->text($this->send_mail->plain_template)

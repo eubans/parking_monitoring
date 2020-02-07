@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Input;
 use Teepluss\Theme\Facades\Theme;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMail;
 
 use DB;
 use QrCode;
@@ -81,12 +83,33 @@ class Occupant extends Controller
             if ($occ_id == null) {
                 $use_id = null;
                 if ($request->occupant_type != 3) {
+                    $password = Str::random(8);
                     $occupant_account = array(
                         "use_username" => $request->email,
-                        "use_password" => Str::random(8),
+                        "use_password" => $password,
                         "use_user_type" => 2,
                     );
                     $use_id = $this->occupant_m->saveOccupantAccount($occupant_account);
+
+                    if ($this->global_c->Get_Global_Variable('ENABLE_EMAIL') == 1) {
+                        // email sending for new user start
+                        $obj_parameter = new \stdClass();
+                        $obj_parameter->subject = "IETI Parking Logs System: User Credentials";
+                        $obj_parameter->fullname = $request->lastname . ", " . $request->firstname . ", " . strtoupper($request->middlename[0]) . ".";
+                        $obj_parameter->username = $request->email;
+                        $obj_parameter->password = $password;
+                        $obj_parameter->template = 'mails.new-user-created-email';
+                        $obj_parameter->plain_template = 'mails.new-user-created-email';
+
+                        try {
+                            Mail::to($request->email)->send(new SendMail($obj_parameter));
+                        } catch (\Exception $e) {
+                            // return $e;
+                            DB::rollback();
+                            return redirect()->back()->with('status', 'invalid_email')->withInput();
+                        }
+                        // end
+                    }
                 }
 
                 $occupant_details = array(
@@ -199,12 +222,32 @@ class Occupant extends Controller
             return redirect()->back()->with('status', 'error_ongoing_log')->withInput();
         }
 
+        $details = $this->occupant_m->getOccupantProfile($id);
+
         try {
             $this->occupant_m->updateOccupant(array(
                 "occ_account_status" => $new_status,
                 "modified_at" => date('Y-m-d H:i:s'),
                 "created_by" => Session::get('USER_ID'),
             ), $id);
+
+            if ($this->global_c->Get_Global_Variable('ENABLE_EMAIL') == 1) {
+                // email sending start
+                $obj_parameter = new \stdClass();
+                $obj_parameter->subject = "IETI Parking Logs System: Occupant Account Status - " . ucfirst($new_status);
+                $obj_parameter->status = $new_status;
+                $obj_parameter->template = 'mails.toggle-occupant-status-email';
+                $obj_parameter->plain_template = 'mails.toggle-occupant-status-email';
+
+                try {
+                    Mail::to($details->occ_email_address)->send(new SendMail($obj_parameter));
+                } catch (\Exception $e) {
+                    // return $e;
+                    DB::rollback();
+                    return redirect()->back()->with('status', 'change_occupant_status_invalid_email')->withInput();
+                }
+                // end
+            }
 
             DB::commit();
             return redirect('occupant/profile?id=' . $id)->with('status', 'success_change_status');
@@ -239,7 +282,6 @@ class Occupant extends Controller
         $occ_id = $request->occ_id;
         $new_status = "active";
 
-
         if ($request->login == "active")
             $new_status = "deactivated";
 
@@ -249,10 +291,30 @@ class Occupant extends Controller
             return redirect()->back()->with('status', 'error_ongoing_log')->withInput();
         }
 
+        $details = $this->occupant_m->getOccupantProfile($occ_id);
+
         try {
             $this->occupant_m->updateUser(array(
                 "use_status" => $new_status,
             ), $id);
+
+            if ($this->global_c->Get_Global_Variable('ENABLE_EMAIL') == 1) {
+                // email sending start
+                $obj_parameter = new \stdClass();
+                $obj_parameter->subject = "IETI Parking Logs System: Login Access Status - " . ucfirst($new_status);
+                $obj_parameter->status = $new_status;
+                $obj_parameter->template = 'mails.toggle-user-status-email';
+                $obj_parameter->plain_template = 'mails.toggle-user-status-email';
+
+                try {
+                    Mail::to($details->occ_email_address)->send(new SendMail($obj_parameter));
+                } catch (\Exception $e) {
+                    // return $e;
+                    DB::rollback();
+                    return redirect()->back()->with('status', 'change_status_invalid_email')->withInput();
+                }
+                // end
+            }
 
             DB::commit();
             return redirect('occupant/profile?id=' . $occ_id)->with('status', 'success_change_login');

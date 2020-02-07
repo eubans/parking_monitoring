@@ -168,7 +168,7 @@
                     <div class="col-md-7">
                         <div class="form-group required">
                             <label for="email">Email:</label>
-                            <input type="text" class="form-control" placeholder="Enter Email" id="email" name="email"
+                            <input type="email" class="form-control" placeholder="Enter Email" id="email" name="email"
                                 required value="{{ old('email') }}">
                         </div>
                     </div>
@@ -184,8 +184,15 @@
                     <div class="col-md-6">
                         <div class="form-group required">
                             <label for="phone_number">Phone Number:</label>
-                            <input type="text" class="form-control" placeholder="Enter Phone Number" id="phone_number"
-                                name="phone_number" required value="{{ old('phone_number') }}">
+                            <div class="input-group" style="padding:0;">
+                                <div class="input-group-prepend" style="padding: 0;">
+                                    <span class="input-group-text" id="basic-addon2">+63</span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Enter Phone Number"
+                                    id="phone_number" name="phone_number" required value="{{ old('phone_number') }}"
+                                    aria-label="Enter Phone Number" aria-describedby="basic-addon2"
+                                    autocomplete="new-phone-number">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -394,6 +401,11 @@
             transitionOut: 'bounceOutDown',
         });
 
+        $('#phone_number').on('keypress', function (key) {
+            if (key.charCode < 48 || key.charCode > 57) return false;
+            if (this.value.length > 9) return false;
+        });
+
         if (window.location.pathname.split("/").pop() == "profile") {
             $("#page_title").html("Occupant Profile");
             $("#occupant_type").attr("disabled", true);
@@ -462,12 +474,12 @@
                         $("#toggle_login_btn").addClass('btn-danger');
                         $("#toggle_login_btn").html('<i class="fa fa-toggle-off"></i> Deactivate Login');
                     } else {
-                        if(!d.oct_name == "Guest"){
+                        if (d.oct_name != "Guest") {
                             $("#toggle_login_btn").addClass('btn-success');
                             $("#toggle_login_btn").html('<i class="fa fa-toggle-on"></i> Activate Login');
-                        }else{
+                        } else {
                             $("#toggle_login_btn").addClass('btn-success');
-                            $("#toggle_login_btn").attr('disabled',true);
+                            $("#toggle_login_btn").attr('disabled', true);
                             $("#toggle_login_btn").html('<i class="fa fa-toggle-on"></i> Activate Login');
                         }
                     }
@@ -614,6 +626,36 @@
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to save occupant details. Email for username is already taken.',
+                position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
+            });
+        } else if (status == "invalid_email") {
+            iziToast.error({
+                title: 'Error:',
+                message: ' Failure to save occupant details. Invalid email address.',
+                position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
+            });
+        } else if (status == "change_status_invalid_email") {
+            iziToast.error({
+                title: 'Error:',
+                message: ' Failure to change Occupant login access. Invalid email address.',
+                position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
+            });
+        } else if (status == "change_occupant_status_invalid_email") {
+            iziToast.error({
+                title: 'Error:',
+                message: ' Failure to change Occupant account status. Invalid email address.',
                 position: 'bottomCenter',
                 titleSize: '30px',
                 titleLineHeight: '70px',

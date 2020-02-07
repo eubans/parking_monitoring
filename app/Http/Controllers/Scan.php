@@ -9,10 +9,14 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Input;
 use Teepluss\Theme\Facades\Theme;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMail;
 
 use DB;
 use QrCode;
 use Session;
+use DateTime;
+use DateInterval;
 
 use App\Model\Scan_model;
 use App\Http\Controllers\GlobalController;
@@ -72,14 +76,18 @@ class Scan extends Controller
             return 'parking_full';
 
         $reservation = $this->scan_m->getLatestOccupantReservation();
+        // return response()->json($reservation);
 
         try {
             // // return response()->json(isset($reservation->rsv_occupant_id));
             // return response()->json([$reservation->rsv_occupant_id, $id]);
             if (isset($reservation->rsv_occupant_id)) {
-                if ($reservation->rsv_occupant_id != $id)
-                    return 'invalid_occupant_queue';
-                else
+                if ($reservation->rsv_occupant_id != $id) {
+                    if (!count($this->scan_m->getOccupantPendingReservation($id)) > 0)
+                        return 'parking_full';
+                    else
+                        return 'invalid_occupant_queue';
+                } else
                     $this->scan_m->updateReservation(array(
                         "rsv_timein_datetime" => date('Y-m-d H:i:s'),
                         "rsv_status" => "done",
@@ -140,6 +148,32 @@ class Scan extends Controller
             );
             $this->scan_m->updateAttendaceLog($attendance_logs, $request->atl_id);
 
+            if ($this->global_c->Get_Global_Variable('ENABLE_SMS') == 1) {
+                $reservation = $this->scan_m->getLatestOccupantReservationWithoutNotify();
+                if (count($reservation) > 0) {
+                    $rsv_time_limit = $this->global_c->Get_Global_Variable('RESERVATION_TIME_LIMIT');
+                    $date_time = new DateTime();
+                    $date_time->add(new DateInterval("PT" . $rsv_time_limit . "M"));
+                    $time_limit = $date_time->format('g:i A');
+
+                    $sms_status = $this->global_c->Send_SMS(
+                        $reservation->occ_phone_number,
+                        "Hi $reservation->occ_firstname, you now have a slot on IETI Parking lot. Please claim it before $time_limit. The reservation will be automatically cancelled if you failed to claim it on time. Please do not reply. From IETI Parking Logs System."
+                    );
+                    if ($sms_status == "success") {
+                        $this->scan_m->updateReservation(array(
+                            "rsv_notify_ctr" => $reservation->rsv_notify_ctr + 1,
+                            "rsv_expected_timein" => $date_time->format('Y-m-d H:i:s'),
+                            "modified_at" => date('Y-m-d H:i:s'),
+                            "created_by" => Session::get('USER_ID'),
+                        ), $reservation->rsv_id);
+                    } else {
+                        DB::rollback();
+                        return 'error_time_out_sms';
+                    }
+                }
+            }
+
             DB::commit();
             return 'success_time_out';
         } catch (\Exception $e) {
@@ -185,7 +219,8 @@ class Scan extends Controller
     {
         DB::beginTransaction();
 
-        $id = $this->scan_m->getOccupantDetails($request->qr_code)->occ_id;
+        $details = $this->scan_m->getOccupantDetails($request->qr_code);
+        $id = $details->occ_id;
 
         try {
             $incident_report = array(
@@ -197,6 +232,26 @@ class Scan extends Controller
                 "created_by" => Session::get('USER_ID'),
             );
             $this->scan_m->saveIncidentReport($incident_report);
+
+            if ($this->global_c->Get_Global_Variable('ENABLE_EMAIL') == 1) {
+                // email sending start
+                $obj_parameter = new \stdClass();
+                $obj_parameter->subject = "IETI Parking Logs System: Incident Report " . date('F j, Y h:i:s A');
+                $obj_parameter->occupant_name = $details->occ_lastname . ", " . $details->occ_firstname . ", " . strtoupper($details->occ_middlename[0]) . ".";
+                $obj_parameter->description = $request->description;
+                $obj_parameter->datetime = date('F j, Y h:i:s A');
+                $obj_parameter->template = 'mails.incident-report-email';
+                $obj_parameter->plain_template = 'mails.incident-report-email';
+
+                try {
+                    Mail::to(Session::get('USER_EMAIL'))->send(new SendMail($obj_parameter));
+                } catch (\Exception $e) {
+                    // return $e;
+                    DB::rollback();
+                    return redirect()->back()->with('status', 'invalid_email')->withInput();
+                }
+                // end
+            }
 
             DB::commit();
             return 'success_report_incident';

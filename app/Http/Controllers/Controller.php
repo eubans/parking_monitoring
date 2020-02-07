@@ -80,6 +80,11 @@ class Controller extends BaseController
                 session()->put('BASE_URL', url('/'));
                 session()->put('USER_URL_ACCESS', json_encode($this->global_c->Get_User_Access($user_details->ust_id)));
 
+                session()->put('PARKING_SLOT_COUNT', $this->controller_m->getGlobalVariable("PARKING_SLOT_COUNT"));
+                session()->put('PARKING_LOT_CLOSING_TIME', $this->controller_m->getGlobalVariable("PARKING_LOT_CLOSING_TIME"));
+                session()->put('ENABLE_EMAIL', $this->controller_m->getGlobalVariable("ENABLE_EMAIL"));
+                session()->put('ENABLE_SMS', $this->controller_m->getGlobalVariable("ENABLE_SMS"));
+
                 if ($user_details->ust_id == 2) {
                     $occ_id = $this->controller_m->getOccupantDetails(Session::get('USER_ID'))->occ_id;
                     if (file_exists(public_path() . '/img/occupant/' . $occ_id . '.png')) {
@@ -94,8 +99,13 @@ class Controller extends BaseController
                         session()->put('USER_AVATAR_PATH',  url('public/img/avatar/0/1.jpg'));
                     }
                 }
-
-                return redirect('home');
+                if (session()->exists('EXTERNAL_GO_TO_URL')) {
+                    $go_to_url = Session('EXTERNAL_GO_TO_URL');
+                    session()->forget('EXTERNAL_GO_TO_URL');
+                    return redirect($go_to_url);
+                } else {
+                    return redirect('home');
+                }
             } else {
                 return redirect('login?error=1');
             }
@@ -197,7 +207,7 @@ class Controller extends BaseController
             return 'success_reservation';
         } catch (\Exception $e) {
             DB::rollback();
-            return $e;
+            // return $e;
             return 'error_reservation';
         }
     }
@@ -219,7 +229,7 @@ class Controller extends BaseController
             return 'success_cancellation';
         } catch (\Exception $e) {
             DB::rollback();
-            return $e;
+            // return $e;
             return 'error_cancellation';
         }
     }
@@ -234,9 +244,6 @@ class Controller extends BaseController
     function Send_Verification_Code(Request $request)
     {
 
-        //email username = ieti.parkinglogssystem@gmail.com
-        //password = ieti_2020
-
         $email = $request->email;
         $result = $this->controller_m->validateEmail($email);
 
@@ -247,7 +254,7 @@ class Controller extends BaseController
             Session::put('VER_CODE', md5($verificationCode));
 
             $obj_parameter = new \stdClass();
-            $obj_parameter->subject = "Parking Logs System: Verification Code";
+            $obj_parameter->subject = "IETI Parking Logs System: Verification Code";
             $obj_parameter->email = $email;
             $obj_parameter->code = $verificationCode;
             $obj_parameter->template = 'mails.verification-code-email';
@@ -286,7 +293,7 @@ class Controller extends BaseController
             try {
                 Mail::to($email)->send(new SendMail($obj_parameter));
             } catch (\Exception $e) {
-                return $e;
+                // return $e;
                 $error_mail = "Verification timeout exceeded please reload page";
                 return redirect('code-verification')->with(['status' => 'invalid_email', 'error_msg' => $error_mail]);
             }
@@ -351,7 +358,7 @@ class Controller extends BaseController
             return redirect('login?status=cp');
         } catch (\Exception $e) {
             DB::rollback();
-            return $e;
+            // return $e;
             return redirect()->back()->with('status', 'error_save')->withInput();
         }
     }
@@ -364,5 +371,21 @@ class Controller extends BaseController
             'qr_code' => $this->global_c->Render_QR($details->occ_qr_code, 180, 'svg', 2),
             'qr_sticker_code' => $this->global_c->Render_QR($details->occ_qr_code, 180, 'svg', 2),
         ));
+    }
+
+    function Closing_SMS_Blast()
+    {
+        $obj_details = array();
+        foreach ($this->controller_m->getOngoingOccupants() as $value) {
+            $values = new \stdClass();
+            $values->name = $value->occ_firstname;
+            $values->phone_number = $value->occ_phone_number;
+            $obj_details[] = $values;
+        }
+        $status = $this->global_c->Send_Closing_SMS_Blast($obj_details);
+        if ($status == "success")
+            return redirect()->back()->with('status', 'success_sms_blast');
+        else
+            return redirect()->back()->with('status', 'error_sms_blast');
     }
 }

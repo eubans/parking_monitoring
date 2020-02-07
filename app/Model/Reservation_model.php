@@ -10,8 +10,8 @@ class Reservation_model extends Model
     function getAllPendingReservations()
     {
         return DB::table('reservations')
-            ->join('occupants', 'reservations.rsv_occupant_id', '=', 'occupants.occ_id')
-            ->join('occupant_type', 'occupants.occ_type', '=', 'occupant_type.oct_id')
+            ->leftJoin('occupants', 'reservations.rsv_occupant_id', '=', 'occupants.occ_id')
+            ->leftJoin('occupant_type', 'occupants.occ_type', '=', 'occupant_type.oct_id')
             ->where('rsv_status', 'pending')
             // ->orderBy('rsv_id', 'desc')
             ->get();
@@ -20,8 +20,8 @@ class Reservation_model extends Model
     function getAllReservations()
     {
         return DB::table('reservations')
-            ->join('occupants', 'reservations.rsv_occupant_id', '=', 'occupants.occ_id')
-            ->join('occupant_type', 'occupants.occ_type', '=', 'occupant_type.oct_id')
+            ->leftJoin('occupants', 'reservations.rsv_occupant_id', '=', 'occupants.occ_id')
+            ->leftJoin('occupant_type', 'occupants.occ_type', '=', 'occupant_type.oct_id')
             ->orderBy('rsv_id', 'desc')
             ->get();
     }
@@ -31,5 +31,15 @@ class Reservation_model extends Model
         DB::table('reservations')
             ->where('rsv_id', $rsv_id)
             ->update($data);
+    }
+
+    function getReservationDetails($id)
+    {
+        return DB::table('reservations')
+            ->leftJoin('occupants', 'reservations.rsv_occupant_id', '=', 'occupants.occ_id')
+            ->leftJoin('occupant_type', 'occupants.occ_type', '=', 'occupant_type.oct_id')
+            ->where('rsv_id', $id)
+            ->where('rsv_status', 'pending')
+            ->first();
     }
 }

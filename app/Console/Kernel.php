@@ -13,7 +13,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\CheckingParkingSlot::class,
+        Commands\ClosingSMSBlast::class,
+        Commands\DeactivatingAllGuest::class,
     ];
 
     /**
@@ -24,8 +26,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('check:parkingslot --force')->everyMinute();
+        $schedule->command('check:closingtime --force')->everyMinute();
+        $schedule->command('deactivate:allguest --force')->dailyAt('23:59');
     }
 
     /**
@@ -35,7 +38,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
