@@ -261,6 +261,28 @@
         </div>
     </div>
     @endif
+    @if(session('USER_TYPE_ID') == 3)
+    <div class="col-lg-4" style="text-align: center;margin-bottom: 20px;">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-12">
+                        <h5>Closing SMS Blast</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="container" style="padding: 25px;vertical-align: middle;">
+                <a href="{{url('send-closing-sms-blast')}}" type="button" class="btn btn-primary btn-lg"
+                    id="reserve_slot_btn" value="reserve" disabled>Trigger
+                    Closing SMS Blast</a>
+                <p style="text-align: left;margin-top: 20px;">
+                    This is a manual trigger of SMS Blast for the occupant that are still on the parking lot minute
+                    before closing time.
+                </p>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>
 
 <script>
@@ -324,6 +346,30 @@
         $("#btnQRStickerPrint").on('click', function (e) {
             $("#qr_sticker_div").printThis();
         });
+
+        var status = "{{session('status')}}";
+
+        if (status == "success_sms_blast") {
+            iziToast.success({
+                title: 'Success:',
+                message: ' Closing SMS Blast has been successfully sent to all occupant that are still on the parking lot.',
+                position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
+            });
+        } else if (status == "error_sms_blast") {
+            iziToast.error({
+                title: 'Error:',
+                message: ' Failure to send Closing SMS Blast.',
+                position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
+            });
+        }
     });
 
     function getParkingStatus() {
@@ -402,7 +448,7 @@
                     var date_in = moment(logs[i]['atl_date_in'] + " " + logs[i]['atl_time_in']).format('MMMM DD, YYYY');
                     var time_in = moment(logs[i]['atl_date_in'] + " " + logs[i]['atl_time_in']).format('h:mm:ss A');
                     var action = '<a href="' + "{{url('scan?qr=')}}" + logs[i]['occ_qr_code'] + '" type="button" class="btn btn-primary btn-sm" title="Go to Scan" style="float:right;margin-right: 10px;color:#fff;"><i class="fa fa-qrcode"></i></a >'
-                    
+
                     _table_occ.row.add([
                         logs[i]['oct_name'],
                         logs[i]['occ_lastname'] + ", " + logs[i]['occ_firstname'] + " " + (logs[i]['occ_middlename'].charAt(0).toUpperCase()) + ".",
@@ -410,7 +456,7 @@
                         date_in == "Invalid date" ? "" : date_in,
                         time_in == "Invalid date" ? "" : time_in,
                         ("{{session('USER_TYPE_ID')}}" == 3 || "{{session('USER_TYPE_ID')}}" == 4) ? action : ""
-                        ]).draw(false);
+                    ]).draw(false);
                 }
 
                 //for ending loading
@@ -436,7 +482,7 @@
                 for (var i = 0; i < rsv.length; i++) {
                     var reserve_datetime = moment(rsv[i]['rsv_datetime']).format('MMMM DD, YYYY h:mm:ss A');
                     var action = '<a href="' + "{{url('scan?qr=')}}" + rsv[i]['occ_qr_code'] + '" type="button" class="btn btn-primary btn-sm" title="Go to Scan" style="float:right;margin-right: 10px;color:#fff;"><i class="fa fa-qrcode"></i></a >';
-                    
+
                     _table_rsv.row.add([
                         i + 1,
                         reserve_datetime == "Invalid date" ? "" : reserve_datetime,

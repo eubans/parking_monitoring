@@ -208,9 +208,15 @@
                     <div class="col-md-5">
                         <div class="form-group required">
                             <label for="phone_number">Phone Number:</label>
-                            <input type="text" class="form-control" placeholder="Enter Phone Number" id="phone_number"
-                                value="{{ $user->usd_contact_number or  old('phone_number') }}" name="phone_number"
-                                required disabled>
+                            <div class="input-group" style="padding:0;">
+                                <div class="input-group-prepend" style="padding: 0;">
+                                    <span class="input-group-text" id="basic-addon2">+63</span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Enter Phone Number"
+                                    id="phone_number" name="phone_number" required value="{{ $user->usd_contact_number or  old('phone_number') }}"
+                                    aria-label="Enter Phone Number" aria-describedby="basic-addon2"
+                                    autocomplete="new-phone-number" disabled>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-7">
@@ -342,6 +348,11 @@
     }
 
     $(document).ready(function () {
+
+        $('#phone_number').on('keypress', function (key) {
+            if (key.charCode < 48 || key.charCode > 57) return false;
+            if (this.value.length > 9) return false;
+        });
 
         $("#toggle_change_password_btn").on('click', function (event) {
 

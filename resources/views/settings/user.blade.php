@@ -139,15 +139,22 @@
                     <div class="col-md-7">
                         <div class="form-group required">
                             <label for="email">Email:</label>
-                            <input type="text" class="form-control" placeholder="Enter Email" id="email" name="email"
+                            <input type="email" class="form-control" placeholder="Enter Email" id="email" name="email"
                                 value="{{ old('email') }}" required>
                         </div>
                     </div>
                     <div class="col-md-5">
                         <div class="form-group required">
                             <label for="phone_number">Phone Number:</label>
-                            <input type="text" class="form-control" placeholder="Enter Phone Number" id="phone_number"
-                                value="{{ old('phone_number') }}" name="phone_number" required>
+                            <div class="input-group" style="padding:0;">
+                                <div class="input-group-prepend" style="padding: 0;">
+                                    <span class="input-group-text" id="basic-addon2">+63</span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Enter Phone Number"
+                                    id="phone_number" name="phone_number" required value="{{ old('phone_number') }}"
+                                    aria-label="Enter Phone Number" aria-describedby="basic-addon2"
+                                    autocomplete="new-phone-number">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -167,6 +174,11 @@
     $(document).ready(function () {
 
         var _id = (loadPageVar('id'));
+
+        $('#phone_number').on('keypress', function (key) {
+            if (key.charCode < 48 || key.charCode > 57) return false;
+            if (this.value.length > 9) return false;
+        });
 
         if (_id !== null && _id !== "" ) {
             $("#page_title").html("Administrator Profile");
@@ -336,6 +348,26 @@
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to change User login access.',
+                position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
+            });
+        } else if (status == "invalid_email") {
+            iziToast.error({
+                title: 'Error:',
+                message: ' Failure to save new user. Invalid email address.',
+                position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
+            });
+        } else if (status == "change_status_invalid_email") {
+            iziToast.error({
+                title: 'Error:',
+                message: ' Failure to change User login access. Invalid email address.',
                 position: 'bottomCenter',
                 titleSize: '30px',
                 titleLineHeight: '70px',

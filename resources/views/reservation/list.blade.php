@@ -30,8 +30,8 @@
                     <th>Reserve Date & Time</th>
                     <th>Occupant Type</th>
                     <th>Fullname</th>
-                    <th>Contact</th>
-                    <th>Alert Counter</th>
+                    <th>Alert</th>
+                    <th>Expected Time-in</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -46,14 +46,17 @@
                     <td>
                         {{$rsv->occ_lastname . ", " . $rsv->occ_firstname . ", " . strtoupper($rsv->occ_middlename[0]) . ". "}}
                     </td>
-                    <td>{{$rsv->occ_phone_number . " | " . $rsv->occ_telephone}}</td>
                     <td style="text-align: center;">{{ucfirst($rsv->rsv_notify_ctr)}}</td>
+                    <td>{{$rsv->rsv_expected_timein == "" ? "" :date_format(new DateTime($rsv->rsv_expected_timein),"F j, Y g:i:s A")}}
+                    </td>
                     <td>{{ucfirst($rsv->rsv_status)}}</td>
                     <td style="text-align: center;">
-                        <a href="#" type="button"
+                        @if($rsv->rsv_notify_ctr > 0)
+                        <a href="{{url('reservation/send-alert?id=') . $rsv->rsv_id}}" type="button"
                             class="btn btn-secondary btn-sm" title="Send Alert SMS">
                             <i class="fa fa-mobile fa-lg"></i>
                         </a>
+                        @endif
                         <a href="{{url('occupant/profile?id=') . $rsv->occ_id}}" type="button"
                             class="btn btn-primary btn-sm" title="Open Occupant Profile">
                             <i class="fa fa-external-link"></i>
@@ -98,6 +101,26 @@
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to cancel occupant reservation.',
+                position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
+            });
+        } else if (status == "success_alert_sms") {
+            iziToast.success({
+                title: 'Success:',
+                message: ' Occupant has been successfully alerted via SMS.',
+                position: 'bottomCenter',
+                titleSize: '30px',
+                titleLineHeight: '70px',
+                messageSize: '20px',
+                messageLineHeight: '70px',
+            });
+        } else if (status == "error_alert_sms") {
+            iziToast.error({
+                title: 'Error:',
+                message: ' Failure to alert occupant via SMS.',
                 position: 'bottomCenter',
                 titleSize: '30px',
                 titleLineHeight: '70px',

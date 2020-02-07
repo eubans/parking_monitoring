@@ -40,6 +40,7 @@ Route::get('occupant-cancel-reservation', 'Controller@cancelReservation');
 
 Route::group(['middleware' => 'authUser'], function () {
     Route::get('home', 'Controller@Home');
+    Route::get('send-closing-sms-blast', 'Controller@Closing_SMS_Blast');
 
     Route::get('occupant', 'Occupant@List');
     Route::get('occupant/registration', 'Occupant@Registration');
@@ -65,9 +66,11 @@ Route::group(['middleware' => 'authUser'], function () {
     Route::get('reservation', 'Reservation@List');
     Route::get('reservation/logs', 'Reservation@Logs');
     Route::get('reservation/cancel', 'Reservation@Cancel_Reservation');
+    Route::get('reservation/send-alert', 'Reservation@Alert_Occupant_SMS');
 
     Route::get('settings/global-variables', 'Settings@Global_Variables');
-    Route::post('settings/global-variables/parking-slot/save', 'Settings@Parking_Slot_Save');
+    Route::post('settings/global-variables/save', 'Settings@Global_Variables_Save');
+
 
     Route::get('settings/user/list', 'Settings@User_List');
     Route::get('settings/user', 'Settings@User');

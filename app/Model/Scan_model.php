@@ -78,7 +78,17 @@ class Scan_model extends Model
     function getLatestOccupantReservation()
     {
         return DB::table('reservations')
+            ->leftJoin('occupants', 'reservations.rsv_occupant_id', '=', 'occupants.occ_id')
             ->where('rsv_status', 'pending')
+            ->first();
+    }
+
+    function getLatestOccupantReservationWithoutNotify()
+    {
+        return DB::table('reservations')
+            ->leftJoin('occupants', 'reservations.rsv_occupant_id', '=', 'occupants.occ_id')
+            ->where('rsv_status', 'pending')
+            ->where('rsv_notify_ctr', 0)
             ->first();
     }
 

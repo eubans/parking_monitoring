@@ -9,11 +9,14 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Input;
 use Teepluss\Theme\Facades\Theme;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMail;
 
 use DB;
 use QrCode;
 use Session;
 use Hash;
+use DateTime;
 
 use App\Model\Settings_model;
 use App\Http\Controllers\GlobalController;
@@ -42,10 +45,16 @@ class Settings extends Controller
 
     function Global_Variables()
     {
-        $parking_slot = $this->settings_m->getParkingCount();
+        $closing_time = substr_replace($this->global_c->Get_Global_Variable('PARKING_LOT_CLOSING_TIME'), ":", 2, 0);
 
         $data = array(
-            'parking_slot' => $parking_slot,
+            'parking_slot' => $this->global_c->Get_Global_Variable('PARKING_SLOT_COUNT'),
+            'reservation_time_limit' => $this->global_c->Get_Global_Variable('RESERVATION_TIME_LIMIT'),
+            'parking_closing_time' => date_format(new DateTime($closing_time), "g:i A"),
+            'enable_email' => $this->global_c->Get_Global_Variable('ENABLE_EMAIL'),
+            'enable_sms' => $this->global_c->Get_Global_Variable('ENABLE_SMS'),
+            'enable_automatic_closing_sms_blast' => $this->global_c->Get_Global_Variable('ENABLE_AUTOMATIC_CLOSING_SMS_BLAST'),
+            'enable_automatic_disabling_of_guest' => $this->global_c->Get_Global_Variable('ENABLE_AUTOMATIC_DISABLING_OF_GUEST'),
         );
 
         $theme = Theme::uses('main')->layout('default');
@@ -53,13 +62,21 @@ class Settings extends Controller
         return $theme->of('settings.global-variables', $data)->render();
     }
 
-    function Parking_Slot_Save(Request $request)
+    function Global_Variables_Save(Request $request)
     {
         DB::beginTransaction();
         $parking_slot = $request->parking_slot;
+        $reservation_time_limit = $request->reservation_time_limit;
+        $parking_closing_time = $request->parking_closing_time;
+        $enable_email = $request->enable_email;
+        $enable_sms = $request->enable_sms;
+        $enable_automatic_closing_sms_blast = $request->enable_automatic_closing_sms_blast;
+        $enable_automatic_disabling_of_guest = $request->enable_automatic_disabling_of_guest;
+
+        $parking_closing_time = str_replace(":", "", date_format(new DateTime($parking_closing_time), "H:i"));
 
         if (count($this->settings_m->getAllOngoingAttendanceLog()) > $parking_slot)
-            return redirect('settings/global-variables')->with('status_parking_slot', 'error_invalid_parking_slot');
+            return redirect('settings/global-variables')->with('status', 'error_invalid_parking_slot');
 
         try {
             $global_variables = array(
@@ -69,12 +86,54 @@ class Settings extends Controller
             );
             $this->settings_m->updateGlobalVariables($global_variables, "PARKING_SLOT_COUNT");
 
+            $global_variables = array(
+                "glv_value" => $parking_closing_time,
+                "modified_at" => date('Y-m-d H:i:s'),
+                "created_by" => Session::get('USER_ID'),
+            );
+            $this->settings_m->updateGlobalVariables($global_variables, "PARKING_LOT_CLOSING_TIME");
+
+            $global_variables = array(
+                "glv_value" => $reservation_time_limit,
+                "modified_at" => date('Y-m-d H:i:s'),
+                "created_by" => Session::get('USER_ID'),
+            );
+            $this->settings_m->updateGlobalVariables($global_variables, "RESERVATION_TIME_LIMIT");
+
+            $global_variables = array(
+                "glv_value" => $enable_email,
+                "modified_at" => date('Y-m-d H:i:s'),
+                "created_by" => Session::get('USER_ID'),
+            );
+            $this->settings_m->updateGlobalVariables($global_variables, "ENABLE_EMAIL");
+
+            $global_variables = array(
+                "glv_value" => $enable_sms,
+                "modified_at" => date('Y-m-d H:i:s'),
+                "created_by" => Session::get('USER_ID'),
+            );
+            $this->settings_m->updateGlobalVariables($global_variables, "ENABLE_SMS");
+
+            $global_variables = array(
+                "glv_value" => $enable_automatic_closing_sms_blast,
+                "modified_at" => date('Y-m-d H:i:s'),
+                "created_by" => Session::get('USER_ID'),
+            );
+            $this->settings_m->updateGlobalVariables($global_variables, "ENABLE_AUTOMATIC_CLOSING_SMS_BLAST");
+
+            $global_variables = array(
+                "glv_value" => $enable_automatic_disabling_of_guest,
+                "modified_at" => date('Y-m-d H:i:s'),
+                "created_by" => Session::get('USER_ID'),
+            );
+            $this->settings_m->updateGlobalVariables($global_variables, "ENABLE_AUTOMATIC_DISABLING_OF_GUEST");
+
             DB::commit();
-            return redirect('settings/global-variables')->with('status_parking_slot', 'success_parking_slot_update');
+            return redirect('settings/global-variables')->with('status', 'success_save');
         } catch (\Exception $e) {
             DB::rollback();
-            return $e;
-            return redirect()->back()->with('status_parking_slot', 'error_parking_slot_update')->withInput();
+            // return $e;
+            return redirect()->back()->with('status', 'error_save')->withInput();
         }
     }
 
@@ -141,6 +200,26 @@ class Settings extends Controller
                     "created_by" => Session::get('USER_ID'),
                 );
                 $this->settings_m->saveUserDetails($user_details);
+
+                if ($this->global_c->Get_Global_Variable('ENABLE_EMAIL') == 1) {
+                    // email sending start
+                    $obj_parameter = new \stdClass();
+                    $obj_parameter->subject = "IETI Parking Logs System: User Credentials";
+                    $obj_parameter->fullname = $lastname . ", " . $firstname . ", " . strtoupper($middlename[0]) . ".";
+                    $obj_parameter->username = $username;
+                    $obj_parameter->password = $password;
+                    $obj_parameter->template = 'mails.new-user-created-email';
+                    $obj_parameter->plain_template = 'mails.new-user-created-email';
+
+                    try {
+                        Mail::to($email)->send(new SendMail($obj_parameter));
+                    } catch (\Exception $e) {
+                        // return $e;
+                        DB::rollback();
+                        return redirect()->back()->with('status', 'invalid_email')->withInput();
+                    }
+                    // end
+                }
             } else {
                 if (($password != null && $confirm_password != null)) {
                     $user = array(
@@ -284,7 +363,7 @@ class Settings extends Controller
             return url('public/img/avatar/' . $user_id . '/1.jpg?');
         } catch (\Exception $e) {
             DB::rollback();
-            return $e;
+            // return $e;
         }
     }
 
@@ -297,10 +376,30 @@ class Settings extends Controller
         if ($request->status == "active")
             $new_status = "deactivated";
 
+        $details = $this->settings_m->getUserDetails($id);
+
         try {
             $this->settings_m->updateUser(array(
                 "use_status" => $new_status,
             ), $id);
+
+            if ($this->global_c->Get_Global_Variable('ENABLE_EMAIL') == 1) {
+                // email sending start
+                $obj_parameter = new \stdClass();
+                $obj_parameter->subject = "IETI Parking Logs System: Login Access Status - " . ucfirst($new_status);
+                $obj_parameter->status = $new_status;
+                $obj_parameter->template = 'mails.toggle-user-status-email';
+                $obj_parameter->plain_template = 'mails.toggle-user-status-email';
+
+                try {
+                    Mail::to($details->usd_email)->send(new SendMail($obj_parameter));
+                } catch (\Exception $e) {
+                    // return $e;
+                    DB::rollback();
+                    return redirect()->back()->with('status', 'change_status_invalid_email')->withInput();
+                }
+                // end
+            }
 
             DB::commit();
             return redirect('settings/user?id=' . $id)->with('status', 'success_change_status');

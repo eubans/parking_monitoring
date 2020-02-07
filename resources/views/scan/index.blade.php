@@ -587,6 +587,16 @@
                         messageSize: '20px',
                         messageLineHeight: '70px',
                     });
+                } else if (status == "invalid_email") {
+                    iziToast.error({
+                        title: 'Error:',
+                        message: ' Failure for report an incident. Invalid email address.',
+                        position: 'bottomCenter',
+                        titleSize: '30px',
+                        titleLineHeight: '70px',
+                        messageSize: '20px',
+                        messageLineHeight: '70px',
+                    });
                 }
                 $('#report-incident-modal').iziModal('close');
                 $("#incident_description").val("");

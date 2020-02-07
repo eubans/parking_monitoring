@@ -4,4 +4,4 @@
 <p>This is your verification code: <b>{{$send_mail->code}}</b> </p>
 <br />
 <p>Thanks,</p>
-<p>Parking Logs System</p>
+<p>IETI Parking Logs System</p>

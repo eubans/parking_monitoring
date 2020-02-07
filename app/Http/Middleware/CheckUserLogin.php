@@ -18,6 +18,7 @@ class CheckUserLogin
     {
         if (!$request->session()->exists('USER_ID')) {
             // user value cannot be found in session
+            $request->session()->put('EXTERNAL_GO_TO_URL', $request->url());
             return redirect('login');
         }
         $base_url = $request->session()->get('BASE_URL');
