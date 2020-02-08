@@ -124,6 +124,15 @@
         cursor: not-allowed;
         opacity: .5;
     }
+
+    @media (max-width: 930px) {
+        #toggle_change_details_btn{
+            margin-bottom: 10px !important;
+        }
+        #toggle_change_avatar_btn{
+            margin-right: 0 !important;
+        }
+    }
 </style>
 
 <div class="card">
@@ -234,7 +243,7 @@
                     <div class="col-lg-6">
                         <h5>Change Password</h5>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-lg-6">
                         <button type="button" class="btn btn-dark btn-sm" style="float:right;"
                             id="toggle_change_password_btn" value="true"><i class="fa fa-toggle-off"></i> Change
                             Password</button>
@@ -310,15 +319,15 @@
             processData: false,
             contentType: false,
             success: function (response) {
-                console.log(response);
+                // console.log(response);
                 iziToast.success({
                     title: 'Success:',
                     message: ' User profile picture is successfully uploaded.',
                     position: 'bottomCenter',
-                    titleSize: '30px',
-                    titleLineHeight: '70px',
-                    messageSize: '20px',
-                    messageLineHeight: '70px',
+                    titleSize: '15px',
+                    titleLineHeight: '35px',
+                    messageSize: '15px',
+                    messageLineHeight: '35px',
                 });
                 $('#image_avatar').removeAttr('src');
                 $("#image_avatar").removeAttr("src").attr("src", response + new Date().getTime());
@@ -472,10 +481,10 @@
                     title: 'Error:',
                     message: ' Failure to uploader user profile picture. File not supported.',
                     position: 'bottomCenter',
-                    titleSize: '30px',
-                    titleLineHeight: '70px',
-                    messageSize: '20px',
-                    messageLineHeight: '70px',
+                    titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                 });
             }
         });
@@ -488,40 +497,40 @@
                 title: 'Error:',
                 message: ' Failure to save user details. Password does not match.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "error_invalid_old_password") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to save user details. Invalid Old Password.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "success_save") {
             iziToast.success({
                 title: 'Success:',
                 message: ' User details is successfully saved.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "error_save") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to save user details.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         }
         

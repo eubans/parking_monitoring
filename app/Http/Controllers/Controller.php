@@ -43,7 +43,23 @@ class Controller extends BaseController
 
     function Login()
     {
-        // return Hash::make("admin");
+        //CHECK IF THERES SESSION ON LOGIN
+        $username = Session::get('USER_NAME');
+        $password = Session::get('USER_PASS');
+        $user_details = $this->controller_m->verifyLogin($username);
+
+        if ($user_details != null) {
+            $check_password = Hash::check($password, $user_details->use_password);
+            if ($user_details->ust_id == 2)
+                $check_password = $password == $user_details->use_password;
+
+            if ($check_password) {
+                if (Session::get('USER_STATUS') === "active") {
+                    return redirect('home');
+                }
+            }
+        }
+
         $theme = Theme::uses('default')->layout('default');
         $theme->setTitle('Parking Logs System | Login');
         return $theme->of('controller.login')->render();
@@ -55,7 +71,6 @@ class Controller extends BaseController
         $password = $request->password;
 
         $user_details = $this->controller_m->verifyLogin($username);
-
 
         if ($user_details) {
             if ($user_details->use_status != "active")
@@ -69,6 +84,7 @@ class Controller extends BaseController
 
                 session()->put('USER_ID', $user_details->use_id);
                 session()->put('USER_NAME', $user_details->use_username);
+                session()->put('USER_PASS', $password);
                 $user_full_name = $user_details->usd_lastname . ", " . $user_details->usd_firstname . " " . $user_details->usd_middlename;
                 session()->put('USER_FULLNAME', $user_full_name);
                 session()->put('USER_TYPE', $user_details->ust_type);
@@ -207,7 +223,7 @@ class Controller extends BaseController
             return 'success_reservation';
         } catch (\Exception $e) {
             DB::rollback();
-            // return $e;
+            return $e;
             return 'error_reservation';
         }
     }
@@ -229,7 +245,7 @@ class Controller extends BaseController
             return 'success_cancellation';
         } catch (\Exception $e) {
             DB::rollback();
-            // return $e;
+            return $e;
             return 'error_cancellation';
         }
     }
@@ -293,7 +309,7 @@ class Controller extends BaseController
             try {
                 Mail::to($email)->send(new SendMail($obj_parameter));
             } catch (\Exception $e) {
-                // return $e;
+                return $e;
                 $error_mail = "Verification timeout exceeded please reload page";
                 return redirect('code-verification')->with(['status' => 'invalid_email', 'error_msg' => $error_mail]);
             }

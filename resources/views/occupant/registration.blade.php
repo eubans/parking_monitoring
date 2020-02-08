@@ -28,6 +28,15 @@
     .iziModal {
         z-index: 99999 !important;
     }
+
+    @media (max-width: 930px) {
+        #show_qr_btn{
+            margin-bottom: 10px !important;
+        }
+        #toggle_status_btn{
+            margin-right: 0 !important;
+        }
+    }
 </style>
 
 <div class="card">
@@ -547,120 +556,120 @@
                 title: 'Success:',
                 message: ' Occupant details successfully saved.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "error_save") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to save occupant details.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "success_change_status") {
             iziToast.success({
                 title: 'Success:',
                 message: ' Occupant account status successfully changed.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "error_change_status") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to change Occupant account status.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "error_ongoing_log") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to change Occupant account status due to an ongoing attendance log.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "error_save") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to save occupant details.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "success_change_login") {
             iziToast.success({
                 title: 'Success:',
                 message: ' Occupant login access successfully changed.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "error_change_login") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to change Occupant login access.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "error_username_taken") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to save occupant details. Email for username is already taken.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "invalid_email") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to save occupant details. Invalid email address.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "change_status_invalid_email") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to change Occupant login access. Invalid email address.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "change_occupant_status_invalid_email") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to change Occupant account status. Invalid email address.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         }
 
@@ -695,10 +704,10 @@
                                 title: 'Error:',
                                 message: ' Occupant photo is required.',
                                 position: 'bottomCenter',
-                                titleSize: '30px',
-                                titleLineHeight: '70px',
-                                messageSize: '20px',
-                                messageLineHeight: '70px',
+                                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                             });
                         } else {
                             $("#base64_image").val(getBase64Image(document.getElementById("imageprev")));

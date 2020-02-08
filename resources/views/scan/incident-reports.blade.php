@@ -45,50 +45,52 @@
         </div>
     </div>
     <div class="container" style="padding: 20px;">
-        <table id="table" class="table table-striped table-bordered" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Date & Time</th>
-                    <th>Occupant Type</th>
-                    <th>Fullname</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Investigator Note</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($incidents as $key => $inc)
-                <tr>
-                    <td>{{$inc->icr_datetime == "" ? "" :date_format(new DateTime($inc->icr_datetime),"F j, Y g:i:s A")}}
-                    </td>
-                    <td>{{$inc->oct_name}}</td>
-                    <td>
-                        {{$inc->occ_lastname . ", " . $inc->occ_firstname . ", " . strtoupper($inc->occ_middlename[0]) . ". "}}
-                    </td>
-                    <td>{{$inc->icr_description}}</td>
-                    <td>{{ucfirst($inc->icr_status)}}</td>
-                    <td>{{$inc->icr_notes}}</td>
-                    <td style="text-align: center;">
-                        @if($inc->icr_status == "ongoing")
-                        <a href="#"  type="button"
-                            class="btn btn-success btn-sm process_btn" title="Mark as Done" id="done_{{$inc->icr_id}}">
-                            <i class="fa fa-check"></i>
-                        </a>
-                        <a href="#" type="button"
-                            class="btn btn-danger btn-sm process_btn" title="Cancel Incident Report" id="cancel_{{$inc->icr_id}}">
-                            <i class="fa fa-times"></i>
-                        </a>
-                        @endif
-                        <a href="{{url('occupant/profile?id=') . $inc->occ_id}}" type="button"
-                            class="btn btn-primary btn-sm" title="Open Occupant Profile">
-                            <i class="fa fa-external-link"></i>
-                        </a>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table id="table" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>Occupant Type</th>
+                        <th>Fullname</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Investigator Note</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($incidents as $key => $inc)
+                    <tr>
+                        <td>{{$inc->icr_datetime == "" ? "" :date_format(new DateTime($inc->icr_datetime),"F j, Y g:i:s A")}}
+                        </td>
+                        <td>{{$inc->oct_name}}</td>
+                        <td>
+                            {{$inc->occ_lastname . ", " . $inc->occ_firstname . ", " . strtoupper($inc->occ_middlename[0]) . ". "}}
+                        </td>
+                        <td>{{$inc->icr_description}}</td>
+                        <td>{{ucfirst($inc->icr_status)}}</td>
+                        <td>{{$inc->icr_notes}}</td>
+                        <td style="text-align: center;">
+                            @if($inc->icr_status == "ongoing")
+                            <a href="#"  type="button"
+                                class="btn btn-success btn-sm process_btn" title="Mark as Done" id="done_{{$inc->icr_id}}">
+                                <i class="fa fa-check"></i>
+                            </a>
+                            <a href="#" type="button"
+                                class="btn btn-danger btn-sm process_btn" title="Cancel Incident Report" id="cancel_{{$inc->icr_id}}">
+                                <i class="fa fa-times"></i>
+                            </a>
+                            @endif
+                            <a href="{{url('occupant/profile?id=') . $inc->occ_id}}" type="button"
+                                class="btn btn-primary btn-sm" title="Open Occupant Profile">
+                                <i class="fa fa-external-link"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
     <!-- MODAL QR START -->
     <div id="report-incident-modal" class="lead_modal" data-izimodal-group="" data-izimodal-loop=""
@@ -178,20 +180,20 @@
                 title: 'Success:',
                 message: ' Incident is successfully processed.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "error_process") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to proccess incident.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         }
 
@@ -206,10 +208,22 @@
         });
 
         $(".process_btn").click(function () {
-            $("#form_submit_modal").attr('action', '{{url("incident-reports/process")}}');
-            $('#report-incident-modal').iziModal('open');
-            var value =  this.id.split("_");
-            $("#form_submit_modal").attr('action', $("#form_submit_modal").attr('action') + '?s=' + value[0] + '&id=' + value[1]);
+            event.preventDefault(); //this will prevent the default submit
+            $.confirm({
+                title: 'Confirmation',
+                content: 'Are you sure to continue?',
+                buttons: {
+                    confirm: function () {
+                        $("#form_submit_modal").attr('action', '{{url("incident-reports/process")}}');
+                        $('#report-incident-modal').iziModal('open');
+                        var value =  this.id.split("_");
+                        $("#form_submit_modal").attr('action', $("#form_submit_modal").attr('action') + '?s=' + value[0] + '&id=' + value[1]);
+                    },
+                    cancel: function () {
+                        //
+                    },
+                }
+            });
         });
     });
 </script>
