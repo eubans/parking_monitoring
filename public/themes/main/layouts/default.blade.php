@@ -54,7 +54,7 @@
 
         <script src="{{ asset('public/js/dataTables.bootstrap4.min.js') }}/"></script>
         <script src="{{ asset('public/plugin/printThis/printThis.js')}}"></script>
-        <script src="{{ asset('public/plugin/webcamjs/webcam.min.js')}}"></script>
+        <script src="{{ asset('public/js/webcam.min.js')}}"></script>
         <script src="{{ asset('public/js/jquery-confirm.min.js')}}"></script>
     </head>
     <body>
