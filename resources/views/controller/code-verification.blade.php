@@ -73,10 +73,10 @@
                         message: "Verification code sent. Please check your email.",
                         timeout: 10000,
                         position: 'bottomCenter',
-                        titleSize: '30px',
-                        titleLineHeight: '70px',
-                        messageSize: '20px',
-                        messageLineHeight: '70px',
+                        titleSize: '15px',
+                        titleLineHeight: '35px',
+                        messageSize: '15px',
+                        messageLineHeight: '35px',
                     });
                     code = response;
                     $('.main').waitMe('hide');
@@ -105,10 +105,10 @@
                     message: "Verification code didn't match.",
                     timeout: 10000,
                     position: 'bottomCenter',
-                    titleSize: '30px',
-                    titleLineHeight: '70px',
-                    messageSize: '20px',
-                    messageLineHeight: '70px',
+                    titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                 });
             }
         });
