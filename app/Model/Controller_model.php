@@ -136,4 +136,12 @@ class Controller_model extends Model
             ->first()
             ->glv_value;
     }
+
+    function checkUser($username, $password)
+    {
+        return DB::table('users')
+            ->where('use_username', $username)
+            ->where('use_password', $password)
+            ->first();
+    }
 }

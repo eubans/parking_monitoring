@@ -34,20 +34,20 @@
                 title: 'Failed to Login',
                 message: "Invalid Username/Password",
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         }else if(error=="2"){
             iziToast.error({
                 title: 'Failed to Login',
                 message: "Account is deactivated. Please contact the adminitrator.",
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         }
 
@@ -57,10 +57,10 @@
                 title: 'Success',
                 message: "Password is successfully changed.",
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         }
     });

@@ -31,10 +31,10 @@
                 title: 'Error',
                 message: 'Sorry, we don\'t recognize that email address',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         }
 

@@ -247,10 +247,10 @@
                             title: 'Success:',
                             message: ' Occupant is successfully timed-in.',
                             position: 'bottomCenter',
-                            titleSize: '30px',
-                            titleLineHeight: '70px',
-                            messageSize: '20px',
-                            messageLineHeight: '70px',
+                            titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                         });
 
                         $('#time_in_btn').attr("disabled", true);
@@ -262,20 +262,20 @@
                             title: 'Error:',
                             message: ' Failure for occupant to time-in.',
                             position: 'bottomCenter',
-                            titleSize: '30px',
-                            titleLineHeight: '70px',
-                            messageSize: '20px',
-                            messageLineHeight: '70px',
+                            titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                         });
                     } else if (response == "parking_full") {
                         iziToast.warning({
                             title: 'Warning:',
                             message: ' Failure for occupant to time-in. Parking is currently full.',
                             position: 'bottomCenter',
-                            titleSize: '30px',
-                            titleLineHeight: '70px',
-                            messageSize: '20px',
-                            messageLineHeight: '70px',
+                            titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                         });
 
                         $("#time_group_btn").css("display", "none");
@@ -285,20 +285,20 @@
                             title: 'Warning:',
                             message: ' Failure for occupant to time-in. Occupant\'s account is deactived.',
                             position: 'bottomCenter',
-                            titleSize: '30px',
-                            titleLineHeight: '70px',
-                            messageSize: '20px',
-                            messageLineHeight: '70px',
+                            titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                         });
                     } else if (response == "invalid_occupant_queue") {
                         iziToast.warning({
                             title: 'Warning:',
                             message: ' Failure for occupant to time-in. Invalid queued occupant. Please check the list of pending reservation.',
                             position: 'bottomCenter',
-                            titleSize: '30px',
-                            titleLineHeight: '70px',
-                            messageSize: '20px',
-                            messageLineHeight: '70px',
+                            titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                         });
                     }
 
@@ -330,10 +330,10 @@
                             title: 'Success:',
                             message: ' Occupant is successfully timed-out.',
                             position: 'bottomCenter',
-                            titleSize: '30px',
-                            titleLineHeight: '70px',
-                            messageSize: '20px',
-                            messageLineHeight: '70px',
+                            titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                         });
 
                         $('#time_in_btn').attr("disabled", false);
@@ -345,10 +345,10 @@
                             title: 'Error:',
                             message: ' Failure for occupant to time-out.',
                             position: 'bottomCenter',
-                            titleSize: '30px',
-                            titleLineHeight: '70px',
-                            messageSize: '20px',
-                            messageLineHeight: '70px',
+                            titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                         });
                     }
 
@@ -381,20 +381,20 @@
                             title: 'Success:',
                             message: ' Occupant is successfully reserved.',
                             position: 'bottomCenter',
-                            titleSize: '30px',
-                            titleLineHeight: '70px',
-                            messageSize: '20px',
-                            messageLineHeight: '70px',
+                            titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                         });
                     } else if (response == "error_reservation") {
                         iziToast.error({
                             title: 'Error:',
                             message: ' Failure for occupant to reserve.',
                             position: 'bottomCenter',
-                            titleSize: '30px',
-                            titleLineHeight: '70px',
-                            messageSize: '20px',
-                            messageLineHeight: '70px',
+                            titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                         });
                         $('#reserve_slot_btn').attr("disabled", false);
                     } else if (response == "occupant_deactivated") {
@@ -402,20 +402,20 @@
                             title: 'Warning:',
                             message: ' Failure for occupant to reserve. Occupant\'s account is deactived.',
                             position: 'bottomCenter',
-                            titleSize: '30px',
-                            titleLineHeight: '70px',
-                            messageSize: '20px',
-                            messageLineHeight: '70px',
+                            titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                         });
                     } else if (response == "occupant_reservation_exist") {
                         iziToast.error({
                             title: 'Error:',
                             message: ' Failure for occupant to reserve. Occupant have existing reservation.',
                             position: 'bottomCenter',
-                            titleSize: '30px',
-                            titleLineHeight: '70px',
-                            messageSize: '20px',
-                            messageLineHeight: '70px',
+                            titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                         });
                     }
 
@@ -565,37 +565,37 @@
                 'description': $("#incident_description").val(),
             },
             success: function (response) {
-                console.log(response);
+                // console.log(response);
 
                 if (response == "success_report_incident") {
                     iziToast.success({
                         title: 'Success:',
                         message: ' Incident is successfully reported.',
                         position: 'bottomCenter',
-                        titleSize: '30px',
-                        titleLineHeight: '70px',
-                        messageSize: '20px',
-                        messageLineHeight: '70px',
+                        titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                     });
                 } else if (response == "error_report_incident") {
                     iziToast.error({
                         title: 'Error:',
                         message: ' Failure for report an incident.',
                         position: 'bottomCenter',
-                        titleSize: '30px',
-                        titleLineHeight: '70px',
-                        messageSize: '20px',
-                        messageLineHeight: '70px',
+                        titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                     });
                 } else if (status == "invalid_email") {
                     iziToast.error({
                         title: 'Error:',
                         message: ' Failure for report an incident. Invalid email address.',
                         position: 'bottomCenter',
-                        titleSize: '30px',
-                        titleLineHeight: '70px',
-                        messageSize: '20px',
-                        messageLineHeight: '70px',
+                        titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                     });
                 }
                 $('#report-incident-modal').iziModal('close');

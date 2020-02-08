@@ -37,6 +37,15 @@
     #show_hide_confirm_password {
         cursor: pointer;
     }
+
+    @media (max-width: 930px) {
+        #toggle_change_password_btn{
+            margin-bottom: 10px !important;
+        }
+        #toggle_status_btn{
+            margin-right: 0 !important;
+        }
+    }
 </style>
 
 <div class="card">
@@ -244,7 +253,7 @@
         }
 
         $("#toggle_change_password_btn").on('click', function (event) {
-            console.log(this.value);
+            // console.log(this.value);
 
             if (this.value == 'true') {
                 $("#toggle_change_password_btn").removeClass('btn-dark');
@@ -299,80 +308,80 @@
                 title: 'Error:',
                 message: ' Failure to save user details. Password does not match.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "error_username_taken") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to save user details. Username has been already taken.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "success_save") {
             iziToast.success({
                 title: 'Success:',
                 message: ' User details is successfully saved.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "error_save") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to save user details.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "success_change_status") {
             iziToast.success({
                 title: 'Success:',
                 message: ' User login access successfully changed.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "error_change_status") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to change User login access.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "invalid_email") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to save new user. Invalid email address.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "change_status_invalid_email") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to change User login access. Invalid email address.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         }
 

@@ -1,9 +1,16 @@
 <style>
 #header-nav { 
-    background-color: #003007 !important;
+    background-color: #003007 !important;    
+}
+
+@media (max-width: 930px) {
+    #header-nav {  
+        overflow-y: scroll !important;
+        max-height: 350px !important;
+    }
 }
 </style>
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-end fixed-top" id="header-nav">
+<nav class="navbar navbar-expand-xl bg-dark navbar-dark justify-content-end fixed-top" id="header-nav" >
     <a class="navbar-brand" href="{{ url('home') }}"> <img src="{{ asset('public/img/logo.png') }}" class="img-circle" style="width: 35px;height: 35px;object-fit: cover; ">
      Parking Logs System</a>
     <span class="ml-auto mr-1"></span>

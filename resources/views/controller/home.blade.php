@@ -273,7 +273,7 @@
             </div>
             <div class="container" style="padding: 25px;vertical-align: middle;">
                 <a href="{{url('send-closing-sms-blast')}}" type="button" class="btn btn-primary btn-lg"
-                    id="reserve_slot_btn" value="reserve" disabled>Trigger
+                    id="closing_sms_blast_btn" value="reserve" disabled>Trigger
                     Closing SMS Blast</a>
                 <p style="text-align: left;margin-top: 20px;">
                     This is a manual trigger of SMS Blast for the occupant that are still on the parking lot minute
@@ -354,22 +354,38 @@
                 title: 'Success:',
                 message: ' Closing SMS Blast has been successfully sent to all occupant that are still on the parking lot.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status == "error_sms_blast") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to send Closing SMS Blast.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         }
+
+        $('#closing_sms_blast_btn').click(function (event) {
+            event.preventDefault(); //this will prevent the default submit
+            $.confirm({
+                title: 'Confirmation',
+                content: 'Are you sure to continue?',
+                buttons: {
+                    confirm: function () {
+                        window.location.href = $("#closing_sms_blast_btn").attr("href"); // continue the submit unbind preventDefault
+                    },
+                    cancel: function () {
+                        //
+                    },
+                }
+            });
+        });
     });
 
     function getParkingStatus() {
@@ -381,8 +397,8 @@
                 //for ending loading
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                // console.log(JSON.stringify(jqXHR));
-                // console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                console.log(JSON.stringify(jqXHR));
+                console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
                 //for ending loading
             }
         });
@@ -398,8 +414,8 @@
                 //for ending loading
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                // console.log(JSON.stringify(jqXHR));
-                // console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                console.log(JSON.stringify(jqXHR));
+                console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
                 //for ending loading
             }
         });
@@ -427,8 +443,8 @@
                 //for ending loading
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                // console.log(JSON.stringify(jqXHR));
-                // console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                console.log(JSON.stringify(jqXHR));
+                console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
                 //for ending loading
             }
         });
@@ -441,7 +457,7 @@
             dataType: 'json',
             success: function (response) {
                 var logs = response;
-                console.log(logs);
+                // console.log(logs);
 
                 _table_occ.clear().draw();
                 for (var i = 0; i < logs.length; i++) {
@@ -462,8 +478,8 @@
                 //for ending loading
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                // console.log(JSON.stringify(jqXHR));
-                // console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                console.log(JSON.stringify(jqXHR));
+                console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
                 //for ending loading
             }
         });
@@ -476,7 +492,7 @@
             dataType: 'json',
             success: function (response) {
                 var rsv = response;
-                console.log(rsv);
+                // console.log(rsv);
 
                 _table_rsv.clear().draw();
                 for (var i = 0; i < rsv.length; i++) {
@@ -496,8 +512,8 @@
                 //for ending loading
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                // console.log(JSON.stringify(jqXHR));
-                // console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                console.log(JSON.stringify(jqXHR));
+                console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
                 //for ending loading
             }
         });
@@ -510,7 +526,7 @@
             dataType: 'json',
             success: function (response) {
                 var icr = response;
-                console.log(icr);
+                // console.log(icr);
 
                 _table_incident_reports.clear().draw();
                 for (var i = 0; i < icr.length; i++) {
@@ -530,8 +546,8 @@
                 //for ending loading
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                // console.log(JSON.stringify(jqXHR));
-                // console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                console.log(JSON.stringify(jqXHR));
+                console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
                 //for ending loading
             }
         });
@@ -544,27 +560,27 @@
             method: 'GET',
             url: '{{ url("occupant-reserve-slot") }}',
             success: function (response) {
-                console.log(response);
+                // console.log(response);
 
                 if (response == "success_reservation") {
                     iziToast.success({
                         title: 'Success:',
                         message: ' Occupant is successfully reserved.',
                         position: 'bottomCenter',
-                        titleSize: '30px',
-                        titleLineHeight: '70px',
-                        messageSize: '20px',
-                        messageLineHeight: '70px',
+                        titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                     });
                 } else if (response == "error_reservation") {
                     iziToast.error({
                         title: 'Error:',
                         message: ' Failure for occupant to reserve.',
                         position: 'bottomCenter',
-                        titleSize: '30px',
-                        titleLineHeight: '70px',
-                        messageSize: '20px',
-                        messageLineHeight: '70px',
+                        titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                     });
                     $('#reserve_slot_btn').attr("disabled", false);
                 } else if (response == "occupant_deactivated") {
@@ -572,40 +588,40 @@
                         title: 'Warning:',
                         message: ' Failure for occupant to reserve. Occupant\'s account is deactived.',
                         position: 'bottomCenter',
-                        titleSize: '30px',
-                        titleLineHeight: '70px',
-                        messageSize: '20px',
-                        messageLineHeight: '70px',
+                        titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                     });
                 } else if (response == "occupant_reservation_exist") {
                     iziToast.error({
                         title: 'Error:',
                         message: ' Failure for occupant to reserve. Occupant have existing reservation.',
                         position: 'bottomCenter',
-                        titleSize: '30px',
-                        titleLineHeight: '70px',
-                        messageSize: '20px',
-                        messageLineHeight: '70px',
+                        titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                     });
                 } else if (response == "reservation_invalid_not_full") {
                     iziToast.warning({
                         title: 'Warning:',
                         message: ' Invalid to reserve a slot. Parking slot is not full.',
                         position: 'bottomCenter',
-                        titleSize: '30px',
-                        titleLineHeight: '70px',
-                        messageSize: '20px',
-                        messageLineHeight: '70px',
+                        titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                     });
                 } else if (response == "occupant_ongoing_attendance_exist") {
                     iziToast.error({
                         title: 'Error:',
                         message: ' Invalid to reserve a slot. Occupant has ongoing attendance.',
                         position: 'bottomCenter',
-                        titleSize: '30px',
-                        titleLineHeight: '70px',
-                        messageSize: '20px',
-                        messageLineHeight: '70px',
+                        titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                     });
                 }
 
@@ -636,27 +652,27 @@
                 'id': id,
             },
             success: function (response) {
-                console.log(response);
+                // console.log(response);
 
                 if (response == "success_cancellation") {
                     iziToast.success({
                         title: 'Success:',
                         message: ' Occupant reservation successfully cancelled.',
                         position: 'bottomCenter',
-                        titleSize: '30px',
-                        titleLineHeight: '70px',
-                        messageSize: '20px',
-                        messageLineHeight: '70px',
+                        titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                     });
                 } else if (response == "error_cancellation") {
                     iziToast.error({
                         title: 'Error:',
                         message: ' Failure to cancel occupant reservation.',
                         position: 'bottomCenter',
-                        titleSize: '30px',
-                        titleLineHeight: '70px',
-                        messageSize: '20px',
-                        messageLineHeight: '70px',
+                        titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
                     });
                 }
 

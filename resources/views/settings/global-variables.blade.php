@@ -104,30 +104,30 @@
                 title: 'Success:',
                 message: ' Global Variables are successfully updated.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status_parking_slot == "error_save") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Failure to update Global Variables.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         } else if (status_parking_slot == "error_invalid_parking_slot") {
             iziToast.error({
                 title: 'Error:',
                 message: ' Global Variables are successfully updated. Parking slot is currently not equal or higher than the ongoing occupant parked.',
                 position: 'bottomCenter',
-                titleSize: '30px',
-                titleLineHeight: '70px',
-                messageSize: '20px',
-                messageLineHeight: '70px',
+                titleSize: '15px',
+                titleLineHeight: '35px',
+                messageSize: '15px',
+                messageLineHeight: '35px',
             });
         }
 

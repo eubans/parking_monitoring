@@ -45,47 +45,49 @@
         </div>
     </div>
     <div class="container" style="padding: 20px;">
-        <table id="table" class="table table-striped table-bordered" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Reserve Date & Time</th>
-                    <th>Time In</th>
-                    <th>Occupant Type</th>
-                    <th>Fullname</th>
-                    <th>Contact</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($reservations as $rsv)
-                <tr>
-                    <td>{{$rsv->rsv_datetime == "" ? "" :date_format(new DateTime($rsv->rsv_datetime),"F j, Y g:i:s A")}}
-                    </td>
-                    <td>{{$rsv->rsv_timein_datetime == "" ? "" :date_format(new DateTime($rsv->rsv_datetime),"F j, Y g:i:s A")}}
-                    </td>
-                    <td>{{$rsv->oct_name}}</td>
-                    <td>
-                        {{$rsv->occ_lastname . ", " . $rsv->occ_firstname . ", " . strtoupper($rsv->occ_middlename[0]) . ". "}}
-                    </td>
-                    <td>{{$rsv->occ_phone_number . " | " . $rsv->occ_telephone}}</td>
-                    <td>{{ucfirst($rsv->rsv_status)}}</td>
-                    <td style="text-align: center;">
-                        <a href="{{url('occupant/profile?id=') . $rsv->occ_id}}" type="button"
-                            class="btn btn-primary btn-sm" title="Open Occupant Profile">
-                            <i class="fa fa-external-link"></i>
-                        </a>
-                        @if(session('USER_TYPE_ID') == 3 || session('USER_TYPE_ID') == 4)
-                        <a href="{{url('scan?qr=') . $rsv->occ_qr_code}}" type="button" class="btn btn-info btn-sm"
-                            title="Go to Scan">
-                            <i class="fa fa-qrcode"></i>
-                        </a>
-                        @endif
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table id="table" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Reserve Date & Time</th>
+                        <th>Time In</th>
+                        <th>Occupant Type</th>
+                        <th>Fullname</th>
+                        <th>Contact</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($reservations as $rsv)
+                    <tr>
+                        <td>{{$rsv->rsv_datetime == "" ? "" :date_format(new DateTime($rsv->rsv_datetime),"F j, Y g:i:s A")}}
+                        </td>
+                        <td>{{$rsv->rsv_timein_datetime == "" ? "" :date_format(new DateTime($rsv->rsv_datetime),"F j, Y g:i:s A")}}
+                        </td>
+                        <td>{{$rsv->oct_name}}</td>
+                        <td>
+                            {{$rsv->occ_lastname . ", " . $rsv->occ_firstname . ", " . strtoupper($rsv->occ_middlename[0]) . ". "}}
+                        </td>
+                        <td>{{$rsv->occ_phone_number . " | " . $rsv->occ_telephone}}</td>
+                        <td>{{ucfirst($rsv->rsv_status)}}</td>
+                        <td style="text-align: center;">
+                            <a href="{{url('occupant/profile?id=') . $rsv->occ_id}}" type="button"
+                                class="btn btn-primary btn-sm" title="Open Occupant Profile">
+                                <i class="fa fa-external-link"></i>
+                            </a>
+                            @if(session('USER_TYPE_ID') == 3 || session('USER_TYPE_ID') == 4)
+                            <a href="{{url('scan?qr=') . $rsv->occ_qr_code}}" type="button" class="btn btn-info btn-sm"
+                                title="Go to Scan">
+                                <i class="fa fa-qrcode"></i>
+                            </a>
+                            @endif
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
