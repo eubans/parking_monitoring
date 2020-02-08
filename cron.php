@@ -1,0 +1,1 @@
+-f  "opt/lampp/htdocs/parkinglogssystem/artisan" schedule:run
