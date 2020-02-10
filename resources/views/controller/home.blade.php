@@ -392,6 +392,7 @@
         $.ajax({
             method: 'GET',
             url: '{{ url("get-parking-status") }}',
+            dataType: 'json',
             success: function (response) {
                 $("#parking_ctr").text(response);
                 //for ending loading

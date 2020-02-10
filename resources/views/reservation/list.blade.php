@@ -45,7 +45,7 @@
                         </td>
                         <td>{{$rsv->oct_name}}</td>
                         <td>
-                            {{$rsv->occ_lastname . ", " . $rsv->occ_firstname . ", " . strtoupper($rsv->occ_middlename[0]) . ". "}}
+                            {{$rsv->occ_lastname . ", " . $rsv->occ_firstname . " " . (($rsv->occ_middlename == "") ? "" :  strtoupper($rsv->occ_middlename[0]) . ". ")}}
                         </td>
                         <td style="text-align: center;">{{ucfirst($rsv->rsv_notify_ctr)}}</td>
                         <td>{{$rsv->rsv_expected_timein == "" ? "" :date_format(new DateTime($rsv->rsv_expected_timein),"F j, Y g:i:s A")}}

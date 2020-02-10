@@ -237,7 +237,7 @@ class Scan extends Controller
                 // email sending start
                 $obj_parameter = new \stdClass();
                 $obj_parameter->subject = "IETI Parking Logs System: Incident Report " . date('F j, Y h:i:s A');
-                $obj_parameter->occupant_name = $details->occ_lastname . ", " . $details->occ_firstname . ", " . strtoupper($details->occ_middlename[0]) . ".";
+                $obj_parameter->occupant_name = $details->occ_lastname . ", " . $details->occ_firstname . " " . (($details->occ_middlename == "") ? "" : strtoupper($details->occ_middlename[0]) . ".");
                 $obj_parameter->description = $request->description;
                 $obj_parameter->datetime = date('F j, Y h:i:s A');
                 $obj_parameter->template = 'mails.incident-report-email';
