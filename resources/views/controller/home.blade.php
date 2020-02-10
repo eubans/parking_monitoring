@@ -315,6 +315,7 @@
             getIncidentReports();
             getQueuedReservationCount();
         } else {
+            getQueuedReservationCount();
             getOccupantQueueNumber();
             getOccupantProfile();
         }
@@ -327,7 +328,9 @@
                 getIncidentReports();
                 getQueuedReservationCount();
             } else {
+                getQueuedReservationCount();
                 getOccupantQueueNumber();
+                getOccupantProfile();
             }
         }, 5000);
 
@@ -394,7 +397,6 @@
             url: '{{ url("get-parking-status") }}',
             dataType: 'json',
             success: function (response) {
-                console.log(response.responseText);
                 $("#parking_ctr").text(response.data);
                 //for ending loading
             },
@@ -412,7 +414,7 @@
             url: '{{ url("get-queued-reservation-count") }}',
             dataType: 'json',
             success: function (response) {
-                $("#queued_reservation_ctr").text(response);
+                $("#queued_reservation_ctr").text(response.data);
                 //for ending loading
             },
             error: function (jqXHR, textStatus, errorThrown) {

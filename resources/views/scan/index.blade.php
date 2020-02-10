@@ -239,8 +239,10 @@
                 data: {
                     'qr_code': $('#qr_code').val(),
                 },
+                dataType: 'json',
                 success: function (response) {
-                    // console.log(response);
+                    console.log(response.data);
+                    response = response.data;
 
                     if (response == "success_time_in") {
                         iziToast.success({
@@ -248,9 +250,9 @@
                             message: ' Occupant is successfully timed-in.',
                             position: 'bottomCenter',
                             titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                            titleLineHeight: '35px',
+                            messageSize: '15px',
+                            messageLineHeight: '35px',
                         });
 
                         $('#time_in_btn').attr("disabled", true);
@@ -263,9 +265,9 @@
                             message: ' Failure for occupant to time-in.',
                             position: 'bottomCenter',
                             titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                            titleLineHeight: '35px',
+                            messageSize: '15px',
+                            messageLineHeight: '35px',
                         });
                     } else if (response == "parking_full") {
                         iziToast.warning({
@@ -273,9 +275,9 @@
                             message: ' Failure for occupant to time-in. Parking is currently full.',
                             position: 'bottomCenter',
                             titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                            titleLineHeight: '35px',
+                            messageSize: '15px',
+                            messageLineHeight: '35px',
                         });
 
                         $("#time_group_btn").css("display", "none");
@@ -286,9 +288,9 @@
                             message: ' Failure for occupant to time-in. Occupant\'s account is deactived.',
                             position: 'bottomCenter',
                             titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                            titleLineHeight: '35px',
+                            messageSize: '15px',
+                            messageLineHeight: '35px',
                         });
                     } else if (response == "invalid_occupant_queue") {
                         iziToast.warning({
@@ -296,9 +298,9 @@
                             message: ' Failure for occupant to time-in. Invalid queued occupant. Please check the list of pending reservation.',
                             position: 'bottomCenter',
                             titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                            titleLineHeight: '35px',
+                            messageSize: '15px',
+                            messageLineHeight: '35px',
                         });
                     }
 
@@ -322,8 +324,10 @@
                 data: {
                     'atl_id': _ongoing_atl_id,
                 },
+                dataType: 'json',
                 success: function (response) {
-                    // console.log(response);
+                    console.log(response.data);
+                    response = response.data;
 
                     if (response == "success_time_out") {
                         iziToast.success({
@@ -331,9 +335,9 @@
                             message: ' Occupant is successfully timed-out.',
                             position: 'bottomCenter',
                             titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                            titleLineHeight: '35px',
+                            messageSize: '15px',
+                            messageLineHeight: '35px',
                         });
 
                         $('#time_in_btn').attr("disabled", false);
@@ -346,9 +350,9 @@
                             message: ' Failure for occupant to time-out.',
                             position: 'bottomCenter',
                             titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                            titleLineHeight: '35px',
+                            messageSize: '15px',
+                            messageLineHeight: '35px',
                         });
                     }
 
@@ -372,8 +376,10 @@
                 data: {
                     'qr_code': $('#qr_code').val(),
                 },
+                dataType: 'json',
                 success: function (response) {
-                    // console.log(response);
+                    console.log(response.data);
+                    response = response.data;
 
                     $('#reserve_slot_btn > button').attr("disabled", true);
                     if (response == "success_reservation") {
@@ -382,9 +388,9 @@
                             message: ' Occupant is successfully reserved.',
                             position: 'bottomCenter',
                             titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                            titleLineHeight: '35px',
+                            messageSize: '15px',
+                            messageLineHeight: '35px',
                         });
                     } else if (response == "error_reservation") {
                         iziToast.error({
@@ -392,9 +398,9 @@
                             message: ' Failure for occupant to reserve.',
                             position: 'bottomCenter',
                             titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                            titleLineHeight: '35px',
+                            messageSize: '15px',
+                            messageLineHeight: '35px',
                         });
                         $('#reserve_slot_btn').attr("disabled", false);
                     } else if (response == "occupant_deactivated") {
@@ -403,9 +409,9 @@
                             message: ' Failure for occupant to reserve. Occupant\'s account is deactived.',
                             position: 'bottomCenter',
                             titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                            titleLineHeight: '35px',
+                            messageSize: '15px',
+                            messageLineHeight: '35px',
                         });
                     } else if (response == "occupant_reservation_exist") {
                         iziToast.error({
@@ -413,9 +419,9 @@
                             message: ' Failure for occupant to reserve. Occupant have existing reservation.',
                             position: 'bottomCenter',
                             titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                            titleLineHeight: '35px',
+                            messageSize: '15px',
+                            messageLineHeight: '35px',
                         });
                     }
 
@@ -564,8 +570,10 @@
                 'qr_code': $('#qr_code').val(),
                 'description': $("#incident_description").val(),
             },
+            dataType: 'json',
             success: function (response) {
                 // console.log(response);
+                response = response.data;
 
                 if (response == "success_report_incident") {
                     iziToast.success({
@@ -573,9 +581,9 @@
                         message: ' Incident is successfully reported.',
                         position: 'bottomCenter',
                         titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                        titleLineHeight: '35px',
+                        messageSize: '15px',
+                        messageLineHeight: '35px',
                     });
                 } else if (response == "error_report_incident") {
                     iziToast.error({
@@ -583,9 +591,9 @@
                         message: ' Failure for report an incident.',
                         position: 'bottomCenter',
                         titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                        titleLineHeight: '35px',
+                        messageSize: '15px',
+                        messageLineHeight: '35px',
                     });
                 } else if (status == "invalid_email") {
                     iziToast.error({
@@ -593,9 +601,9 @@
                         message: ' Failure for report an incident. Invalid email address.',
                         position: 'bottomCenter',
                         titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                        titleLineHeight: '35px',
+                        messageSize: '15px',
+                        messageLineHeight: '35px',
                     });
                 }
                 $('#report-incident-modal').iziModal('close');
