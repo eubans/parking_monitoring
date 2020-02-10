@@ -12,6 +12,7 @@
         <link href="{{ asset('public/css/iziToast.min.css') }}" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="{{ asset('public/css/waitMe.min.css')}}">
         <link rel="stylesheet" href="{{ url('public/plugin/font-awesome/css/font-awesome.min.css')}}">
+        <link rel="stylesheet" href="{{ asset('public/css/jquery-confirm.min.css')}}">
 
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
         
@@ -27,6 +28,7 @@
         <script src="{{ asset('public/js/iziToast.min.js') }}/"></script>
         <script src="{{ asset('public/js/main.js') }}/"></script>
         <script src="{{ asset('public/js/waitMe.min.js')}}"></script>
+        <script src="{{ asset('public/js/jquery-confirm.min.js')}}"></script>
 
     </head>
     <body>

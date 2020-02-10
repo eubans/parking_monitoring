@@ -7,7 +7,7 @@
         opacity: 1;
     }
 </style>
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+<link rel="stylesheet" href="{{ asset('public/css/jquery.timepicker.min.css')}}">
 <div class="card">
     <div class="card-header">
         <div class="row">
@@ -93,7 +93,7 @@
     </div>
     {!! Form::close() !!}
 </div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+<script src="{{ asset('public/js/jquery.timepicker.min.js')}}"></script>
 <script>
     $(document).ready(function () {
         var status_parking_slot = "{{session('status')}}";

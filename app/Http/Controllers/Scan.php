@@ -244,7 +244,7 @@ class Scan extends Controller
                 $obj_parameter->plain_template = 'mails.incident-report-email';
 
                 try {
-                    Mail::to(Session::get('USER_EMAIL'))->send(new SendMail($obj_parameter));
+                    Mail::to(Session::get('SUPER_ADMIN_EMAIL'))->send(new SendMail($obj_parameter));
                 } catch (\Exception $e) {
                     // return $e;
                     DB::rollback();
@@ -257,7 +257,7 @@ class Scan extends Controller
             return 'success_report_incident';
         } catch (\Exception $e) {
             DB::rollback();
-            // return $e;
+            return $e;
             return 'error_report_incident';
         }
     }
@@ -295,7 +295,7 @@ class Scan extends Controller
             return redirect('incident-reports')->with('status', 'success_process');
         } catch (\Exception $e) {
             DB::rollback();
-            // return $e;
+            return $e;
             return redirect()->back()->with('status', 'error_process')->withInput();
         }
     }

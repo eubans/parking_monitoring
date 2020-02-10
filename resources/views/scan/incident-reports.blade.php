@@ -196,6 +196,13 @@
                 messageLineHeight: '35px',
             });
         }
+        
+        $(".process_btn").click(function () {
+            $("#form_submit_modal").attr('action', '{{url("incident-reports/process")}}');
+            $('#report-incident-modal').iziModal('open');
+            var value =  this.id.split("_");
+            $("#form_submit_modal").attr('action', $("#form_submit_modal").attr('action') + '?s=' + value[0] + '&id=' + value[1]);
+        });
 
         $('#report-incident-modal').iziModal({
             headerColor: '#23282E',
@@ -207,17 +214,14 @@
             transitionOut: 'bounceOutDown',
         });
 
-        $(".process_btn").click(function () {
+        $("#incident_report_submit_btn").click(function () {
             event.preventDefault(); //this will prevent the default submit
             $.confirm({
                 title: 'Confirmation',
                 content: 'Are you sure to continue?',
                 buttons: {
                     confirm: function () {
-                        $("#form_submit_modal").attr('action', '{{url("incident-reports/process")}}');
-                        $('#report-incident-modal').iziModal('open');
-                        var value =  this.id.split("_");
-                        $("#form_submit_modal").attr('action', $("#form_submit_modal").attr('action') + '?s=' + value[0] + '&id=' + value[1]);
+                        $('#form_submit_modal').unbind('submit').submit(); // continue the submit unbind preventDefault
                     },
                     cancel: function () {
                         //
