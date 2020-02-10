@@ -67,7 +67,7 @@
                         </td>
                         <td>{{$rsv->oct_name}}</td>
                         <td>
-                            {{$rsv->occ_lastname . ", " . $rsv->occ_firstname . ", " . strtoupper($rsv->occ_middlename[0]) . ". "}}
+                            {{$rsv->occ_lastname . ", " . $rsv->occ_firstname . " " . (($rsv->occ_middlename == "") ? "" :  strtoupper($rsv->occ_middlename[0]) . ". ")}}
                         </td>
                         <td>{{$rsv->occ_phone_number . " | " . $rsv->occ_telephone}}</td>
                         <td>{{ucfirst($rsv->rsv_status)}}</td>

@@ -49,7 +49,7 @@
                         <td>{{$occupant->oct_name}}</td>
                         <td><strong>{{$occupant->occ_student_number}}</strong></td>
                         <td>
-                            {{$occupant->occ_lastname . ", " . $occupant->occ_firstname . ", " . strtoupper($occupant->occ_middlename[0]) . ". "}}
+                            {{$occupant->occ_lastname . ", " . $occupant->occ_firstname . " " . (($occupant->occ_middlename == "") ? "" : strtoupper($occupant->occ_middlename[0]) . ". ")}}
                         </td>
                         <td>{{$occupant->occ_course}}</td>
                         <td>{{$occupant->occ_phone_number . " | " . $occupant->occ_telephone}}</td>

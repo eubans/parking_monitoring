@@ -37,6 +37,7 @@ class GlobalController_model extends Model
             ->leftJoin('occupants', 'reservations.rsv_occupant_id', '=', 'occupants.occ_id')
             ->where('rsv_status', 'pending')
             ->where('rsv_notify_ctr', 0)
+            ->orderBy('rsv_id', 'asc')
             ->first();
     }
 
@@ -53,6 +54,7 @@ class GlobalController_model extends Model
             ->where('rsv_status', 'pending')
             ->where('rsv_notify_ctr', '<>', 0)
             ->whereNotNull('rsv_expected_timein')
+            ->orderBy('rsv_id', 'asc')
             ->get();
     }
 

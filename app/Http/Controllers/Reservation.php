@@ -91,6 +91,32 @@ class Reservation extends Controller
                 }
             }
 
+            if ($this->global_c->Get_Global_Variable('ENABLE_SMS') == 1) {
+                $reservation = $this->reservation_m->getLatestOccupantReservationWithoutNotify();
+                if (count($reservation) > 0) {
+                    $rsv_time_limit = $this->global_c->Get_Global_Variable('RESERVATION_TIME_LIMIT');
+                    $date_time = new DateTime();
+                    $date_time->add(new DateInterval("PT" . $rsv_time_limit . "M"));
+                    $time_limit = $date_time->format('g:i A');
+
+                    $sms_status = $this->global_c->Send_SMS(
+                        $reservation->occ_phone_number,
+                        "Hi $reservation->occ_firstname, you now have a slot on IETI Parking lot. Please claim it before $time_limit. The reservation will be automatically cancelled if you failed to claim it on time. Please do not reply. From IETI Parking Logs System."
+                    );
+                    if ($sms_status == "success") {
+                        $this->reservation_m->updateReservation(array(
+                            "rsv_notify_ctr" => $reservation->rsv_notify_ctr + 1,
+                            "rsv_expected_timein" => $date_time->format('Y-m-d H:i:s'),
+                            "modified_at" => date('Y-m-d H:i:s'),
+                            "created_by" => Session::get('USER_ID'),
+                        ), $reservation->rsv_id);
+                    } else {
+                        DB::rollback();
+                        return array('data' => 'error_time_out_sms');
+                    }
+                }
+            }
+
             $details = array(
                 "rsv_status" => "cancelled",
                 "modified_at" => date('Y-m-d H:i:s'),

@@ -205,7 +205,7 @@ class Settings extends Controller
                     // email sending start
                     $obj_parameter = new \stdClass();
                     $obj_parameter->subject = "IETI Parking Logs System: User Credentials";
-                    $obj_parameter->fullname = $lastname . ", " . $firstname . ", " . strtoupper($middlename[0]) . ".";
+                    $obj_parameter->fullname = $lastname . ", " . $firstname . " " . (($middlename == "") ? "" : strtoupper($middlename[0]) . ".");
                     $obj_parameter->username = $username;
                     $obj_parameter->password = $password;
                     $obj_parameter->template = 'mails.new-user-created-email';

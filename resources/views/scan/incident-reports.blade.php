@@ -65,7 +65,7 @@
                         </td>
                         <td>{{$inc->oct_name}}</td>
                         <td>
-                            {{$inc->occ_lastname . ", " . $inc->occ_firstname . ", " . strtoupper($inc->occ_middlename[0]) . ". "}}
+                            {{$inc->occ_lastname . ", " . $inc->occ_firstname . " " .(($inc->occ_middlename == "") ? "" :   strtoupper($inc->occ_middlename[0]) . ". ")}}
                         </td>
                         <td>{{$inc->icr_description}}</td>
                         <td>{{ucfirst($inc->icr_status)}}</td>

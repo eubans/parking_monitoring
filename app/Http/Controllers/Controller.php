@@ -147,7 +147,9 @@ class Controller extends BaseController
 
     function getParkingStatus()
     {
-        return count($this->controller_m->getAllOngoingAttendanceLog()) . "/" . $this->controller_m->getParkingCount();
+        return array(
+            "data" => count($this->controller_m->getAllOngoingAttendanceLog()) . "/" . $this->controller_m->getParkingCount()
+        );
     }
 
     function getOngoingOccupants()
@@ -167,7 +169,9 @@ class Controller extends BaseController
 
     function getQueuedReservationCount()
     {
-        return count($this->controller_m->getAllPendingReservations());
+        return array(
+            "data" => count($this->controller_m->getAllPendingReservations())
+        );
     }
 
     function getOccupantQueueNumber()
@@ -247,7 +251,7 @@ class Controller extends BaseController
             return 'success_cancellation';
         } catch (\Exception $e) {
             DB::rollback();
-            return $e;
+            // return $e;
             return 'error_cancellation';
         }
     }

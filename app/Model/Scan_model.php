@@ -72,6 +72,7 @@ class Scan_model extends Model
         return DB::table('reservations')
             ->where('rsv_occupant_id', $id)
             ->where('rsv_status', 'pending')
+            ->orderBy('rsv_id', 'asc')
             ->first();
     }
 
@@ -80,6 +81,7 @@ class Scan_model extends Model
         return DB::table('reservations')
             ->leftJoin('occupants', 'reservations.rsv_occupant_id', '=', 'occupants.occ_id')
             ->where('rsv_status', 'pending')
+            ->orderBy('rsv_id', 'asc')
             ->first();
     }
 
@@ -89,6 +91,7 @@ class Scan_model extends Model
             ->leftJoin('occupants', 'reservations.rsv_occupant_id', '=', 'occupants.occ_id')
             ->where('rsv_status', 'pending')
             ->where('rsv_notify_ctr', 0)
+            ->orderBy('rsv_id', 'asc')
             ->first();
     }
 

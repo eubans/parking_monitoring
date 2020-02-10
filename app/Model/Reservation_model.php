@@ -13,7 +13,7 @@ class Reservation_model extends Model
             ->leftJoin('occupants', 'reservations.rsv_occupant_id', '=', 'occupants.occ_id')
             ->leftJoin('occupant_type', 'occupants.occ_type', '=', 'occupant_type.oct_id')
             ->where('rsv_status', 'pending')
-            // ->orderBy('rsv_id', 'desc')
+            ->orderBy('rsv_id', 'asc')
             ->get();
     }
 
@@ -40,6 +40,15 @@ class Reservation_model extends Model
             ->leftJoin('occupant_type', 'occupants.occ_type', '=', 'occupant_type.oct_id')
             ->where('rsv_id', $id)
             ->where('rsv_status', 'pending')
+            ->first();
+    }
+
+    function getLatestOccupantReservationWithoutNotify()
+    {
+        return DB::table('reservations')
+            ->leftJoin('occupants', 'reservations.rsv_occupant_id', '=', 'occupants.occ_id')
+            ->where('rsv_status', 'pending')
+            ->where('rsv_notify_ctr', 0)
             ->first();
     }
 }

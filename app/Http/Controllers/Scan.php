@@ -68,12 +68,12 @@ class Scan extends Controller
         $status = $occupant_details->occ_account_status;
 
         if ($status != "active")
-            return 'occupant_deactivated';
+            return array('data' => 'occupant_deactivated');
 
         $parking_status = $this->scan_m->getOccupantOngoingLogsCount() >= $this->scan_m->getParkingCount();
 
         if ($parking_status)
-            return 'parking_full';
+            return array('data' => 'parking_full');
 
         $reservation = $this->scan_m->getLatestOccupantReservation();
         // return response()->json($reservation);
@@ -84,9 +84,9 @@ class Scan extends Controller
             if (isset($reservation->rsv_occupant_id)) {
                 if ($reservation->rsv_occupant_id != $id) {
                     if (!count($this->scan_m->getOccupantPendingReservation($id)) > 0)
-                        return 'parking_full';
+                        return array('data' => 'parking_full');
                     else
-                        return 'invalid_occupant_queue';
+                        return array('data' => 'invalid_occupant_queue');
                 } else
                     $this->scan_m->updateReservation(array(
                         "rsv_timein_datetime" => date('Y-m-d H:i:s'),
@@ -107,11 +107,11 @@ class Scan extends Controller
             $this->scan_m->saveAttendaceLog($attendance_logs);
 
             DB::commit();
-            return 'success_time_in';
+            return array('data' => 'success_time_in');
         } catch (\Exception $e) {
             DB::rollback();
             // return $e;
-            return 'error_time_in';
+            return array('data' => 'error_time_in');
         }
     }
 
@@ -169,17 +169,17 @@ class Scan extends Controller
                         ), $reservation->rsv_id);
                     } else {
                         DB::rollback();
-                        return 'error_time_out_sms';
+                        return array('data' => 'error_time_out_sms');
                     }
                 }
             }
 
             DB::commit();
-            return 'success_time_out';
+            return array('data' => 'success_time_out');
         } catch (\Exception $e) {
             DB::rollback();
             // return $e;
-            return 'error_time_out';
+            return array('data' => 'error_time_out');
         }
     }
 
@@ -192,10 +192,10 @@ class Scan extends Controller
         $status = $occupant_details->occ_account_status;
 
         if ($status != "active")
-            return 'occupant_deactivated';
+            return array('data' => 'occupant_deactivated');
 
         if (count($this->scan_m->getOccupantPendingReservation($id)) > 0)
-            return 'occupant_reservation_exist';
+            return array('data' => 'occupant_reservation_exist');
 
         try {
             $reservation = array(
@@ -207,11 +207,11 @@ class Scan extends Controller
             $this->scan_m->saveReservation($reservation);
 
             DB::commit();
-            return 'success_reservation';
+            return array('data' => 'success_reservation');
         } catch (\Exception $e) {
             DB::rollback();
             // return $e;
-            return 'error_reservation';
+            return array('data' => 'error_reservation');
         }
     }
 
@@ -237,7 +237,7 @@ class Scan extends Controller
                 // email sending start
                 $obj_parameter = new \stdClass();
                 $obj_parameter->subject = "IETI Parking Logs System: Incident Report " . date('F j, Y h:i:s A');
-                $obj_parameter->occupant_name = $details->occ_lastname . ", " . $details->occ_firstname . ", " . strtoupper($details->occ_middlename[0]) . ".";
+                $obj_parameter->occupant_name = $details->occ_lastname . ", " . $details->occ_firstname . " " . (($details->occ_middlename == "") ? "" : strtoupper($details->occ_middlename[0]) . ".");
                 $obj_parameter->description = $request->description;
                 $obj_parameter->datetime = date('F j, Y h:i:s A');
                 $obj_parameter->template = 'mails.incident-report-email';
@@ -248,17 +248,17 @@ class Scan extends Controller
                 } catch (\Exception $e) {
                     // return $e;
                     DB::rollback();
-                    return redirect()->back()->with('status', 'invalid_email')->withInput();
+                    return array('data' => 'invalid_email');
                 }
                 // end
             }
 
             DB::commit();
-            return 'success_report_incident';
+            return array('data' => 'success_report_incident');
         } catch (\Exception $e) {
             DB::rollback();
-            return $e;
-            return 'error_report_incident';
+            // return $e;
+            return array('data' => 'error_report_incident');
         }
     }
 
