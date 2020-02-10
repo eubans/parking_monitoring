@@ -91,7 +91,7 @@
                     </div>
                 </div>
                 <div class="row" style="padding-left: 5px;">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group required">
                             <label for="occupant_type">Occupant Type</label>
                             <select class="form-control" id="occupant_type" name="occupant_type" required>
@@ -101,14 +101,14 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="username">Username:</label>
                             <input type="text" class="form-control" placeholder="Enter Username" id="username"
                                 name="username" readonly>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4" style="display:none">
                         <div class="form-group">
                             <label for="password">Password:</label>
                             <div class="input-group" id="show_hide_password">
@@ -168,10 +168,10 @@
                 </div>
                 <div class="row" style="padding-left: 5px;">
                     <div class="col-md-5">
-                        <div class="form-group required">
+                        <div class="form-group">
                             <label for="birth_date">Date of birth:</label>
                             <input type="date" class="form-control" placeholder="Enter Date of Birth" id="birth_date"
-                                name="birth_date" required value="{{ old('birth_date') }}">
+                                name="birth_date" value="{{ old('birth_date') }}">
                         </div>
                     </div>
                     <div class="col-md-7">
@@ -501,7 +501,7 @@
                     $('#qrcode').html(response.qr_code);
 
                     $("#card_occupant_type").text(d.oct_name);
-                    $("#card_name").text(d.occ_lastname + ", " + d.occ_firstname + " " + (d.occ_middlename.charAt(0).toUpperCase()) + ".");
+                    $("#card_name").text(d.occ_lastname + ", " + d.occ_firstname + " " + ((d.occ_middlename == null || d.occ_middlename == "") ? "" : d.occ_middlename.charAt(0).toUpperCase() + "."));
                     var date_issued = moment().format('MMMM DD, YYYY');
                     $("#card_date_issued").text(date_issued == "Invalid date" ? "" : date_issued);
                     $("#card_or_number").text(d.omi_or_number);
@@ -705,9 +705,9 @@
                                 message: ' Occupant photo is required.',
                                 position: 'bottomCenter',
                                 titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                                titleLineHeight: '35px',
+                                messageSize: '15px',
+                                messageLineHeight: '35px',
                             });
                         } else {
                             $("#base64_image").val(getBase64Image(document.getElementById("imageprev")));

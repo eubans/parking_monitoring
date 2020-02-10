@@ -120,6 +120,7 @@ class Occupant_model extends Model
     function checkOccupantUsername($username)
     {
         return DB::table('users')
+            ->leftjoin('occupants', 'users.use_id', '=', 'occupants.occ_user_id')
             ->where('use_username', $username)
             ->first();
     }

@@ -191,9 +191,9 @@ class Settings extends Controller
 
                 $user_details = array(
                     "usd_user_id" => $use_id,
-                    "usd_firstname" => $firstname,
-                    "usd_lastname" => $lastname,
-                    "usd_middlename" => $middlename,
+                    "usd_firstname" => ucfirst($firstname),
+                    "usd_lastname" => ucfirst($lastname),
+                    "usd_middlename" => ucfirst($middlename),
                     "usd_email" => $email,
                     "usd_contact_number" => $phone_number,
                     "created_at" => date('Y-m-d H:i:s'),
@@ -229,9 +229,9 @@ class Settings extends Controller
                 }
 
                 $user_details = array(
-                    "usd_firstname" => $firstname,
-                    "usd_lastname" => $lastname,
-                    "usd_middlename" => $middlename,
+                    "usd_firstname" => ucfirst($firstname),
+                    "usd_lastname" => ucfirst($lastname),
+                    "usd_middlename" => ucfirst($middlename),
                     "usd_email" => $email,
                     "usd_contact_number" => $phone_number,
                     "modified_at" => date('Y-m-d H:i:s'),
@@ -311,9 +311,9 @@ class Settings extends Controller
 
             if (($firstname != null && $lastname != null && $email != null && $phone_number != null) && Session::get('USER_TYPE_ID') != 2) {
                 $user_details = array(
-                    "usd_firstname" => $firstname,
-                    "usd_lastname" => $lastname,
-                    "usd_middlename" => $middlename,
+                    "usd_firstname" => ucfirst($firstname),
+                    "usd_lastname" => ucfirst($lastname),
+                    "usd_middlename" => ucfirst($middlename),
                     "usd_email" => $email,
                     "usd_contact_number" => $phone_number,
                 );
