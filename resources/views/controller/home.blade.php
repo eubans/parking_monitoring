@@ -394,7 +394,8 @@
             url: '{{ url("get-parking-status") }}',
             dataType: 'json',
             success: function (response) {
-                $("#parking_ctr").text(response);
+                console.log(response.responseText);
+                $("#parking_ctr").text(response.data);
                 //for ending loading
             },
             error: function (jqXHR, textStatus, errorThrown) {

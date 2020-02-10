@@ -147,7 +147,9 @@ class Controller extends BaseController
 
     function getParkingStatus()
     {
-        return count($this->controller_m->getAllOngoingAttendanceLog()) . "/" . $this->controller_m->getParkingCount();
+        return array(
+            "data" => count($this->controller_m->getAllOngoingAttendanceLog()) . "/" . $this->controller_m->getParkingCount()
+        );
     }
 
     function getOngoingOccupants()

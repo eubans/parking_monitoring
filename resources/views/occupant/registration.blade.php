@@ -91,7 +91,7 @@
                     </div>
                 </div>
                 <div class="row" style="padding-left: 5px;">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group required">
                             <label for="occupant_type">Occupant Type</label>
                             <select class="form-control" id="occupant_type" name="occupant_type" required>
@@ -101,14 +101,15 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="username">Username:</label>
                             <input type="text" class="form-control" placeholder="Enter Username" id="username"
                                 name="username" readonly>
                         </div>
                     </div>
-                    <div class="col-md-4" style="display:none">
+                    @if(session('USER_TYPE_ID') == 1 || session('USER_TYPE_ID') == 3)
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="password">Password:</label>
                             <div class="input-group" id="show_hide_password">
@@ -121,6 +122,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 </div>
                 <div class="row" style="margin-bottom: 5px;margin-top: 15px;">
                     <div class="col-lg-12">
