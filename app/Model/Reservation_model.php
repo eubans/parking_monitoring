@@ -13,7 +13,7 @@ class Reservation_model extends Model
             ->leftJoin('occupants', 'reservations.rsv_occupant_id', '=', 'occupants.occ_id')
             ->leftJoin('occupant_type', 'occupants.occ_type', '=', 'occupant_type.oct_id')
             ->where('rsv_status', 'pending')
-            // ->orderBy('rsv_id', 'desc')
+            ->orderBy('rsv_id', 'asc')
             ->get();
     }
 

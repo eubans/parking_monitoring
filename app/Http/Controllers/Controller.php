@@ -169,7 +169,9 @@ class Controller extends BaseController
 
     function getQueuedReservationCount()
     {
-        return count($this->controller_m->getAllPendingReservations());
+        return array(
+            "data" => count($this->controller_m->getAllPendingReservations())
+        );
     }
 
     function getOccupantQueueNumber()

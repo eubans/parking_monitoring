@@ -184,11 +184,18 @@ class GlobalController extends Controller
     {
         if ($this->Get_Global_Variable('ENABLE_AUTOMATIC_CLOSING_SMS_BLAST') == 1) {
             $closing_time = substr_replace($this->Get_Global_Variable('PARKING_LOT_CLOSING_TIME'), ":", 2, 0);
-            $date_time = new DateTime();
-            $date_time->add(new DateInterval("PT30M"));
-            $date_time = $date_time->format('Y-m-d H:i:s');
+            $date_time_from = new DateTime();
+            $date_time_from->add(new DateInterval("PT29M"));
+            $date_time_from = $date_time_from->format('H:i');
 
-            if (date_format(new DateTime($closing_time), "Y-m-d H:i:s") <= $date_time) {
+            $date_time_to = new DateTime();
+            $date_time_to->add(new DateInterval("PT31M"));
+            $date_time_to = $date_time_to->format('H:i');
+
+            if (
+                date_format(new DateTime($closing_time), "H:i") > $date_time_from
+                && date_format(new DateTime($closing_time), "H:i") < $date_time_to
+            ) {
                 $obj_details = array();
                 foreach ($this->global_m->getOngoingOccupants() as $value) {
                     $values = new \stdClass();
