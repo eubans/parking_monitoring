@@ -102,7 +102,7 @@ class Occupant extends Controller
                         // email sending for new user start
                         $obj_parameter = new \stdClass();
                         $obj_parameter->subject = "IETI Parking Logs System: User Credentials";
-                        $obj_parameter->fullname = $request->lastname . ", " . $request->firstname . ", " . strtoupper($request->middlename[0]) . ".";
+                        $obj_parameter->fullname = $request->lastname . ", " . $request->firstname . " " . (($request->occ_middlename == "") ? "" : strtoupper($request->middlename[0]) . ".");
                         $obj_parameter->username = $request->email;
                         $obj_parameter->password = $password;
                         $obj_parameter->template = 'mails.new-user-created-email';

@@ -64,7 +64,7 @@
                     <tr>
                         <td>{{$log->oct_name}}</td>
                         <td>
-                            {{$log->occ_lastname . ", " . $log->occ_firstname . ", " . strtoupper($log->occ_middlename[0]) . ". "}}
+                            {{$log->occ_lastname . ", " . $log->occ_firstname . " " . (($log->occ_middlename == "") ? "" :  strtoupper($log->occ_middlename[0]) . ". ")}}
                         </td>
                         <td>{{$log->atl_date_in == "" ? "" :date_format(new DateTime($log->atl_date_in),"F j, Y")}}
                         </td>
