@@ -51,7 +51,7 @@
 <div class="main">
     <div class="col-md-6 col-sm-12">
         <div class="login-form">
-            {!! Form::open(['url' => 'forgot-password/change-forgotten-password']) !!}
+            {!! Form::open(['url' => 'forgot-password/change-forgotten-password','id'=>'form_submit']) !!}
             <input type="hidden" name="account" value="{{$account}}">
             <div class="form-group required">
                 <label for="new_password">New Password:</label>
@@ -134,5 +134,21 @@
                 messageLineHeight: '35px',
             });
         }
+        
+        $('#form_submit').submit(function (event) {
+            event.preventDefault(); //this will prevent the default submit
+            $.confirm({
+                title: 'Confirmation',
+                content: 'Are you sure to continue?',
+                buttons: {
+                    confirm: function () {
+                        $('#form_submit').unbind('submit').submit(); // continue the submit unbind preventDefault
+                    },
+                    cancel: function () {
+                        //
+                    },
+                }
+            });
+        });
     });
 </script>

@@ -76,8 +76,15 @@ class Occupant extends Controller
         DB::beginTransaction();
         $occ_id = $request->id;
 
-        if (count($this->occupant_m->checkOccupantUsername($request->email)) > 0)
-            return redirect()->back()->with('status', 'error_username_taken')->withInput();
+        $details = $this->occupant_m->checkOccupantUsername($request->email);
+        if (count($details) > 0) {
+            if ($occ_id == "") {
+                return redirect()->back()->with('status', 'error_username_taken')->withInput();
+            } else {
+                if ($occ_id != $details->occ_id)
+                    return redirect()->back()->with('status', 'error_username_taken')->withInput();
+            }
+        }
 
         try {
             if ($occ_id == null) {
@@ -113,14 +120,14 @@ class Occupant extends Controller
                 }
 
                 $occupant_details = array(
-                    "occ_lastname" => $request->lastname,
-                    "occ_firstname" => $request->firstname,
-                    "occ_middlename" => $request->middlename,
+                    "occ_lastname" => ucfirst($request->lastname),
+                    "occ_firstname" => ucfirst($request->firstname),
+                    "occ_middlename" => ucfirst($request->middlename),
                     "occ_date_of_birth" => $request->birth_date,
                     "occ_email_address" => $request->email,
                     "occ_student_number" => $request->student_number,
                     "occ_course" => $request->course,
-                    "occ_address" => $request->address,
+                    "occ_address" => ucwords($request->address),
                     "occ_telephone" => $request->telephone,
                     "occ_phone_number" => $request->phone_number,
                     "occ_qr_code" => sha1(time()),
@@ -133,7 +140,7 @@ class Occupant extends Controller
 
                 $occupant_guardian = array(
                     "ocg_occupant_id" => $occ_id,
-                    "ocg_name" => $request->guardian_name,
+                    "ocg_name" => ucwords($request->guardian_name),
                     "ocg_occupation" => $request->guardian_occupation,
                     "ocg_contact" => $request->guardian_contact,
                 );
@@ -150,13 +157,13 @@ class Occupant extends Controller
                 $this->occupant_m->saveOccupantMotorcycle($occupant_motorcycle);
             } else {
                 $occupant_details = array(
-                    "occ_lastname" => $request->lastname,
-                    "occ_firstname" => $request->firstname,
-                    "occ_middlename" => $request->middlename,
+                    "occ_lastname" => ucfirst($request->lastname),
+                    "occ_firstname" => ucfirst($request->firstname),
+                    "occ_middlename" => ucfirst($request->middlename),
                     "occ_date_of_birth" => $request->birth_date,
                     "occ_email_address" => $request->email,
                     "occ_course" => $request->course,
-                    "occ_address" => $request->address,
+                    "occ_address" => ucwords($request->address),
                     "occ_telephone" => $request->telephone,
                     "occ_phone_number" => $request->phone_number,
                     "modified_at" => date('Y-m-d H:i:s'),
@@ -165,7 +172,7 @@ class Occupant extends Controller
                 $this->occupant_m->updateOccupant($occupant_details, $occ_id);
 
                 $occupant_guardian = array(
-                    "ocg_name" => $request->guardian_name,
+                    "ocg_name" => ucwords($request->guardian_name),
                     "ocg_occupation" => $request->guardian_occupation,
                     "ocg_contact" => $request->guardian_contact,
                 );

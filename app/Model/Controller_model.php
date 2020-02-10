@@ -107,6 +107,13 @@ class Controller_model extends Model
             ->get();
     }
 
+    function validateOccupantEmail($email)
+    {
+        return DB::table('users')
+            ->where('use_username', $email)
+            ->get();
+    }
+
     function validateOccupantUsername($email)
     {
         return DB::table('users')
@@ -120,6 +127,13 @@ class Controller_model extends Model
             ->leftjoin('users', 'user_details.usd_user_id', '=', 'users.use_id')
             ->where('usd_email', $email)
             ->pluck('users.use_username');
+    }
+
+    function getOccupantUsernameFromEmail($email)
+    {
+        return DB::table('users')
+            ->where('use_username', $email)
+            ->pluck('use_username');
     }
 
     function updatePassword($details, $account)
@@ -142,6 +156,15 @@ class Controller_model extends Model
         return DB::table('users')
             ->where('use_username', $username)
             ->where('use_password', $password)
+            ->first();
+    }
+
+    function getSuperAdminDetails()
+    {
+        return DB::table('user_type')
+            ->join('users', 'user_type.ust_id', '=', 'users.use_user_type')
+            ->join('user_details', 'users.use_id', '=', 'user_details.usd_user_id')
+            ->where('ust_id', 3)
             ->first();
     }
 }

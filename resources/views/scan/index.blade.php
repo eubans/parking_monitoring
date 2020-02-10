@@ -465,7 +465,7 @@
                 $('#qrcode').html(response.qr_code);
 
                 $("#occupant_type").text(d.oct_name);
-                $("#name").text(d.occ_lastname + ", " + d.occ_firstname + " " + (d.occ_middlename.charAt(0).toUpperCase()) + ".");
+                $("#name").text(d.occ_lastname + ", " + d.occ_firstname + " " + ((d.occ_middlename == null || d.occ_middlename == "") ? "" : d.occ_middlename.charAt(0).toUpperCase()) + ".");
                 $("#student_number").text(d.occ_student_number);
                 $("#course").text(d.occ_course);
                 $("#telephone").val(d.occ_telephone);

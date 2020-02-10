@@ -467,7 +467,7 @@
 
                     _table_occ.row.add([
                         logs[i]['oct_name'],
-                        logs[i]['occ_lastname'] + ", " + logs[i]['occ_firstname'] + " " + (logs[i]['occ_middlename'].charAt(0).toUpperCase()) + ".",
+                        logs[i]['occ_lastname'] + ", " + logs[i]['occ_firstname'] + " " + ((logs[i]['occ_middlename'] == null || logs[i]['occ_middlename'] == "") ? "" : logs[i]['occ_middlename'].charAt(0).toUpperCase() + "."),
                         logs[i]['omi_plate_number'],
                         date_in == "Invalid date" ? "" : date_in,
                         time_in == "Invalid date" ? "" : time_in,
@@ -568,9 +568,9 @@
                         message: ' Occupant is successfully reserved.',
                         position: 'bottomCenter',
                         titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                        titleLineHeight: '35px',
+                        messageSize: '15px',
+                        messageLineHeight: '35px',
                     });
                 } else if (response == "error_reservation") {
                     iziToast.error({
@@ -578,9 +578,9 @@
                         message: ' Failure for occupant to reserve.',
                         position: 'bottomCenter',
                         titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                        titleLineHeight: '35px',
+                        messageSize: '15px',
+                        messageLineHeight: '35px',
                     });
                     $('#reserve_slot_btn').attr("disabled", false);
                 } else if (response == "occupant_deactivated") {
@@ -589,9 +589,9 @@
                         message: ' Failure for occupant to reserve. Occupant\'s account is deactived.',
                         position: 'bottomCenter',
                         titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                        titleLineHeight: '35px',
+                        messageSize: '15px',
+                        messageLineHeight: '35px',
                     });
                 } else if (response == "occupant_reservation_exist") {
                     iziToast.error({
@@ -599,9 +599,9 @@
                         message: ' Failure for occupant to reserve. Occupant have existing reservation.',
                         position: 'bottomCenter',
                         titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                        titleLineHeight: '35px',
+                        messageSize: '15px',
+                        messageLineHeight: '35px',
                     });
                 } else if (response == "reservation_invalid_not_full") {
                     iziToast.warning({
@@ -609,9 +609,9 @@
                         message: ' Invalid to reserve a slot. Parking slot is not full.',
                         position: 'bottomCenter',
                         titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                        titleLineHeight: '35px',
+                        messageSize: '15px',
+                        messageLineHeight: '35px',
                     });
                 } else if (response == "occupant_ongoing_attendance_exist") {
                     iziToast.error({
@@ -619,9 +619,9 @@
                         message: ' Invalid to reserve a slot. Occupant has ongoing attendance.',
                         position: 'bottomCenter',
                         titleSize: '15px',
-                titleLineHeight: '35px',
-                messageSize: '15px',
-                messageLineHeight: '35px',
+                        titleLineHeight: '35px',
+                        messageSize: '15px',
+                        messageLineHeight: '35px',
                     });
                 }
 
@@ -703,7 +703,7 @@
                 $('#qrcode').html(response.qr_code);
 
                 $("#card_occupant_type").text(d.oct_name);
-                $("#card_name").text(d.occ_lastname + ", " + d.occ_firstname + " " + (d.occ_middlename.charAt(0).toUpperCase()) + ".");
+                $("#card_name").text(d.occ_lastname + ", " + d.occ_firstname + " " + ((d.occ_middlename == null || d.occ_middlename == "") ? "" : d.occ_middlename.charAt(0).toUpperCase() + "."));
                 var date_issued = moment().format('MMMM DD, YYYY');
                 $("#card_date_issued").text(date_issued == "Invalid date" ? "" : date_issued);
                 $("#card_or_number").text(d.omi_or_number);

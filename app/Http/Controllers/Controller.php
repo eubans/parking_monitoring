@@ -101,6 +101,8 @@ class Controller extends BaseController
                 session()->put('ENABLE_EMAIL', $this->controller_m->getGlobalVariable("ENABLE_EMAIL"));
                 session()->put('ENABLE_SMS', $this->controller_m->getGlobalVariable("ENABLE_SMS"));
 
+                session()->put('SUPER_ADMIN_EMAIL', $this->controller_m->getSuperAdminDetails()->usd_email);
+
                 if ($user_details->ust_id == 2) {
                     $occ_id = $this->controller_m->getOccupantDetails(Session::get('USER_ID'))->occ_id;
                     if (file_exists(public_path() . '/img/occupant/' . $occ_id . '.png')) {
@@ -193,9 +195,9 @@ class Controller extends BaseController
         DB::beginTransaction();
 
         $id = Session::get('USER_ID');
-        $status = Session::get('USER_STATUS');
 
         $occupant_details = $this->controller_m->getOccupantDetails($id);
+        $status = $occupant_details->occ_account_status;
         $occ_id = $occupant_details->occ_id;
 
         if (count($this->controller_m->getOccupantOngoingAttendance($occ_id)) > 0)
@@ -262,6 +264,8 @@ class Controller extends BaseController
 
         $email = $request->email;
         $result = $this->controller_m->validateEmail($email);
+        if (count($result) == 0)
+            $result = $this->controller_m->validateOccupantEmail($email);
 
         if (count($result) > 0) {
             // TODO: send email and stuffs
@@ -342,6 +346,9 @@ class Controller extends BaseController
         }
 
         $result = $this->controller_m->getUsernameFromEmail($email);
+        if (count($result) == 0)
+            $result = $this->controller_m->getOccupantUsernameFromEmail($email);
+
         $data = array(
             'account' => $result[0],
             'code' => $code
@@ -364,9 +371,15 @@ class Controller extends BaseController
 
         try {
             if ($new_password != null && $confirm_password != null) {
-                $user = array(
-                    "use_password" => Hash::make($new_password),
-                );
+                $user = array();
+                if ($this->controller_m->verifyLogin($account)->use_user_type == 2)
+                    $user = array(
+                        "use_password" => $new_password,
+                    );
+                else
+                    $user = array(
+                        "use_password" => Hash::make($new_password),
+                    );
                 $this->controller_m->updatePassword($user, $account);
             }
 
