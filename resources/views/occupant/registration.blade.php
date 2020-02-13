@@ -308,9 +308,11 @@
                         </div>
                     </div>
                 </div>
+                @if(session('USER_TYPE_ID') == 3 || session('USER_TYPE_ID') == 1)
                 <button type="submit" class="btn btn-primary" id="submit_button" style="float:right;margin: 5px -5px;">
                     <i class="fa fa-floppy-o"></i> Save
                 </button>
+                @endif
             </div>
         </div>
     </div>

@@ -20,11 +20,13 @@
             <div class="col-6">
                 <h4>Occupant List</h4>
             </div>
+            @if(session('USER_TYPE_ID') == 3 || session('USER_TYPE_ID') == 1)
             <div class="col-6" style="text-align: right;">
                 <a href="{{ url('occupant/registration') }}" class="btn btn-primary" title="Open" style="float: right;">
                     New Occupant
                 </a>
             </div>
+            @endif
         </div>
     </div>
     <div class="container" style="padding: 20px;">
