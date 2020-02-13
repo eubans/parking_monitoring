@@ -91,6 +91,13 @@ class Reservation extends Controller
                 }
             }
 
+            $details = array(
+                "rsv_status" => "cancelled",
+                "modified_at" => date('Y-m-d H:i:s'),
+                "created_by" => Session::get('USER_ID'),
+            );
+            $this->reservation_m->updateReservation($details, $rsv_id);
+
             if ($this->global_c->Get_Global_Variable('ENABLE_SMS') == 1) {
                 $reservation = $this->reservation_m->getLatestOccupantReservationWithoutNotify();
                 if (count($reservation) > 0) {
@@ -116,13 +123,6 @@ class Reservation extends Controller
                     }
                 }
             }
-
-            $details = array(
-                "rsv_status" => "cancelled",
-                "modified_at" => date('Y-m-d H:i:s'),
-                "created_by" => Session::get('USER_ID'),
-            );
-            $this->reservation_m->updateReservation($details, $rsv_id);
 
             DB::commit();
             return redirect('reservation')->with('status', 'success_cancellation');
