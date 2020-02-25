@@ -19,7 +19,7 @@
                 <input type="password" class="form-control" placeholder="Password" name="password">
             </div>
             <button type="submit" class="btn btn-black">Login</button>
-        <a href="{{url('forgot-password')}}" type="button" class="btn btn-outline-dark">Forget Password</a>
+        <a href="{{url('forgot-password')}}" type="button" class="btn btn-outline-dark">Forgot Password</a>
             {!! Form::close() !!}
         </div>
     </div>

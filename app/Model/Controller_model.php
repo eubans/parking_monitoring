@@ -76,7 +76,6 @@ class Controller_model extends Model
         return DB::table('reservations')
             ->where('rsv_occupant_id', $id)
             ->where('rsv_status', 'pending')
-            ->orderBy('rsv_id', 'asc')
             ->first();
     }
 
@@ -166,6 +165,24 @@ class Controller_model extends Model
             ->join('users', 'user_type.ust_id', '=', 'users.use_user_type')
             ->join('user_details', 'users.use_id', '=', 'user_details.usd_user_id')
             ->where('ust_id', 3)
+            ->first();
+    }
+
+    function getLatestOccupantReservationWithoutNotify()
+    {
+        return DB::table('reservations')
+            ->leftJoin('occupants', 'reservations.rsv_occupant_id', '=', 'occupants.occ_id')
+            ->where('rsv_status', 'pending')
+            ->where('rsv_notify_ctr', 0)
+            ->orderBy('rsv_id', 'asc')
+            ->first();
+    }
+
+    function getReservationDetails($id)
+    {
+        return DB::table('reservations')
+            ->where('rsv_id', $id)
+            ->where('rsv_status', 'pending')
             ->first();
     }
 }
